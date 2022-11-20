@@ -1,0 +1,7 @@
+bnetkeys
+proxykey
+/alt
+/lists/*.txt
+/__pycache__
+/json/*.json
+test.html
