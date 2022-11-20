@@ -63,9 +63,9 @@ def gen_ScoreTable(players, inis, colors, isTyrannical):
 		if x['timer'] == 0:
 			ini_timer = ""
 		else:
-			ini_timer = f'{int(x["timer"] // 60)}:{str(int(x["timer"] % 60)).zfill(2)}'
+			ini_timer = f'[{int(x["timer"] // 60)}:{str(int(x["timer"] % 60)).zfill(2)}]'
 
-		html += f'<th title="{x["name"]}" width=\"8%\"><span style="white-space:pre-line;color:white;background-color:black">{x["short"]}<br>[{ini_timer}]</span></th>\n'
+		html += f'<th title="{x["name"]}" width=\"8%\"><span style="white-space:pre-line;color:white;background-color:black">{x["short"]}<br>{ini_timer}</span></th>\n'
 	html += f'</tr>\n'
 #----------------------------
 	high_score = rio.get_highest_score(players)
