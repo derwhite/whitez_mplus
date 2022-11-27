@@ -5,3 +5,4 @@ proxykey
 /__pycache__
 /json/*.json
 test.html
+.vscode

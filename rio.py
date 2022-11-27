@@ -27,8 +27,8 @@ def pull(URLs, proxy=''):    #sometimes gets stuck if Proxy does not response -.
 		with open('proxykey') as f:
 			key = f.readlines()
 			proxies = {
-			'http': 'http://' + key[0].strip() + proxy + ':8080',
-			'https': 'https://' + key[0].strip() + proxy + ':8080'
+			'http': f'http://{key[0].strip()}@{proxy}:8080',
+			'https': f'http://{key[0].strip()}@{proxy}:8080'
 			}
 			s.proxies.update(proxies)
 	results = pool.map(s.get, URLs, chunksize=1) # DL all URLS !!
