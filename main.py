@@ -37,10 +37,15 @@ if __name__ == "__main__":
 	# Takes alle Pulled Players and writes it to an Json file !
 	now = datetime.now()
 	date = now.strftime('%Y-%m-%d')
-	all_players = players + alts
-	dump = []
-	for x in all_players:
-		dump.append(x.json())
+
+	dump = {'Players': [],
+			'Alts': [],
+			}
+	for i in players:
+		dump['Players'].append(i.json())
+	for i in alts:
+		dump['Alts'].append(i.json())
+
 	with open(f'json/{date}.json', 'w', encoding="utf8") as f:
 		f.write(json.dumps(dump, sort_keys=True))
 	# --------------------
