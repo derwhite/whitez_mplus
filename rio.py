@@ -41,7 +41,7 @@ def pull(URLs, proxy=''):    #sometimes gets stuck if Proxy does not response -.
 	return results
 
 def get_instances(season, proxy=''):
-	tmp = pull(['https://raider.io/api/v1/mythic-plus/static-data?expansion_id=8'], proxy)
+	tmp = pull(['https://raider.io/api/v1/mythic-plus/static-data?expansion_id=9'], proxy)
 	try:
 		bnet_Token = bnet.getBnetAccessToken()
 	except:
