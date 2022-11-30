@@ -10,6 +10,23 @@ def cleanLists(players, hidden):
 			players.remove(x)
 	return players
 
+def exportDatatoJson(players, alts):
+	# Takes alle Pulled Players and writes it to an Json file !
+	now = datetime.now()
+	date = now.strftime('%Y-%m-%d')
+
+	dump = {'Players': [],
+			'Alts': [],
+			}
+	for i in players:
+		dump['Players'].append(i.json())
+	for i in alts:
+		dump['Alts'].append(i.json())
+
+	with open(f'json/{date}.json', 'w', encoding="utf8") as f:
+		f.write(json.dumps(dump, sort_keys=True))
+	# --------------------
+
 if __name__ == "__main__":
 	#urls.append('https://checkip.perfect-privacy.com/json')  # Test with your Proxy
 
@@ -34,21 +51,7 @@ if __name__ == "__main__":
 	alts = rio.sort_players_by_score(rio.pull(urls, proxy))
 	# --------------------
 
-	# Takes alle Pulled Players and writes it to an Json file !
-	now = datetime.now()
-	date = now.strftime('%Y-%m-%d')
-
-	dump = {'Players': [],
-			'Alts': [],
-			}
-	for i in players:
-		dump['Players'].append(i.json())
-	for i in alts:
-		dump['Alts'].append(i.json())
-
-	with open(f'json/{date}.json', 'w', encoding="utf8") as f:
-		f.write(json.dumps(dump, sort_keys=True))
-	# --------------------
+	exportDatatoJson(players, alts)
 
 	# remove hidden players
 	players = cleanLists(players, hidden_players)
