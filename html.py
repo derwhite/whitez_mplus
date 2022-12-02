@@ -1,7 +1,8 @@
 import rio
 from datetime import datetime, timezone
 
-WREWARD=[0,0,278,278,278,281,281,285,288,288,291,294,298,298,301,304] # Season 4
+# WREWARD=[0,0,278,278,278,281,281,285,288,288,291,294,298,298,301,304] # Season 4
+WREWARD=[0,0,382,385,385,389,389,392,395,395,398,402,405,408,408,411,415,415,418,418,421] # Season 1 DF
 
 CLASS_COLOR={
 	'Death Knight': '#C41F3B',
@@ -109,7 +110,7 @@ def gen_weekly(players, inis, colors, weekly):
 	players = rio.sort_players_by(players,weekly)
 	high = rio.get_highest_score(players)
 	html = f'<table width="100%">\n'
-	html += f'<tr><th><span style="color:white">Player</span></th><th width="7%"><span style="color:white;">+15</span></th><th width="12%"><span style="color:white">Rewards</span></th>'
+	html += f'<tr><th><span style="color:white">Player</span></th><th width="7%"><span style="color:white;">+20</span></th><th width="12%"><span style="color:white">Rewards</span></th>'
 	for i in range(0,8):
 		html += f'<th width="7%"></th>'
 	html += f'</tr>\n'
@@ -124,7 +125,7 @@ def gen_weekly(players, inis, colors, weekly):
 		#--------- Show Left Instances -------#
 		count = 0
 		for i in p.json()[weekly]:
-			if i['mythic_level'] >= 15:
+			if i['mythic_level'] >= 20:
 				count += 1
 		color = 'red'
 		if count > 8:
@@ -138,8 +139,8 @@ def gen_weekly(players, inis, colors, weekly):
 			if i != 0:
 				html += f' / '
 			if len(p.json()[weekly]) > i:
-				if p.json()[weekly][i]['mythic_level'] >= 15:
-					reward = WREWARD[15]
+				if p.json()[weekly][i]['mythic_level'] >= 20:
+					reward = WREWARD[20]
 				else:
 					reward = WREWARD[p.json()[weekly][i]['mythic_level']]
 				html += f'{reward}'
