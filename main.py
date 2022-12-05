@@ -4,6 +4,8 @@ import json
 import rio, lists, html
 from datetime import datetime
 
+MAX_ILVL = 315
+
 def cleanLists(players, hidden):
 	for x in reversed(players):
 		if f'{x.json()["name"]}-{x.json()["realm"]}' in hidden:
@@ -26,6 +28,12 @@ def exportDatatoJson(players, alts):
 	with open(f'json/{date}.json', 'w', encoding="utf8") as f:
 		f.write(json.dumps(dump, sort_keys=True))
 	# --------------------
+
+def clear_low_ilevel_chars(players):
+	for x in reversed(players):
+		if x.json()['gear']['item_level_equipped'] < MAX_ILVL:
+			players.remove(x)
+	return players
 
 if __name__ == "__main__":
 	#urls.append('https://checkip.perfect-privacy.com/json')  # Test with your Proxy
@@ -51,6 +59,11 @@ if __name__ == "__main__":
 	alts = rio.sort_players_by_score(rio.pull(urls, proxy))
 	# --------------------
 
+	# Remove low Item level Chars (because Raider.io API dont gives me Char Levels. Its to remove alts thats not 70)
+	players = clear_low_ilevel_chars(players)
+	alts = clear_low_ilevel_chars(alts)
+	# --------------------
+	
 	exportDatatoJson(players, alts)
 
 	# remove hidden players
