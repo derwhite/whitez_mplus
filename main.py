@@ -51,14 +51,19 @@ if __name__ == "__main__":
 
 	# Load Player Mains ---
 	urls, hidden_players = rio.getAPI_List(lists.getMains())
-	players = rio.sort_players_by_score(rio.pull(urls, proxy))
+	players = rio.sort_players_by_ilvl(rio.pull(urls, proxy))
 	# ---------------------
 	
 	# Load Player Alts ---	
 	urls, hidden_alts = rio.getAPI_List(lists.getAlts())
-	alts = rio.sort_players_by_score(rio.pull(urls, proxy))
+	alts = rio.sort_players_by_ilvl(rio.pull(urls, proxy))
 	# --------------------
 
+	# Sortiere Players by ilvl
+	players = rio.sort_players_by_score(players)
+	alts = rio.sort_players_by_score(alts)
+	#----------------------
+	
 	# Remove low Item level Chars (because Raider.io API dont gives me Char Levels. Its to remove alts thats not 70)
 	players = clear_low_ilevel_chars(players)
 	alts = clear_low_ilevel_chars(alts)
