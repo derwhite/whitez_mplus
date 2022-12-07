@@ -211,6 +211,7 @@ def gen_site(affixes, all_tables, season_name, isTyrannical):
 	myhtml += '</div>\n'
 	myhtml += '</div>\n'
 	myhtml += '<br><p style="color:white">All data provided by <a href="https://raider.io">Raider.io</a> & <a href="https://battle.net">Battle.net</a></p>\n'
+	myhtml += '<br><p style="color:white">This Project source is hosted on <a href="https://github.com/derwhite/whitez_mplus">Github.com</a>\n'
 
 	myhtml += '</body>\n'
 
