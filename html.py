@@ -101,6 +101,13 @@ def gen_ScoreTable(players, inis, colors, isTyrannical):
 				else:
 					sec = best
 					first = alter
+			else:
+				if best['affix'] == 10:
+					first = best
+					sec = alter
+				else:
+					sec = best
+					first = alter
 			html += f'<td title="{first["score"]} / {alter["score"]} / {round(best["score"]*1.5+alter["score"]*0.5,2)}"><span style="font-size:{mainSize}px;color:{first["color"]}">{first["run"]}</span><span style="font-size:{mainSize}px;color:yellow">{first["sterne"]}</span><span style="color:white"> | </span><span style="font-size:{secSize}px;color:{sec["color"]}">{sec["run"]}</span><span style="font-size:{secSize}px;color:yellow">{sec["sterne"]}</span></td>\n'
 		html += f'</tr>\n'
 	html += f'</table>\n'
