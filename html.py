@@ -56,6 +56,21 @@ def getSterne(upgrade):
 		count -= 1
 	return stern
 
+def getTierItems(p):
+	tier = 0
+	tcount = 0
+	tset = ['head','shoulder','chest','hands','legs']
+	for x in tset:
+		if 'tier' in p['gear']['items'][x]:
+			if p['gear']['items'][x]['tier'] > tier:
+				tier = p['gear']['items'][x]['tier']
+				tcount = 1
+			elif p['gear']['items'][x]['tier'] == tier:
+				tcount = tcount + 1
+	if tier == 0:
+			return ""
+	return f'T{tier}: {tcount}/5'
+
 ## SCORE TABLE -------
 def gen_ScoreTable(players, inis, colors, isTyrannical):
 	html = f'<table width="100%">\n'
@@ -78,9 +93,12 @@ def gen_ScoreTable(players, inis, colors, isTyrannical):
 		tday = datetime.now()
 		old = tday - dt
 		#-----------------------------------------------------------
+		# Count Tier Items an Build a string
+		Tier = getTierItems(p.json())
+        #----------------------------------
 		# Create Player Line on Website !!
 		html += f'<tr>\n'
-		html += f'<td title="Last Update: {old.days} days ago&#10;"><a href="{p.json()["profile_url"]}" target="_blank"><img src="{p.json()["thumbnail_url"]}" width="40" height="40" style="float:left"></a><p style="font-size:{mainSize}px;color:{CLASS_COLOR[p.json()["class"]]};padding:10px;margin:0px;text-align:left">&emsp;{p.json()["name"]}&emsp;[{p.json()["gear"]["item_level_equipped"]}]</p></td>\n'
+		html += f'<td title="Last Update: {old.days} days ago&#10;{Tier}"><a href="{p.json()["profile_url"]}" target="_blank"><img src="{p.json()["thumbnail_url"]}" width="40" height="40" style="float:left"></a><p style="font-size:{mainSize}px;color:{CLASS_COLOR[p.json()["class"]]};padding:10px;margin:0px;text-align:left">&emsp;{p.json()["name"]}&emsp;[{p.json()["gear"]["item_level_equipped"]}]</p></td>\n'
 		sum = p.json()['mythic_plus_scores_by_season'][0]['scores']['all'] #Player Score
 		color = rio.getColor(colors, sum)
 		html += f'<td><span style="font-size:{mainSize}px;color:{color}">{"{:.2f}".format(sum)}</span></td>\n'
@@ -126,8 +144,11 @@ def gen_weekly(players, inis, colors, weekly):
 		dt = datetime.strptime(p.json()['last_crawled_at'], '%Y-%m-%dT%H:%M:%S.000Z')
 		tday = datetime.now()
 		old = tday - dt
+		# Count Tier Items an Build a string
+		Tier = getTierItems(p.json())
+        #----------------------------------
 		html += f'<tr>\n'
-		html += f'<td title="Last Update: {old.days} days ago&#10;"><a href="{p.json()["profile_url"]}" target="_blank"><img src="{p.json()["thumbnail_url"]}" width="40" height="40" style="float:left"></a><p style="color:{CLASS_COLOR[p.json()["class"]]};padding:10px;margin:0px;text-align:left;">&emsp;{p.json()["name"]}&emsp;[{p.json()["gear"]["item_level_equipped"]}]</p></td>\n'
+		html += f'<td title="Last Update: {old.days} days ago&#10;{Tier}"><a href="{p.json()["profile_url"]}" target="_blank"><img src="{p.json()["thumbnail_url"]}" width="40" height="40" style="float:left"></a><p style="color:{CLASS_COLOR[p.json()["class"]]};padding:10px;margin:0px;text-align:left;">&emsp;{p.json()["name"]}&emsp;[{p.json()["gear"]["item_level_equipped"]}]</p></td>\n'
 		
 		#--------- Show Left Instances -------#
 		count = 0
