@@ -62,10 +62,10 @@ def getTierItems(p):
 	tset = ['head','shoulder','chest','hands','legs']
 	for x in tset:
 		if 'tier' in p['gear']['items'][x]:
-			if p['gear']['items'][x]['tier'] > tier:
-				tier = p['gear']['items'][x]['tier']
+			if int(p['gear']['items'][x]['tier']) > tier:
+				tier = int(p['gear']['items'][x]['tier'])
 				tcount = 1
-			elif p['gear']['items'][x]['tier'] == tier:
+			elif int(p['gear']['items'][x]['tier']) == tier:
 				tcount = tcount + 1
 	if tier == 0:
 			return ""
