@@ -6,3 +6,4 @@ proxykey
 /json/*.json
 test.html
 .vscode
+.idea/*
