@@ -113,10 +113,10 @@ def main():
 	tables.update({'alts_weekly': html.gen_weekly(alts, inis, scolors, 'mythic_plus_weekly_highest_level_runs')})
 	tables.update({'alts_pweek': html.gen_weekly(alts, inis, scolors, 'mythic_plus_previous_weekly_highest_level_runs')})
 
-	html = html.gen_site(affixe, tables, sname, tyrannical)
+	myhtml = html.gen_site(affixe, tables, sname, tyrannical)
 	
 	with open(out_to_file, "w", encoding="utf8") as text_file:
-		text_file.write(html)
+		text_file.write(myhtml)
 	
 	quit()
 
