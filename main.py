@@ -3,6 +3,7 @@ import types, sys
 import json
 import rio, lists, html
 from datetime import datetime
+from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 
 MAX_ILVL = 315
 
@@ -35,7 +36,21 @@ def clear_low_ilevel_chars(players):
 			players.remove(x)
 	return players
 
-if __name__ == "__main__":
+
+def cli():
+	parser = ArgumentParser(description='Pulls infomation about M+ runs from a custom list of wow players via Raider.io '
+										'and Battle.net API.',
+							formatter_class=ArgumentDefaultsHelpFormatter)
+	parser.add_argument('--mains', help='mains file path', default='lists/players.txt')  # TODO: Change file name to mains.txt for consistencie
+	parser.add_argument('--alts', help='alts file path', default='lists/alts.txt')
+
+	args = vars(parser.parse_args())
+	return args
+
+
+def main():
+	args = cli()
+
 	#urls.append('https://checkip.perfect-privacy.com/json')  # Test with your Proxy
 
 	# set the output path as i need (./main.py /var/www/html/index.html)
@@ -50,12 +65,12 @@ if __name__ == "__main__":
 	# --------------------
 
 	# Load Player Mains ---
-	urls, hidden_players = rio.getAPI_List(lists.getMains())
+	urls, hidden_players = rio.getAPI_List(lists.get_players(args['mains']))
 	players = rio.sort_players_by_ilvl(rio.pull(urls, proxy))
 	# ---------------------
 	
 	# Load Player Alts ---	
-	urls, hidden_alts = rio.getAPI_List(lists.getAlts())
+	urls, hidden_alts = rio.getAPI_List(lists.get_players(args['alts']))
 	alts = rio.sort_players_by_ilvl(rio.pull(urls, proxy))
 	# --------------------
 
@@ -105,3 +120,6 @@ if __name__ == "__main__":
 	
 	quit()
 
+
+if __name__ == "__main__":
+	main()
