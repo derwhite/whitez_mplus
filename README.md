@@ -1,5 +1,5 @@
 # Whitez Mythic Plus
-pulls infomation about Mythic Plus runs from a custom list of wow players via Raider.io and Battle.net API
+pulls infomation about Mythic Plus runs from a custom list of wow players via Raider.io and Battle.net API.
 
 ## how to setup
 - in the folder "lists" create a file named "players.txt" and "alts.txt" 
