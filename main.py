@@ -4,7 +4,7 @@ from datetime import datetime
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 import rio, lists, html
 
-MAX_ILVL = 315
+MIN_ILVL = 350
 
 
 def clean_lists(players, hidden):
@@ -34,7 +34,7 @@ def export_data_to_json(players, alts):
 
 def clear_low_ilevel_chars(players):
 	for x in reversed(players):
-		if x.json()['gear']['item_level_equipped'] < MAX_ILVL:
+		if x.json()['gear']['item_level_equipped'] < MIN_ILVL:
 			players.remove(x)
 	return players
 
