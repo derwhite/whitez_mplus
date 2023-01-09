@@ -6,20 +6,23 @@ import rio, lists, html
 
 MAX_ILVL = 315
 
-def cleanLists(players, hidden):
+
+def clean_lists(players, hidden):
 	for x in reversed(players):
 		if f'{x.json()["name"]}-{x.json()["realm"]}' in hidden:
 			players.remove(x)
 	return players
 
-def exportDatatoJson(players, alts):
+
+def export_data_to_json(players, alts):
 	# Takes alle Pulled Players and writes it to an Json file !
 	now = datetime.now()
 	date = now.strftime('%Y-%m-%d')
 
-	dump = {'Players': [],
-			'Alts': [],
-			}
+	dump = {
+		'Players': [],
+		'Alts': [],
+	}
 	for i in players:
 		dump['Players'].append(i.json())
 	for i in alts:
@@ -27,7 +30,7 @@ def exportDatatoJson(players, alts):
 
 	with open(f'json/{date}.json', 'w', encoding="utf8") as f:
 		f.write(json.dumps(dump, sort_keys=True))
-	# --------------------
+
 
 def clear_low_ilevel_chars(players):
 	for x in reversed(players):
@@ -70,7 +73,7 @@ def main():
 	alts = rio.sort_players_by_ilvl(rio.pull(urls, proxy))
 	# --------------------
 
-	# Sortiere Players by ilvl
+	# sort Players by ilvl
 	players = rio.sort_players_by_score(players)
 	alts = rio.sort_players_by_score(alts)
 	#----------------------
@@ -80,11 +83,11 @@ def main():
 	alts = clear_low_ilevel_chars(alts)
 	# --------------------
 	
-	exportDatatoJson(players, alts)
+	export_data_to_json(players, alts)
 
 	# remove hidden players
-	players = cleanLists(players, hidden_players)
-	alts = cleanLists(alts, hidden_alts)
+	players = clean_lists(players, hidden_players)
+	alts = clean_lists(alts, hidden_alts)
 	#---------------------
 
 	# Grab Season from a Player (and look it up in Static Values API) to get the Full Name and Instance names
