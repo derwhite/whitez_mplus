@@ -1,9 +1,8 @@
 #!/usr/bin/python3
-import types, sys
 import json
-import rio, lists, html
 from datetime import datetime
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+import rio, lists, html
 
 MAX_ILVL = 315
 
@@ -41,6 +40,9 @@ def cli():
 	parser = ArgumentParser(description='Pulls infomation about M+ runs from a custom list of wow players via Raider.io '
 										'and Battle.net API.',
 							formatter_class=ArgumentDefaultsHelpFormatter)
+	# required arguments, e.g.: ./main.py /var/www/html/index.html
+	parser.add_argument('outfile', help='output file path with name')
+	# optional arguments
 	parser.add_argument('--mains', help='mains file path', default='lists/players.txt')  # TODO: Change file name to mains.txt for consistencie
 	parser.add_argument('--alts', help='alts file path', default='lists/alts.txt')
 
@@ -53,13 +55,7 @@ def main():
 
 	#urls.append('https://checkip.perfect-privacy.com/json')  # Test with your Proxy
 
-	# set the output path as i need (./main.py /var/www/html/index.html)
-	out_to_file = 'test.html'
-	if len(sys.argv) > 1:
-		out_to_file = sys.argv[1]
-	# --------------------
-
-	# SET PROXY ---	
+	# SET PROXY ---
 	proxy = lists.getProxy()
 	#proxy = ''	
 	# --------------------
@@ -94,7 +90,7 @@ def main():
 	# Grab Season from a Player (and look it up in Static Values API) to get the Full Name and Instance names
 	# set bnet client_ID and client_secret to get Instance Timers
 	season = players[0].json()['mythic_plus_scores_by_season'][0]['season']
-	inis,sname = rio.get_instances(season,proxy)
+	inis, sname = rio.get_instances(season,proxy)
 	# --------------------
 	
 	# get Score_colors from API (if failed from File)
@@ -115,7 +111,7 @@ def main():
 
 	myhtml = html.gen_site(affixe, tables, sname, tyrannical)
 	
-	with open(out_to_file, "w", encoding="utf8") as text_file:
+	with open(args['outfile'], "w", encoding="utf8") as text_file:
 		text_file.write(myhtml)
 	
 	quit()
