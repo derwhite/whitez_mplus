@@ -20,11 +20,11 @@ def export_data_to_json(mains, alts):
 	date = now.strftime('%Y-%m-%d')
 
 	dump = {
-		'Players': [],
+		'Mains': [],
 		'Alts': [],
 	}
 	for i in mains:
-		dump['Players'].append(i.json())
+		dump['Mains'].append(i.json())
 	for i in alts:
 		dump['Alts'].append(i.json())
 
