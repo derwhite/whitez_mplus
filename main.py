@@ -2,7 +2,7 @@
 import json
 from datetime import datetime
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
-import rio, lists, html
+import rio, lists, html_out
 
 MIN_ILVL = 350
 
@@ -104,15 +104,15 @@ def main():
 	# Generate Tables
 	tables = {}
 	# Mains
-	tables.update({'main_score': html.gen_ScoreTable(mains, inis, scolors, tyrannical)})
-	tables.update({'main_weekly': html.gen_weekly(mains, inis, scolors, 'mythic_plus_weekly_highest_level_runs')})
-	tables.update({'main_pweek': html.gen_weekly(mains, inis, scolors, 'mythic_plus_previous_weekly_highest_level_runs')})
+	tables.update({'main_score': html_out.gen_ScoreTable(mains, inis, scolors, tyrannical)})
+	tables.update({'main_weekly': html_out.gen_weekly(mains, inis, scolors, 'mythic_plus_weekly_highest_level_runs')})
+	tables.update({'main_pweek': html_out.gen_weekly(mains, inis, scolors, 'mythic_plus_previous_weekly_highest_level_runs')})
 	# Alts
-	tables.update({'alts_score': html.gen_ScoreTable(alts, inis, scolors, tyrannical)})
-	tables.update({'alts_weekly': html.gen_weekly(alts, inis, scolors, 'mythic_plus_weekly_highest_level_runs')})
-	tables.update({'alts_pweek': html.gen_weekly(alts, inis, scolors, 'mythic_plus_previous_weekly_highest_level_runs')})
+	tables.update({'alts_score': html_out.gen_ScoreTable(alts, inis, scolors, tyrannical)})
+	tables.update({'alts_weekly': html_out.gen_weekly(alts, inis, scolors, 'mythic_plus_weekly_highest_level_runs')})
+	tables.update({'alts_pweek': html_out.gen_weekly(alts, inis, scolors, 'mythic_plus_previous_weekly_highest_level_runs')})
 
-	myhtml = html.gen_site(affixe, tables, sname, tyrannical)
+	myhtml = html_out.gen_site(affixe, tables, sname, tyrannical)
 	
 	with open(args['outfile'], "w", encoding="utf8") as text_file:
 		text_file.write(myhtml)
