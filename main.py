@@ -7,14 +7,14 @@ import rio, lists, html
 MIN_ILVL = 350
 
 
-def clean_lists(players, hidden):
-	for x in reversed(players):
+def clean_lists(mains, hidden):
+	for x in reversed(mains):
 		if f'{x.json()["name"]}-{x.json()["realm"]}' in hidden:
-			players.remove(x)
-	return players
+			mains.remove(x)
+	return mains
 
 
-def export_data_to_json(players, alts):
+def export_data_to_json(mains, alts):
 	# Takes alle Pulled Players and writes it to an Json file !
 	now = datetime.now()
 	date = now.strftime('%Y-%m-%d')
@@ -23,7 +23,7 @@ def export_data_to_json(players, alts):
 		'Players': [],
 		'Alts': [],
 	}
-	for i in players:
+	for i in mains:
 		dump['Players'].append(i.json())
 	for i in alts:
 		dump['Alts'].append(i.json())
@@ -32,21 +32,21 @@ def export_data_to_json(players, alts):
 		f.write(json.dumps(dump, sort_keys=True))
 
 
-def clear_low_ilevel_chars(players):
-	for x in reversed(players):
+def clear_low_ilevel_chars(mains):
+	for x in reversed(mains):
 		if x.json()['gear']['item_level_equipped'] < MIN_ILVL:
-			players.remove(x)
-	return players
+			mains.remove(x)
+	return mains
 
 
 def cli():
-	parser = ArgumentParser(description='Pulls infomation about M+ runs from a custom list of wow players via Raider.io '
+	parser = ArgumentParser(description='Pulls infomation about M+ runs from a custom list of wow mains via Raider.io '
 										'and Battle.net API.',
 							formatter_class=ArgumentDefaultsHelpFormatter)
 	# required arguments, e.g.: ./main.py /var/www/html/index.html
 	parser.add_argument('outfile', help='output file path with name')
 	# optional arguments
-	parser.add_argument('--mains', help='mains file path', default='lists/players.txt')  # TODO: Change file name to mains.txt for consistencie
+	parser.add_argument('--mains', help='mains file path', default='lists/mains.txt')
 	parser.add_argument('--alts', help='alts file path', default='lists/alts.txt')
 
 	args = vars(parser.parse_args())
@@ -65,7 +65,7 @@ def main():
 
 	# Load Player Mains ---
 	urls, hidden_players = rio.getAPI_List(lists.get_players(args['mains']))
-	players = rio.sort_players_by_ilvl(rio.pull(urls, proxy))
+	mains = rio.sort_players_by_ilvl(rio.pull(urls, proxy))
 	# ---------------------
 	
 	# Load Player Alts ---	
@@ -74,25 +74,25 @@ def main():
 	# --------------------
 
 	# sort Players by ilvl
-	players = rio.sort_players_by_score(players)
+	mains = rio.sort_players_by_score(mains)
 	alts = rio.sort_players_by_score(alts)
 	#----------------------
 	
 	# Remove low Item level Chars (because Raider.io API dont gives me Char Levels. Its to remove alts thats not 70)
-	players = clear_low_ilevel_chars(players)
+	mains = clear_low_ilevel_chars(mains)
 	alts = clear_low_ilevel_chars(alts)
 	# --------------------
 	
-	export_data_to_json(players, alts)
+	export_data_to_json(mains, alts)
 
-	# remove hidden players
-	players = clean_lists(players, hidden_players)
+	# remove hidden mains
+	mains = clean_lists(mains, hidden_players)
 	alts = clean_lists(alts, hidden_alts)
 	#---------------------
 
 	# Grab Season from a Player (and look it up in Static Values API) to get the Full Name and Instance names
 	# set bnet client_ID and client_secret to get Instance Timers
-	season = players[0].json()['mythic_plus_scores_by_season'][0]['season']
+	season = mains[0].json()['mythic_plus_scores_by_season'][0]['season']
 	inis, sname = rio.get_instances(season,proxy)
 	# --------------------
 	
@@ -104,9 +104,9 @@ def main():
 	# Generate Tables
 	tables = {}
 	# Mains
-	tables.update({'main_score': html.gen_ScoreTable(players, inis, scolors, tyrannical)})
-	tables.update({'main_weekly': html.gen_weekly(players, inis, scolors, 'mythic_plus_weekly_highest_level_runs')})
-	tables.update({'main_pweek': html.gen_weekly(players, inis, scolors, 'mythic_plus_previous_weekly_highest_level_runs')})
+	tables.update({'main_score': html.gen_ScoreTable(mains, inis, scolors, tyrannical)})
+	tables.update({'main_weekly': html.gen_weekly(mains, inis, scolors, 'mythic_plus_weekly_highest_level_runs')})
+	tables.update({'main_pweek': html.gen_weekly(mains, inis, scolors, 'mythic_plus_previous_weekly_highest_level_runs')})
 	# Alts
 	tables.update({'alts_score': html.gen_ScoreTable(alts, inis, scolors, tyrannical)})
 	tables.update({'alts_weekly': html.gen_weekly(alts, inis, scolors, 'mythic_plus_weekly_highest_level_runs')})

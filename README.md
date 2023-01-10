@@ -2,7 +2,7 @@
 pulls infomation about Mythic Plus runs from a custom list of wow players via Raider.io and Battle.net API.
 
 ## how to setup
-- in the folder "lists" create a file named "players.txt" and "alts.txt" 
+- in the folder "lists" create a file named "mains.txt" and "alts.txt" 
 - fill this lists with WOW players that are listed at Raider.io (player-realm) without brackets
 - if u have python3 and all imports ur good to go.
 
