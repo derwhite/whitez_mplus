@@ -73,16 +73,16 @@ def getTierItems(p):
 
 ## SCORE TABLE -------
 def gen_ScoreTable(players, inis, colors, isTyrannical):
-	html = f'<table width="100%">\n'
-	html += f'<tr><th><span style="color:white;background-color:black">Player</span></th><th width=\"8%\"><span style="color:white;background-color:black">Score</span></th>\n'
+	str_html = f'<table width="100%">\n'
+	str_html += f'<tr><th><span style="color:white;background-color:black">Player</span></th><th width=\"8%\"><span style="color:white;background-color:black">Score</span></th>\n'
 	for x in inis:
 		if x['timer'] == 0:
 			ini_timer = ""
 		else:
 			ini_timer = f'[{int(x["timer"] // 60)}:{str(int(x["timer"] % 60)).zfill(2)}]'
 
-		html += f'<th title="{x["name"]}" width=\"8%\"><span style="white-space:pre-line;color:white;background-color:black">{x["short"]}<br>{ini_timer}</span></th>\n'
-	html += f'</tr>\n'
+		str_html += f'<th title="{x["name"]}" width=\"8%\"><span style="white-space:pre-line;color:white;background-color:black">{x["short"]}<br>{ini_timer}</span></th>\n'
+	str_html += f'</tr>\n'
 #----------------------------
 	high_score = rio.get_highest_score(players)
 	for p in players:
@@ -97,11 +97,11 @@ def gen_ScoreTable(players, inis, colors, isTyrannical):
 		Tier = getTierItems(p.json())
         #----------------------------------
 		# Create Player Line on Website !!
-		html += f'<tr>\n'
-		html += f'<td title="Last Update: {old.days} days ago&#10;{Tier}"><a href="{p.json()["profile_url"]}" target="_blank"><img src="{p.json()["thumbnail_url"]}" width="40" height="40" style="float:left"></a><p style="font-size:{mainSize}px;color:{CLASS_COLOR[p.json()["class"]]};padding:10px;margin:0px;text-align:left">&emsp;{p.json()["name"]}&emsp;[{p.json()["gear"]["item_level_equipped"]}]</p></td>\n'
+		str_html += f'<tr>\n'
+		str_html += f'<td title="Last Update: {old.days} days ago&#10;{Tier}"><a href="{p.json()["profile_url"]}" target="_blank"><img src="{p.json()["thumbnail_url"]}" width="40" height="40" style="float:left"></a><p style="font-size:{mainSize}px;color:{CLASS_COLOR[p.json()["class"]]};padding:10px;margin:0px;text-align:left">&emsp;{p.json()["name"]}&emsp;[{p.json()["gear"]["item_level_equipped"]}]</p></td>\n'
 		sum = p.json()['mythic_plus_scores_by_season'][0]['scores']['all'] #Player Score
 		color = rio.getColor(colors, sum)
-		html += f'<td><span style="font-size:{mainSize}px;color:{color}">{"{:.2f}".format(sum)}</span></td>\n'
+		str_html += f'<td><span style="font-size:{mainSize}px;color:{color}">{"{:.2f}".format(sum)}</span></td>\n'
 		#-----------------------------
 		for ini in inis:
 			# Iterate Instances:
@@ -126,19 +126,19 @@ def gen_ScoreTable(players, inis, colors, isTyrannical):
 				else:
 					sec = best
 					first = alter
-			html += f'<td title="{first["score"]} / {alter["score"]} / {round(best["score"]*1.5+alter["score"]*0.5,2)}"><span style="font-size:{mainSize}px;color:{first["color"]}">{first["run"]}</span><span style="font-size:{mainSize}px;color:yellow">{first["sterne"]}</span><span style="color:white"> | </span><span style="font-size:{secSize}px;color:{sec["color"]}">{sec["run"]}</span><span style="font-size:{secSize}px;color:yellow">{sec["sterne"]}</span></td>\n'
-		html += f'</tr>\n'
-	html += f'</table>\n'
-	return html
+			str_html += f'<td title="{first["score"]} / {alter["score"]} / {round(best["score"]*1.5+alter["score"]*0.5,2)}"><span style="font-size:{mainSize}px;color:{first["color"]}">{first["run"]}</span><span style="font-size:{mainSize}px;color:yellow">{first["sterne"]}</span><span style="color:white"> | </span><span style="font-size:{secSize}px;color:{sec["color"]}">{sec["run"]}</span><span style="font-size:{secSize}px;color:yellow">{sec["sterne"]}</span></td>\n'
+		str_html += f'</tr>\n'
+	str_html += f'</table>\n'
+	return str_html
 
 def gen_weekly(players, inis, colors, weekly):
 	players = rio.sort_players_by(players,weekly)
 	high = rio.get_highest_score(players)
-	html = f'<table width="100%">\n'
-	html += f'<tr><th><span style="color:white">Player</span></th><th width="7%"><span style="color:white;">+20</span></th><th width="12%"><span style="color:white">Rewards</span></th>'
+	str_html = f'<table width="100%">\n'
+	str_html += f'<tr><th><span style="color:white">Player</span></th><th width="7%"><span style="color:white;">+20</span></th><th width="12%"><span style="color:white">Rewards</span></th>'
 	for i in range(0,8):
-		html += f'<th width="7%"></th>'
-	html += f'</tr>\n'
+		str_html += f'<th width="7%"></th>'
+	str_html += f'</tr>\n'
 	for p in players:
 		# ------------ PLAYER and SCORE -----------
 		dt = datetime.strptime(p.json()['last_crawled_at'], '%Y-%m-%dT%H:%M:%S.000Z')
@@ -147,8 +147,8 @@ def gen_weekly(players, inis, colors, weekly):
 		# Count Tier Items an Build a string
 		Tier = getTierItems(p.json())
         #----------------------------------
-		html += f'<tr>\n'
-		html += f'<td title="Last Update: {old.days} days ago&#10;{Tier}"><a href="{p.json()["profile_url"]}" target="_blank"><img src="{p.json()["thumbnail_url"]}" width="40" height="40" style="float:left"></a><p style="color:{CLASS_COLOR[p.json()["class"]]};padding:10px;margin:0px;text-align:left;">&emsp;{p.json()["name"]}&emsp;[{p.json()["gear"]["item_level_equipped"]}]</p></td>\n'
+		str_html += f'<tr>\n'
+		str_html += f'<td title="Last Update: {old.days} days ago&#10;{Tier}"><a href="{p.json()["profile_url"]}" target="_blank"><img src="{p.json()["thumbnail_url"]}" width="40" height="40" style="float:left"></a><p style="color:{CLASS_COLOR[p.json()["class"]]};padding:10px;margin:0px;text-align:left;">&emsp;{p.json()["name"]}&emsp;[{p.json()["gear"]["item_level_equipped"]}]</p></td>\n'
 		
 		#--------- Show Left Instances -------#
 		count = 0
@@ -160,26 +160,26 @@ def gen_weekly(players, inis, colors, weekly):
 			count = 8
 		elif count == 8:
 			color='green'
-		html += f'<td><span style="color:{color}">{count-8}</span></td>\n'
+		str_html += f'<td><span style="color:{color}">{count-8}</span></td>\n'
 		#---------- 0 / 0 / 0 overview -------#
-		html += f'<td><span style="color:white">'
+		str_html += f'<td><span style="color:white">'
 		for i in [0,3,7]:
 			if i != 0:
-				html += f' / '
+				str_html += f' / '
 			if len(p.json()[weekly]) > i:
 				if p.json()[weekly][i]['mythic_level'] >= 20:
 					reward = WREWARD[20]
 				else:
 					reward = WREWARD[p.json()[weekly][i]['mythic_level']]
-				html += f'{reward}'
+				str_html += f'{reward}'
 			else:
-				html += f'-'
+				str_html += f'-'
 				if i == 0:
 					break
 				else:
-					html = html[:-4]
+					str_html = str_html[:-4]
 				#continue
-		html += f'</span></td>'
+		str_html += f'</span></td>'
 		# ------------- Instances ------#
 		for i in range(0,8):
 			if i == 0 or i == 3 or i == 7:
@@ -191,14 +191,14 @@ def gen_weekly(players, inis, colors, weekly):
 				dt = datetime.strptime(p.json()[weekly][i]['completed_at'], '%Y-%m-%dT%H:%M:%S.000Z')
 				dt = dt.replace(tzinfo=timezone.utc).astimezone(tz=None)
 				run_time = dt.strftime('%a %d.%m %H:%M %Z')
-				html += f'<td title="{p.json()[weekly][i]["score"]} | {run_time}"><span style="color:{color}">{p.json()[weekly][i]["short_name"]} (<a href="{p.json()[weekly][i]["url"]}" style="color:{rio.getColor(colors, p.json()[weekly][i]["score"]*20,high)}">{p.json()[weekly][i]["mythic_level"]}{stern}</a>)</span></td>\n'
+				str_html += f'<td title="{p.json()[weekly][i]["score"]} | {run_time}"><span style="color:{color}">{p.json()[weekly][i]["short_name"]} (<a href="{p.json()[weekly][i]["url"]}" style="color:{rio.getColor(colors, p.json()[weekly][i]["score"]*20,high)}">{p.json()[weekly][i]["mythic_level"]}{stern}</a>)</span></td>\n'
 			except:
-				html += f'<td><span style="color:{color}">-</span></td>\n'
-		html += '</tr>\n'
+				str_html += f'<td><span style="color:{color}">-</span></td>\n'
+		str_html += '</tr>\n'
 
 
-	html += '</table>\n'
-	return html
+	str_html += '</table>\n'
+	return str_html
 
 #-------------------------------------------------------
 
