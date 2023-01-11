@@ -2,9 +2,8 @@
 import json
 from datetime import datetime
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+import configparser
 import rio, lists, html_out
-
-MIN_ILVL = 350
 
 
 def clean_lists(mains, hidden):
@@ -32,11 +31,20 @@ def export_data_to_json(mains, alts):
 		f.write(json.dumps(dump, sort_keys=True))
 
 
-def clear_low_ilevel_chars(mains):
+def clear_low_ilevel_chars(mains, min_ilvl):
 	for x in reversed(mains):
-		if x.json()['gear']['item_level_equipped'] < MIN_ILVL:
+		if x.json()['gear']['item_level_equipped'] < min_ilvl:
 			mains.remove(x)
 	return mains
+
+
+def parse_config_file(config_file_path):
+	config = configparser.ConfigParser()
+	config.read(config_file_path)
+
+	min_ilvl = config["DEFAULT"].getint("min_ilvl", 300)
+
+	return {'min_ilvl': min_ilvl}
 
 
 def cli():
@@ -46,6 +54,7 @@ def cli():
 	# required arguments, e.g.: ./main.py /var/www/html/index.html
 	parser.add_argument('outfile', help='output file path with name')
 	# optional arguments
+	parser.add_argument('--config', help='path to config file', default='lists/settings.conf')
 	parser.add_argument('--mains', help='mains file path', default='lists/mains.txt')
 	parser.add_argument('--alts', help='alts file path', default='lists/alts.txt')
 
@@ -55,6 +64,8 @@ def cli():
 
 def main():
 	args = cli()
+
+	settings = parse_config_file(args['config'])
 
 	#urls.append('https://checkip.perfect-privacy.com/json')  # Test with your Proxy
 
@@ -79,8 +90,8 @@ def main():
 	#----------------------
 	
 	# Remove low Item level Chars (because Raider.io API dont gives me Char Levels. Its to remove alts thats not 70)
-	mains = clear_low_ilevel_chars(mains)
-	alts = clear_low_ilevel_chars(alts)
+	mains = clear_low_ilevel_chars(mains, settings['min_ilvl'])
+	alts = clear_low_ilevel_chars(alts, settings['min_ilvl'])
 	# --------------------
 	
 	export_data_to_json(mains, alts)
