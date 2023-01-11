@@ -211,7 +211,7 @@ def gen_site(affixes, all_tables, season_name, isTyrannical):
 		legende = "[Tyrannical / Fortified]"
 	
 	myhtml = f'<!DOCTYPE html>\n'				# Building Website !!
-	myhtml += f'<html><head><meta charset="utf-8"></head><body><h1 style="Color:white;">current Season: "{season_name}"</h1><h2 style="color:white">last Update: {now}&emsp;&emsp;&emsp;{legende}</h2>\n'
+	myhtml += f'<html><head><link rel="icon" type="image/png" href="http://ts.chbrath.de/favicon.png"><meta charset="utf-8"></head><body><h1 style="Color:white;">current Season: "{season_name}"</h1><h2 style="color:white">last Update: {now}&emsp;&emsp;&emsp;{legende}</h2>\n'
 	myhtml += f'<h3 style="color:white">Affixe: {affixes}</h3>\n'
 	# Open Tab
 	myhtml += f'<div class="mytabs"><input type="radio" id="Main" name="mytabs" checked="checked"><label for="Main">Main Tracker</label><div class="tab">\n'
