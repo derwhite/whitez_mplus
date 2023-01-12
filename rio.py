@@ -77,7 +77,8 @@ def get_tweek_affixes(proxy=''): #Affixe ufschreiben
 		tweek_affixes_out = ""
 		tyrannical = False
 		for x in r.json()['affix_details']:
-			tweek_affixes_out += x['name'] + ","
+			tweek_affixes_out += f'<a href="{x["wowhead_url"]}"><span>{x["name"]}</span></a>,'
+
 			if x['id'] == 9:
 				tyrannical = True
 		tweek_affixes_out = tweek_affixes_out[:-1] + "\n"
