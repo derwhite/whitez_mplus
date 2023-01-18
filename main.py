@@ -4,7 +4,10 @@ import json
 from datetime import datetime
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 import configparser
-import rio, lists, html_out
+
+import rio
+import lists
+import html_out
 
 
 def clean_lists(mains, hidden):
@@ -75,17 +78,17 @@ def main():
 	#urls.append('https://checkip.perfect-privacy.com/json')  # Test with your Proxy
 
 	# SET PROXY ---
-	proxy = lists.getProxy()
+	proxy = lists.get_proxy()
 	#proxy = ''	
 	# --------------------
 
 	# Load Player Mains ---
-	urls, hidden_players = rio.getAPI_List(lists.get_players(args['mains']))
+	urls, hidden_players = rio.get_api_list(lists.get_players(args['mains']))
 	mains = rio.sort_players_by_ilvl(rio.pull(urls, proxy))
 	# ---------------------
 	
 	# Load Player Alts ---	
-	urls, hidden_alts = rio.getAPI_List(lists.get_players(args['alts']))
+	urls, hidden_alts = rio.get_api_list(lists.get_players(args['alts']))
 	alts = rio.sort_players_by_ilvl(rio.pull(urls, proxy))
 	# --------------------
 
@@ -120,11 +123,11 @@ def main():
 	# Generate Tables
 	tables = {}
 	# Mains
-	tables.update({'main_score': html_out.gen_ScoreTable(mains, inis, scolors, tyrannical)})
+	tables.update({'main_score': html_out.gen_score_table(mains, inis, scolors, tyrannical)})
 	tables.update({'main_weekly': html_out.gen_weekly(mains, inis, scolors, 'mythic_plus_weekly_highest_level_runs')})
 	tables.update({'main_pweek': html_out.gen_weekly(mains, inis, scolors, 'mythic_plus_previous_weekly_highest_level_runs')})
 	# Alts
-	tables.update({'alts_score': html_out.gen_ScoreTable(alts, inis, scolors, tyrannical)})
+	tables.update({'alts_score': html_out.gen_score_table(alts, inis, scolors, tyrannical)})
 	tables.update({'alts_weekly': html_out.gen_weekly(alts, inis, scolors, 'mythic_plus_weekly_highest_level_runs')})
 	tables.update({'alts_pweek': html_out.gen_weekly(alts, inis, scolors, 'mythic_plus_previous_weekly_highest_level_runs')})
 

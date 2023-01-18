@@ -11,7 +11,7 @@ def get_players(file_path):
 		return f.readlines()
 
 
-def getProxy():
+def get_proxy():
 	try:
 		with open('lists/proxy.txt', encoding="utf8") as f:
 			ips = f.readlines()
@@ -20,7 +20,7 @@ def getProxy():
 			try:
 				rio.pull(['https://checkip.perfect-privacy.com/json'], ips[index].strip())
 			except:
-				getProxy()
+				get_proxy()
 			return ips[index].strip()
 	except:
 		return ''

@@ -20,7 +20,8 @@ CLASS_COLOR={
 	'Evoker': '#33937F',
 	}
 
-def getInstance_from_player(player, ini):
+
+def get_instance_from_player(player, ini):
 	best = {}
 	alter = {}
 	best.update({'run': 0})
@@ -48,7 +49,8 @@ def getInstance_from_player(player, ini):
 			break
 	return best, alter		
 
-def getSterne(upgrade):
+
+def get_sterne(upgrade):
 	count = upgrade
 	stern = ''
 	while count > 0:
@@ -56,7 +58,8 @@ def getSterne(upgrade):
 		count -= 1
 	return stern
 
-def getTierItems(p):
+
+def get_tier_items(p):
 	tier = 0
 	tcount = 0
 	tset = ['head','shoulder','chest','hands','legs']
@@ -71,8 +74,9 @@ def getTierItems(p):
 			return ""
 	return f'T{tier}: {tcount}/5'
 
+
 ## SCORE TABLE -------
-def gen_ScoreTable(players, inis, colors, isTyrannical):
+def gen_score_table(players, inis, colors, isTyrannical):
 	str_html = f'<table width="100%">\n'
 	str_html += f'<tr><th><span style="color:white;background-color:black">Player</span></th><th width=\"8%\"><span style="color:white;background-color:black">Score</span></th>\n'
 	for x in inis:
@@ -83,7 +87,7 @@ def gen_ScoreTable(players, inis, colors, isTyrannical):
 
 		str_html += f'<th title="{x["name"]}" width=\"8%\"><span style="white-space:pre-line;color:white;background-color:black">{x["short"]}<br>{ini_timer}</span></th>\n'
 	str_html += f'</tr>\n'
-#----------------------------
+
 	high_score = rio.get_highest_score(players)
 	for p in players:
 		mainSize=17
@@ -94,8 +98,8 @@ def gen_ScoreTable(players, inis, colors, isTyrannical):
 		old = tday - dt
 		#-----------------------------------------------------------
 		# Count Tier Items an Build a string
-		Tier = getTierItems(p.json())
-        #----------------------------------
+		Tier = get_tier_items(p.json())
+		#----------------------------------
 		# Create Player Line on Website !!
 		str_html += f'<tr>\n'
 		str_html += f'<td title="Last Update: {old.days} days ago&#10;{Tier}"><a href="{p.json()["profile_url"]}" target="_blank"><img src="{p.json()["thumbnail_url"]}" width="40" height="40" style="float:left"></a><p style="font-size:{mainSize}px;color:{CLASS_COLOR[p.json()["class"]]};padding:10px;margin:0px;text-align:left">&emsp;{p.json()["name"]}&emsp;[{p.json()["gear"]["item_level_equipped"]}]</p></td>\n'
@@ -105,11 +109,11 @@ def gen_ScoreTable(players, inis, colors, isTyrannical):
 		#-----------------------------
 		for ini in inis:
 			# Iterate Instances:
-			best, alter = getInstance_from_player(p.json(),ini['short'])
+			best, alter = get_instance_from_player(p.json(), ini['short'])
 			best.update({'color': rio.getColor(colors, best['score']*20, high_score)})
-			best.update({'sterne': getSterne(best['upgrade'])})
+			best.update({'sterne': get_sterne(best['upgrade'])})
 			alter.update({'color': rio.getColor(colors, alter['score']*20, high_score)})
-			alter.update({'sterne': getSterne(alter['upgrade'])})
+			alter.update({'sterne': get_sterne(alter['upgrade'])})
 			first = {}
 			sec = {}
 			if isTyrannical:
@@ -145,7 +149,7 @@ def gen_weekly(players, inis, colors, weekly):
 		tday = datetime.now()
 		old = tday - dt
 		# Count Tier Items an Build a string
-		Tier = getTierItems(p.json())
+		Tier = get_tier_items(p.json())
 		#----------------------------------
 		str_html += f'<tr>\n'
 		str_html += f'<td title="Last Update: {old.days} days ago&#10;{Tier}"><a href="{p.json()["profile_url"]}" target="_blank"><img src="{p.json()["thumbnail_url"]}" width="40" height="40" style="float:left"></a><p style="color:{CLASS_COLOR[p.json()["class"]]};padding:10px;margin:0px;text-align:left;">&emsp;{p.json()["name"]}&emsp;[{p.json()["gear"]["item_level_equipped"]}]</p></td>\n'
@@ -187,7 +191,7 @@ def gen_weekly(players, inis, colors, weekly):
 			else:
 				color='white'
 			try:
-				stern = getSterne(p.json()[weekly][i]['num_keystone_upgrades'])
+				stern = get_sterne(p.json()[weekly][i]['num_keystone_upgrades'])
 				dt = datetime.strptime(p.json()[weekly][i]['completed_at'], '%Y-%m-%dT%H:%M:%S.000Z')
 				dt = dt.replace(tzinfo=timezone.utc).astimezone(tz=None)
 				run_time = dt.strftime('%a %d.%m %H:%M %Z')
@@ -200,7 +204,6 @@ def gen_weekly(players, inis, colors, weekly):
 	str_html += '</table>\n'
 	return str_html
 
-#-------------------------------------------------------
 
 def gen_site(affixes, all_tables, season_name, isTyrannical):
 	now = datetime.now()
