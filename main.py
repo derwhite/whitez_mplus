@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+from pathlib import Path
 import json
 from datetime import datetime
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
@@ -64,6 +65,10 @@ def cli():
 
 def main():
 	args = cli()
+
+	if Path(args['outfile']).is_dir():
+		print(f"ERROR: outfile '{args['outfile']}' isn't a valid file path!")
+		exit(1)
 
 	settings = parse_config_file(args['config'])
 
