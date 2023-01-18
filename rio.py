@@ -73,15 +73,20 @@ def get_score_colors(proxy=''):
 def get_tweek_affixes(proxy=''): #Affixe ufschreiben
 	tmp = pull(['https://raider.io/api/v1/mythic-plus/affixes?region=eu&locale=en'], proxy)
 	if tmp[0].status_code == 200:
-		r = tmp[0]
+		r = tmp[0].json()
 		tweek_affixes_out = ""
 		tyrannical = False
-		for x in r.json()['affix_details']:
-			tweek_affixes_out += f'<a href="{x["wowhead_url"]}"><span>{x["name"]}</span></a>,'
-
+		affixes_html = []
+		for x in r['affix_details']:
+			affix_html = f'<a class="icontiny" style="background: left center no-repeat;" ' \
+						 f'data-game="wow" data-type="affix" href="{x["wowhead_url"]}">' \
+						 f'<img src="https://wow.zamimg.com/images/wow/icons/tiny/{x["icon"]}.gif" ' \
+						 f'style="vertical-align: middle;" loading="lazy">' \
+						 f'<span class="tinycontxt"> {x["name"]}</span></a>'
+			affixes_html.append(affix_html)
 			if x['id'] == 9:
 				tyrannical = True
-		tweek_affixes_out = tweek_affixes_out[:-1] + "\n"
+		tweek_affixes_out = ', '.join(affixes_html) + "\n"
 	else:
 		tweek_affixes_out = "RaiderIO Affixes Error"
 		tyrannical = False

@@ -146,7 +146,7 @@ def gen_weekly(players, inis, colors, weekly):
 		old = tday - dt
 		# Count Tier Items an Build a string
 		Tier = getTierItems(p.json())
-        #----------------------------------
+		#----------------------------------
 		str_html += f'<tr>\n'
 		str_html += f'<td title="Last Update: {old.days} days ago&#10;{Tier}"><a href="{p.json()["profile_url"]}" target="_blank"><img src="{p.json()["thumbnail_url"]}" width="40" height="40" style="float:left"></a><p style="color:{CLASS_COLOR[p.json()["class"]]};padding:10px;margin:0px;text-align:left;">&emsp;{p.json()["name"]}&emsp;[{p.json()["gear"]["item_level_equipped"]}]</p></td>\n'
 		
@@ -213,7 +213,7 @@ def gen_site(affixes, all_tables, season_name, isTyrannical):
 	myhtml = f'<!DOCTYPE html>\n'				# Building Website !!
 	myhtml += f'<html><head>'
 	myhtml += f'<link rel="icon" type="image/png" href="http://ts.chbrath.de/favicon.png"><meta charset="utf-8">'
-	myhtml += "<script>const whTooltips = {colorLinks: true, iconizeLinks: true, renameLinks: true};</script>"
+	myhtml += "<script>const whTooltips = {colorLinks: true, iconizeLinks: true, renameLinks: false};</script>"
 	myhtml += f'<script src="https://wow.zamimg.com/js/tooltips.js"></script>'
 	myhtml += f'</head>'
 	myhtml += f'<body><h1 style="Color:white;">current Season: "{season_name}"</h1><h2 style="color:white">last Update: {now}&emsp;&emsp;&emsp;{legende}</h2>\n'
