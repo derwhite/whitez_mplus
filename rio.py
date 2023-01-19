@@ -154,12 +154,12 @@ def sort_players_by(results, weekly):
 		x=i+1
 		while x < len(results):
 			sum=0
-			for r in results[x].json()[weekly]:
+			for r in results[x]._data[weekly]:
 				if r['mythic_level'] >= 15:
 					sum+=300
 				sum+=r['mythic_level']
 			sum2=0
-			for r in results[i].json()[weekly]:
+			for r in results[i]._data[weekly]:
 				if r['mythic_level'] >= 15:
 					sum2+=300
 				sum2+=r['mythic_level']
@@ -190,7 +190,7 @@ def getColor(score_tier, points, max=0):
 def get_highest_score(players):
 	high = 0
 	for player in players:
-		for ini in player.json()['mythic_plus_best_runs']:
+		for ini in player.mythic_plus_best_runs():
 			if high < ini['score']:
 				high = ini['score']
 	return high

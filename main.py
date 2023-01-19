@@ -18,8 +18,8 @@ def clean_lists(mains, hidden):
 	return mains
 
 
-def export_data_to_json(mains, alts):
-	# Takes alle Pulled Players and writes it to an Json file !
+def export_data_to_json(players):
+	# Takes all Pulled Players and writes the responses to an Json file !
 	now = datetime.now()
 	date = now.strftime('%Y-%m-%d')
 
@@ -27,12 +27,13 @@ def export_data_to_json(mains, alts):
 		'Mains': [],
 		'Alts': [],
 	}
-	for i in mains:
-		dump['Mains'].append(i.json())
-	for i in alts:
-		dump['Alts'].append(i.json())
+	for p in players:
+		if p._is_alt:
+			dump['Alts'].append(p._response.json())
+		else:
+			dump['Mains'].append(p._response.json())
 
-	with open(f'json/{date}.json', 'w', encoding="utf8") as f:
+	with open(f'json/{date}_2.json', 'w', encoding="utf8") as f:
 		f.write(json.dumps(dump, sort_keys=True))
 
 
@@ -83,48 +84,53 @@ def main():
 	#proxy = ''	
 	# --------------------
 
+	players = []
+
 	# Load Player Mains ---
-	player_list = lists.read_players_file(args['mains'])
+	player_list = lists.read_players_file(args['mains'], alts=False)
 	rio.append_api_requests(player_list)
 	urls = [p['url'] for p in player_list]
 	responses = rio.pull(urls, proxy)
-	players = Player.create_players(player_list, responses)
-	mains = rio.sort_players_by_ilvl(responses)
+	players.extend(Player.create_players(player_list, responses))
 	# ---------------------
 	
-	# Load Player Alts ---	
-	urls, hidden_alts = rio.get_api_list(lists.read_players_file(args['alts']))
-	alts = rio.sort_players_by_ilvl(rio.pull(urls, proxy))
+	# Load Player Alts ---
+	player_list = lists.read_players_file(args['alts'], alts=True)
+	rio.append_api_requests(player_list)
+	urls = [p['url'] for p in player_list]
+	responses = rio.pull(urls, proxy)
+	players.extend(Player.create_players(player_list, responses))
 	# --------------------
 
-	# sort Players by ilvl
-	mains = rio.sort_players_by_score(mains)
-	alts = rio.sort_players_by_score(alts)
-	#----------------------
-	
-	# Remove low Item level Chars (because Raider.io API dont gives me Char Levels. Its to remove alts thats not 70)
-	mains = clear_low_ilevel_chars(mains, settings['min_ilvl'])
-	alts = clear_low_ilevel_chars(alts, settings['min_ilvl'])
+	# sort Players
+	ilvl_sorted_players = list(sorted(players, key=lambda player: player._iLvl, reverse=True))
+	score_sorted_players = list(sorted(ilvl_sorted_players, key=lambda p: p._score, reverse=True))
+	# --------------------
+
+	# Remove low Item level Chars
+	ilvl_filtered_players = list(filter(lambda player: player._iLvl >= settings['min_ilvl'], score_sorted_players))
 	# --------------------
 	
-	export_data_to_json(mains, alts)
+	export_data_to_json(players)
 
 	# remove hidden mains
-	mains = clean_lists(mains, hidden_players)
-	alts = clean_lists(alts, hidden_alts)
+	hidden_filtered_players = list(filter(lambda player: not player._is_hidden, ilvl_filtered_players))
+	players = hidden_filtered_players
 	#---------------------
 
 	# Grab Season from a Player (and look it up in Static Values API) to get the Full Name and Instance names
 	# set bnet client_ID and client_secret to get Instance Timers
-	season = mains[0].json()['mythic_plus_scores_by_season'][0]['season']
-	inis, sname = rio.get_instances(season,proxy)
+	season = players[0]._data['mythic_plus_scores_by_season'][0]['season']
+	inis, sname = rio.get_instances(season, proxy)
 	# --------------------
 	
 	# get Score_colors from API (if failed from File)
 	scolors = rio.get_score_colors(proxy)
-	affixe,tyrannical = rio.get_tweek_affixes(proxy)
+	affixe, tyrannical = rio.get_tweek_affixes(proxy)
 	# --------------------
-	
+
+	mains = [p for p in players if not p._is_alt]
+	alts = [p for p in players if p._is_alt]
 	# Generate Tables
 	tables = {}
 	# Mains

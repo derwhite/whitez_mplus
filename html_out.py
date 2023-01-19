@@ -32,7 +32,7 @@ def get_instance_from_player(player, ini):
 	alter.update({'upgrade': 0})
 	alter.update({'score': 0})
 	alter.update({'affix': 0})
-	for x in player['mythic_plus_best_runs']:
+	for x in player.mythic_plus_best_runs():
 		if x['short_name'] == ini:
 			best.update({'run':x['mythic_level']})
 			best.update({'upgrade':x['num_keystone_upgrades']})
@@ -40,7 +40,7 @@ def get_instance_from_player(player, ini):
 			best.update({'affix':x['affixes'][0]['id']})
 			break	
 
-	for x in player['mythic_plus_alternate_runs']:
+	for x in player.mythic_plus_alternate_runs():
 		if x['short_name'] == ini:
 			alter.update({'run':x['mythic_level']})
 			alter.update({'upgrade':x['num_keystone_upgrades']})
@@ -57,22 +57,6 @@ def get_sterne(upgrade):
 		stern += f'*'
 		count -= 1
 	return stern
-
-
-def get_tier_items(p):
-	tier = 0
-	tcount = 0
-	tset = ['head','shoulder','chest','hands','legs']
-	for x in tset:
-		if 'tier' in p['gear']['items'][x]:
-			if int(p['gear']['items'][x]['tier']) > tier:
-				tier = int(p['gear']['items'][x]['tier'])
-				tcount = 1
-			elif int(p['gear']['items'][x]['tier']) == tier:
-				tcount = tcount + 1
-	if tier == 0:
-			return ""
-	return f'T{tier}: {tcount}/5'
 
 
 ## SCORE TABLE -------
@@ -93,23 +77,23 @@ def gen_score_table(players, inis, colors, isTyrannical):
 		mainSize=17
 		secSize=13
 		# Last Crawled at
-		dt = datetime.strptime(p.json()['last_crawled_at'], '%Y-%m-%dT%H:%M:%S.000Z')
+		dt = datetime.strptime(p.last_crawled_at(), '%Y-%m-%dT%H:%M:%S.000Z')
 		tday = datetime.now()
 		old = tday - dt
 		#-----------------------------------------------------------
 		# Count Tier Items an Build a string
-		Tier = get_tier_items(p.json())
+		Tier = p.get_tier_items()
 		#----------------------------------
 		# Create Player Line on Website !!
 		str_html += f'<tr>\n'
-		str_html += f'<td title="Last Update: {old.days} days ago&#10;{Tier}"><a href="{p.json()["profile_url"]}" target="_blank"><img src="{p.json()["thumbnail_url"]}" width="40" height="40" style="float:left"></a><p style="font-size:{mainSize}px;color:{CLASS_COLOR[p.json()["class"]]};padding:10px;margin:0px;text-align:left">&emsp;{p.json()["name"]}&emsp;[{p.json()["gear"]["item_level_equipped"]}]</p></td>\n'
-		sum = p.json()['mythic_plus_scores_by_season'][0]['scores']['all'] #Player Score
+		str_html += f'<td title="Last Update: {old.days} days ago&#10;{Tier}"><a href="{p.profile_url()}" target="_blank"><img src="{p.thumbnail_url()}" width="40" height="40" style="float:left"></a><p style="font-size:{mainSize}px;color:{CLASS_COLOR[p._class]};padding:10px;margin:0px;text-align:left">&emsp;{p._name}&emsp;[{p._iLvl}]</p></td>\n'
+		sum = p._score  # Player Score
 		color = rio.getColor(colors, sum)
 		str_html += f'<td><span style="font-size:{mainSize}px;color:{color}">{"{:.2f}".format(sum)}</span></td>\n'
 		#-----------------------------
 		for ini in inis:
 			# Iterate Instances:
-			best, alter = get_instance_from_player(p.json(), ini['short'])
+			best, alter = get_instance_from_player(p, ini['short'])
 			best.update({'color': rio.getColor(colors, best['score']*20, high_score)})
 			best.update({'sterne': get_sterne(best['upgrade'])})
 			alter.update({'color': rio.getColor(colors, alter['score']*20, high_score)})
@@ -145,18 +129,18 @@ def gen_weekly(players, inis, colors, weekly):
 	str_html += f'</tr>\n'
 	for p in players:
 		# ------------ PLAYER and SCORE -----------
-		dt = datetime.strptime(p.json()['last_crawled_at'], '%Y-%m-%dT%H:%M:%S.000Z')
+		dt = datetime.strptime(p.last_crawled_at(), '%Y-%m-%dT%H:%M:%S.000Z')
 		tday = datetime.now()
 		old = tday - dt
 		# Count Tier Items an Build a string
-		Tier = get_tier_items(p.json())
+		Tier = p.get_tier_items()
 		#----------------------------------
 		str_html += f'<tr>\n'
-		str_html += f'<td title="Last Update: {old.days} days ago&#10;{Tier}"><a href="{p.json()["profile_url"]}" target="_blank"><img src="{p.json()["thumbnail_url"]}" width="40" height="40" style="float:left"></a><p style="color:{CLASS_COLOR[p.json()["class"]]};padding:10px;margin:0px;text-align:left;">&emsp;{p.json()["name"]}&emsp;[{p.json()["gear"]["item_level_equipped"]}]</p></td>\n'
+		str_html += f'<td title="Last Update: {old.days} days ago&#10;{Tier}"><a href="{p.profile_url()}" target="_blank"><img src="{p.thumbnail_url()}" width="40" height="40" style="float:left"></a><p style="color:{CLASS_COLOR[p._class]};padding:10px;margin:0px;text-align:left;">&emsp;{p._name}&emsp;[{p._iLvl}]</p></td>\n'
 		
 		#--------- Show Left Instances -------#
 		count = 0
-		for i in p.json()[weekly]:
+		for i in p._data[weekly]:
 			if i['mythic_level'] >= 20:
 				count += 1
 		color = 'red'
@@ -167,14 +151,14 @@ def gen_weekly(players, inis, colors, weekly):
 		str_html += f'<td><span style="color:{color}">{count-8}</span></td>\n'
 		#---------- 0 / 0 / 0 overview -------#
 		str_html += f'<td><span style="color:white">'
-		for i in [0,3,7]:
+		for i in [0, 3, 7]:
 			if i != 0:
 				str_html += f' / '
-			if len(p.json()[weekly]) > i:
-				if p.json()[weekly][i]['mythic_level'] >= 20:
+			if len(p._data[weekly]) > i:
+				if p._data[weekly][i]['mythic_level'] >= 20:
 					reward = WREWARD[20]
 				else:
-					reward = WREWARD[p.json()[weekly][i]['mythic_level']]
+					reward = WREWARD[p._data[weekly][i]['mythic_level']]
 				str_html += f'{reward}'
 			else:
 				str_html += f'-'
@@ -191,11 +175,11 @@ def gen_weekly(players, inis, colors, weekly):
 			else:
 				color='white'
 			try:
-				stern = get_sterne(p.json()[weekly][i]['num_keystone_upgrades'])
-				dt = datetime.strptime(p.json()[weekly][i]['completed_at'], '%Y-%m-%dT%H:%M:%S.000Z')
+				stern = get_sterne(p._data[weekly][i]['num_keystone_upgrades'])
+				dt = datetime.strptime(p._data[weekly][i]['completed_at'], '%Y-%m-%dT%H:%M:%S.000Z')
 				dt = dt.replace(tzinfo=timezone.utc).astimezone(tz=None)
 				run_time = dt.strftime('%a %d.%m %H:%M %Z')
-				str_html += f'<td title="{p.json()[weekly][i]["score"]} | {run_time}"><span style="color:{color}">{p.json()[weekly][i]["short_name"]} (<a href="{p.json()[weekly][i]["url"]}" style="color:{rio.getColor(colors, p.json()[weekly][i]["score"]*20,high)}">{p.json()[weekly][i]["mythic_level"]}{stern}</a>)</span></td>\n'
+				str_html += f'<td title="{p._data[weekly][i]["score"]} | {run_time}"><span style="color:{color}">{p._data[weekly][i]["short_name"]} (<a href="{p._data[weekly][i]["url"]}" style="color:{rio.getColor(colors, p._data[weekly][i]["score"]*20,high)}">{p._data[weekly][i]["mythic_level"]}{stern}</a>)</span></td>\n'
 			except:
 				str_html += f'<td><span style="color:{color}">-</span></td>\n'
 		str_html += '</tr>\n'

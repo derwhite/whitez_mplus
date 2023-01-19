@@ -3,7 +3,7 @@ import random
 import rio
 
 
-def read_players_file(file_path):
+def read_players_file(file_path, alts=False):
 	if not Path(file_path).exists():
 		print(f"WARNING: file {file_path} doesn't exist!")
 		return []
@@ -22,6 +22,7 @@ def read_players_file(file_path):
 			tmp = line.split('-')
 			player['name'] = tmp[0]
 			player['realm'] = tmp[1]
+			player['is_alt'] = alts
 			players.append(player)
 	return players
 
