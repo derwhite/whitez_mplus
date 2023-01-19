@@ -8,15 +8,35 @@ def get_api_list(player_list):
 	request_urls = []		# Erzeuge API Anfrage 	Liste !!
 	hidden_players = []
 	for player in player_list:
-		player=player.strip('\n')
-		if player[:1] == '#':
-			continue
-		if player[:1] == '!':
-			hidden_players.append(player[1:])
-			player = player[1:]
-		tmp = player.split('-')
-		request_urls.append(f'https://raider.io/api/v1/characters/profile?region=eu&realm={tmp[1]}&name={tmp[0]}&fields=talents,mythic_plus_best_runs,mythic_plus_scores_by_season:current,mythic_plus_alternate_runs,gear,mythic_plus_weekly_highest_level_runs,mythic_plus_previous_weekly_highest_level_runs')
+	#	player = player.strip('\n')
+	#	if player[:1] == '#':
+	#		continue
+	#	if player[:1] == '!':
+	#		hidden_players.append(player[1:])
+		#	player = player[1:]
+		#tmp = player.split('-')
+		realm = player['realm']
+		name = player['name']
+		request_urls.append(f'https://raider.io/api/v1/characters/profile?region=eu&realm={realm}&name={name}&fields=talents,mythic_plus_best_runs,mythic_plus_scores_by_season:current,mythic_plus_alternate_runs,gear,mythic_plus_weekly_highest_level_runs,mythic_plus_previous_weekly_highest_level_runs')
 	return request_urls, hidden_players
+
+
+def append_api_requests(players_list):
+	for player in players_list:
+		realm = player['realm']
+		name = player['name']
+		fields = [
+			'talents',
+			'mythic_plus_best_runs',
+			'mythic_plus_scores_by_season:current',
+			'mythic_plus_alternate_runs',
+			'gear',
+			'mythic_plus_weekly_highest_level_runs',
+			'mythic_plus_previous_weekly_highest_level_runs'
+			]
+		fields2 = ','.join(fields)
+		url = f'https://raider.io/api/v1/characters/profile?region=eu&realm={realm}&name={name}&fields={fields2}'
+		player['url'] = url
 
 
 def pull(urls, proxy=''):    #sometimes gets stuck if Proxy does not response -.-

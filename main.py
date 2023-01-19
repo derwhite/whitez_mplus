@@ -8,6 +8,7 @@ import configparser
 import rio
 import lists
 import html_out
+from player import Player
 
 
 def clean_lists(mains, hidden):
@@ -83,12 +84,16 @@ def main():
 	# --------------------
 
 	# Load Player Mains ---
-	urls, hidden_players = rio.get_api_list(lists.get_players(args['mains']))
-	mains = rio.sort_players_by_ilvl(rio.pull(urls, proxy))
+	player_list = lists.read_players_file(args['mains'])
+	rio.append_api_requests(player_list)
+	urls = [p['url'] for p in player_list]
+	responses = rio.pull(urls, proxy)
+	players = Player.create_players(player_list, responses)
+	mains = rio.sort_players_by_ilvl(responses)
 	# ---------------------
 	
 	# Load Player Alts ---	
-	urls, hidden_alts = rio.get_api_list(lists.get_players(args['alts']))
+	urls, hidden_alts = rio.get_api_list(lists.read_players_file(args['alts']))
 	alts = rio.sort_players_by_ilvl(rio.pull(urls, proxy))
 	# --------------------
 

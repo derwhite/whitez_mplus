@@ -3,12 +3,27 @@ import random
 import rio
 
 
-def get_players(file_path):
+def read_players_file(file_path):
 	if not Path(file_path).exists():
 		print(f"WARNING: file {file_path} doesn't exist!")
 		return []
+
+	players = []
 	with open(file_path, encoding="utf8") as f:
-		return f.readlines()
+		lines = f.readlines()
+		for line in lines:
+			player = {}
+			line = line.strip('\n')
+			if line[0] == '#':
+				continue
+			if line[0] == '!':
+				player['is_hidden'] = True
+				line = line[1:]
+			tmp = line.split('-')
+			player['name'] = tmp[0]
+			player['realm'] = tmp[1]
+			players.append(player)
+	return players
 
 
 def get_proxy():
