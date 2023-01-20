@@ -103,12 +103,12 @@ def main():
 	# --------------------
 
 	# sort Players
-	ilvl_sorted_players = list(sorted(players, key=lambda player: player._iLvl, reverse=True))
+	ilvl_sorted_players = list(sorted(players, key=lambda player: player.ilvl, reverse=True))
 	score_sorted_players = list(sorted(ilvl_sorted_players, key=lambda p: p._score, reverse=True))
 	# --------------------
 
 	# Remove low Item level Chars
-	ilvl_filtered_players = list(filter(lambda player: player._iLvl >= settings['min_ilvl'], score_sorted_players))
+	ilvl_filtered_players = list(filter(lambda player: player.ilvl >= settings['min_ilvl'], score_sorted_players))
 	# --------------------
 	
 	export_data_to_json(players)

@@ -4,22 +4,6 @@ from datetime import datetime, timezone
 # WREWARD=[0,0,278,278,278,281,281,285,288,288,291,294,298,298,301,304] # Season 4
 WREWARD=[0,0,382,385,385,389,389,392,395,395,398,402,405,408,408,411,415,415,418,418,421] # Season 1 DF
 
-CLASS_COLOR={
-	'Death Knight': '#C41F3B',
-	'Demon Hunter': '#A330C9',
-	'Druid': '#FF7D0A',
-	'Hunter': '#ABD473',
-	'Mage': '#69CCF0',
-	'Monk': '#00FF96',
-	'Paladin': '#F58CBA',
-	'Priest': '#FFFFFF',
-	'Rogue': '#FFF569',
-	'Shaman': '#0070DE',
-	'Warlock': '#9482C9',
-	'Warrior': '#C79C6E',
-	'Evoker': '#33937F',
-	}
-
 
 def get_instance_from_player(player, ini):
 	best = {}
@@ -59,7 +43,6 @@ def get_sterne(upgrade):
 	return stern
 
 
-## SCORE TABLE -------
 def gen_score_table(players, inis, colors, isTyrannical):
 	str_html = f'<table width="100%">\n'
 	str_html += f'<tr><th><span style="color:white;background-color:black">Player</span></th><th width=\"8%\"><span style="color:white;background-color:black">Score</span></th>\n'
@@ -86,7 +69,7 @@ def gen_score_table(players, inis, colors, isTyrannical):
 		#----------------------------------
 		# Create Player Line on Website !!
 		str_html += f'<tr>\n'
-		str_html += f'<td title="Last Update: {old.days} days ago&#10;{Tier}"><a href="{p.profile_url()}" target="_blank"><img src="{p.thumbnail_url()}" width="40" height="40" style="float:left"></a><p style="font-size:{mainSize}px;color:{CLASS_COLOR[p._class]};padding:10px;margin:0px;text-align:left">&emsp;{p._name}&emsp;[{p._iLvl}]</p></td>\n'
+		str_html += f'<td title="Last Update: {old.days} days ago&#10;{Tier}"><a href="{p.profile_url()}" target="_blank"><img src="{p.thumbnail_url()}" width="40" height="40" style="float:left"></a><p style="font-size:{mainSize}px;color:{p.class_color};padding:10px;margin:0px;text-align:left">&emsp;{p.name}&emsp;[{p.ilvl}]</p></td>\n'
 		sum = p._score  # Player Score
 		color = rio.getColor(colors, sum)
 		str_html += f'<td><span style="font-size:{mainSize}px;color:{color}">{"{:.2f}".format(sum)}</span></td>\n'
@@ -119,6 +102,7 @@ def gen_score_table(players, inis, colors, isTyrannical):
 	str_html += f'</table>\n'
 	return str_html
 
+
 def gen_weekly(players, inis, colors, weekly):
 	players = rio.sort_players_by(players,weekly)
 	high = rio.get_highest_score(players)
@@ -136,7 +120,7 @@ def gen_weekly(players, inis, colors, weekly):
 		Tier = p.get_tier_items()
 		#----------------------------------
 		str_html += f'<tr>\n'
-		str_html += f'<td title="Last Update: {old.days} days ago&#10;{Tier}"><a href="{p.profile_url()}" target="_blank"><img src="{p.thumbnail_url()}" width="40" height="40" style="float:left"></a><p style="color:{CLASS_COLOR[p._class]};padding:10px;margin:0px;text-align:left;">&emsp;{p._name}&emsp;[{p._iLvl}]</p></td>\n'
+		str_html += f'<td title="Last Update: {old.days} days ago&#10;{Tier}"><a href="{p.profile_url()}" target="_blank"><img src="{p.thumbnail_url()}" width="40" height="40" style="float:left"></a><p style="color:{p.class_color};padding:10px;margin:0px;text-align:left;">&emsp;{p.name}&emsp;[{p.ilvl}]</p></td>\n'
 		
 		#--------- Show Left Instances -------#
 		count = 0
@@ -196,7 +180,7 @@ def gen_site(affixes, all_tables, season_name, isTyrannical):
 	legende = "[Fortified / Tyrannical]"
 	if isTyrannical == True:
 		legende = "[Tyrannical / Fortified]"
-	
+
 	myhtml = f'<!DOCTYPE html>\n'				# Building Website !!
 	myhtml += f'<html><head>'
 	myhtml += f'<link rel="icon" type="image/png" href="http://ts.chbrath.de/favicon.png"><meta charset="utf-8">'
