@@ -35,12 +35,7 @@ def get_instance_from_player(player, ini):
 
 
 def get_sterne(upgrade):
-	count = upgrade
-	stern = ''
-	while count > 0:
-		stern += f'*'
-		count -= 1
-	return stern
+	return '*' * upgrade
 
 
 def gen_score_table(players, inis, colors, isTyrannical):
