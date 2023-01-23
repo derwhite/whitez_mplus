@@ -176,12 +176,22 @@ def gen_site(affixes, all_tables, season_name, isTyrannical):
 	if isTyrannical == True:
 		legende = "[Tyrannical / Fortified]"
 
-	myhtml = f'<!DOCTYPE html>\n'				# Building Website !!
-	myhtml += f'<html><head>'
-	myhtml += f'<link rel="icon" type="image/png" href="http://ts.chbrath.de/favicon.png"><meta charset="utf-8">'
-	myhtml += "<script>const whTooltips = {colorLinks: true, iconizeLinks: true, renameLinks: false};</script>"
-	myhtml += f'<script src="https://wow.zamimg.com/js/tooltips.js"></script>'
-	myhtml += f'</head>'
+	# Building Website !!
+	# Head
+	myhtml = f'<!DOCTYPE html>\n'
+	myhtml += f'<html>\n'
+	myhtml += f'<head>\n'
+	myhtml += f'<link rel="icon" type="image/png" href="http://ts.chbrath.de/favicon.png"><meta charset="utf-8">\n'
+	myhtml += '<script>const whTooltips = {colorLinks: true, iconizeLinks: true, renameLinks: false};</script>\n'
+	myhtml += f'<script src="https://wow.zamimg.com/js/tooltips.js"></script>\n'
+	myhtml += '<style>\n'
+	with open('./static/style.css', 'r', encoding="utf8") as f:
+		lines = f.readlines()
+		for line in lines:
+			myhtml += line
+	myhtml += '</style>\n'
+	myhtml += f'</head>\n'
+	# Body
 	myhtml += f'<body><h1 style="Color:white;">current Season: "{season_name}"</h1><h2 style="color:white">last Update: {now}&emsp;&emsp;&emsp;{legende}</h2>\n'
 	myhtml += f'<h3 style="color:white">Affixe: {affixes}</h3>\n'
 	# Open Tab
@@ -210,75 +220,9 @@ def gen_site(affixes, all_tables, season_name, isTyrannical):
 	myhtml += '</div>\n'
 	myhtml += '</div>\n'
 	myhtml += '<br><br><br><p style="color:white">All data provided by <a href="https://raider.io">Raider.io</a> & <a href="https://battle.net">Battle.net</a></p>\n'
-	myhtml += '<p style="color:white">This Project source is hosted on <a href="https://github.com/derwhite/whitez_mplus">Github.com</a>\n'
+	myhtml += '<p style="color:white">This Project source is hosted on <a href="https://github.com/derwhite/whitez_mplus">Github.com</a></p>\n'
 
 	myhtml += '</body>\n'
-
-	myhtml += '<style>\n'
-	myhtml += 'table th {\n'
-	myhtml += '	position: sticky; top: 0;\n'
-	myhtml += '	padding: 20px;\n'
-	myhtml += '	margin: 20px;\n'
-	myhtml += '	font-size: 18px;\n'
-	myhtml += '}\n'
-	myhtml += 'table, th, td {\n'
-	myhtml += '	border: 1px solid #383838;border-collapse: collapse;\n'
-	myhtml += '}\n'
-	myhtml += 'th, td {\n'
-	myhtml += '	padding: 2px;text-align:center;\n'
-	myhtml += '	font-size: 17px;\n'
-	myhtml += '}\n'
-	myhtml += 'tr:nth-child(even) {\n'
-	myhtml += '	background-color: #181818;\n'
-	myhtml += '}\n'
-	myhtml += 'tr:not(:first-child):hover {\n'
-	myhtml += '     background-color: #012e31;\n'
-	myhtml += '}\n'
-	myhtml += 'body {\n'
-	myhtml += '    background-color: black;\n'
-	myhtml += '}\n'
-	myhtml += '.mytabs {\n'
-	myhtml += '    display: flex;\n'
-	myhtml += '    flex-wrap: wrap;\n'
-	myhtml += '    max-width: 100%;\n'
-	myhtml += '    margin: none;\n'
-	myhtml += '    padding: none;\n'
-	myhtml += '}\n'
-	myhtml += '.mytabs input[type="radio"] {\n'
-	myhtml += '    display: none;\n'
-	myhtml += '}\n'
-	myhtml += '.mytabs label {\n'
-	myhtml += '    padding: 10px;\n'
-	myhtml += '	width: 85px;\n'
-	myhtml += '    background: black;\n'
-	myhtml += '    font-weight: bold;\n'
-	myhtml += '	color: white;\n'
-	myhtml += 'border: 1px solid #383838;\n'
-	myhtml += '	text-align: center;\n'
-	myhtml += '	font-size: 18px;\n'
-	myhtml += '	border-radius: 15px 15px 0px 0px;\n'
-	myhtml += '}\n'
-
-	myhtml += '.mytabs .tab {\n'
-	myhtml += '    width: 100%;\n'
-	myhtml += '    padding: none;\n'
-	myhtml += '    background: black;\n'
-	myhtml += '    order: 1;\n'
-	myhtml += '    display: none;\n'
-	myhtml += '}\n'
-	myhtml += '.mytabs .tab h2 {\n'
-	myhtml += '    font-size: 3em;\n'
-	myhtml += '}\n'
-
-	myhtml += '.mytabs input[type=\'radio\']:checked + label + .tab {\n'
-	myhtml += '    display: block;\n'
-	myhtml += '}\n'
-
-	myhtml += '.mytabs input[type="radio"]:checked + label {\n'
-	myhtml += '    background: black;\n'
-	myhtml += '	color: red;\n'
-	myhtml += '}\n'
-	myhtml += '</style>\n'
 	myhtml += '</html>\n'
 
 	return myhtml

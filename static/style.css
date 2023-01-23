@@ -1,0 +1,60 @@
+table th {
+	position: sticky; top: 0;
+	padding: 20px;
+	margin: 20px;
+	font-size: 18px;
+}
+table, th, td {
+	border: 1px solid #383838;border-collapse: collapse;
+}
+th, td {
+	padding: 2px;text-align:center;
+	font-size: 17px;
+}
+tr:nth-child(even) {
+	background-color: #181818;
+}
+tr:not(:first-child):hover {
+     background-color: #012e31;
+}
+body {
+    background-color: black;
+}
+.mytabs {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 100%;
+    margin: none;
+    padding: none;
+}
+.mytabs input[type="radio"] {
+    display: none;
+}
+.mytabs label {
+    padding: 10px;
+	width: 85px;
+    background: black;
+    font-weight: bold;
+	color: white;
+border: 1px solid #383838;
+	text-align: center;
+	font-size: 18px;
+	border-radius: 15px 15px 0px 0px;
+}
+.mytabs .tab {
+    width: 100%;
+    padding: none;
+    background: black;
+    order: 1;
+    display: none;
+}
+.mytabs .tab h2 {
+    font-size: 3em;
+}
+.mytabs input[type='radio']:checked + label + .tab {
+    display: block;
+}
+.mytabs input[type="radio"]:checked + label {
+    background: black;
+	color: red;
+}
