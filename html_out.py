@@ -172,9 +172,9 @@ def gen_site(affixes, all_tables, season_name, isTyrannical):
 	now = datetime.now()
 	now = now.strftime("%d.%m.%Y %H:%M:%S")
 	
-	legende = "[Fortified / Tyrannical]"
+	legende = "[Fortified | Tyrannical]"
 	if isTyrannical == True:
-		legende = "[Tyrannical / Fortified]"
+		legende = "[Tyrannical | Fortified]"
 
 	# Building Website !!
 	# Head
