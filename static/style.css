@@ -2,15 +2,15 @@ table th {
 	position: sticky;
     top: 0;
     background-color: black;
+    outline: 1px solid #383838;
 	padding: 20px;
 	margin: 20px;
 	font-size: 18px;
 }
 table, th, td {
-	border: 1px solid #383838;border-collapse: collapse;
-}
-th, td {
-	padding: 2px;text-align:center;
+	border: 1px solid #383838;
+    border-collapse: collapse;
+    padding: 2px;text-align:center;
 	font-size: 17px;
 }
 tr:nth-child(even) {
