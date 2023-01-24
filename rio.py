@@ -113,38 +113,6 @@ def get_tweek_affixes(proxy=''):  # Affixe ufschreiben
 	return tweek_affixes_out, tyrannical
 
 
-def sort_players_by_score(results):
-	i=0
-	while i < len(results):
-		x=i+1
-		while x < len(results):
-			sum=results[x].json()['mythic_plus_scores_by_season'][0]['scores']['all']
-			sum2=results[i].json()['mythic_plus_scores_by_season'][0]['scores']['all']
-			if sum > sum2:
-				tmp = results[i]
-				results[i]=results[x]
-				results[x]=tmp
-			x+=1
-		i+=1
-	return results
-
-
-def sort_players_by_ilvl(results):
-	i=0
-	while i < len(results):
-		x=i+1
-		while x < len(results):
-			sum=results[x].json()['gear']['item_level_equipped']
-			sum2=results[i].json()['gear']['item_level_equipped']
-			if sum > sum2:
-				tmp = results[i]
-				results[i]=results[x]
-				results[x]=tmp
-			x+=1
-		i+=1
-	return results
-
-
 def sort_players_by(results, weekly):
 	i=0
 	while i < len(results):
