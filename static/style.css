@@ -3,7 +3,8 @@ table th {
     top: 0;
     background-color: black;
     outline: 1px solid #383838;
-	padding: 20px;
+    height: 50px;
+	padding: 5px;
 	margin: 20px;
 	font-size: 18px;
 }
