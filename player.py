@@ -50,19 +50,26 @@ class Player:
         return self._data['last_crawled_at']
 
     def get_tier_items(self):
-        tier = 0
-        tcount = 0
-        tset = ['head', 'shoulder', 'chest', 'hands', 'legs']
-        for x in tset:
+        tset_pieces = ['head', 'shoulder', 'chest', 'hands', 'legs']
+        tset_equiped = [0, 0, 0, 0, 0]
+        for i, x in enumerate(tset_pieces):
             if 'tier' in self._data['gear']['items'][x]:
-                if int(self._data['gear']['items'][x]['tier']) > tier:
-                    tier = int(self._data['gear']['items'][x]['tier'])
-                    tcount = 1
-                elif int(self._data['gear']['items'][x]['tier']) == tier:
-                    tcount = tcount + 1
-        if tier == 0:
+                tset_equiped[i] = int(self._data['gear']['items'][x]['tier'])
+        if sum(tset_equiped) == 0:
             return ""
-        return f'T{tier}: {tcount}/5'
+        else:
+            tool_tip_per_tier = []
+            different_tiers = set(tset_equiped)
+            different_tiers.discard(0)
+            for tier in different_tiers:
+                count = tset_equiped.count(tier)
+                pieces = []
+                for piece, t in zip(tset_pieces, tset_equiped):
+                    if t == tier:
+                        pieces.append(piece)
+                tool_tip_per_tier.append(f'T{tier}: {count}/5 ({", ".join(pieces)})')
+            tool_tip = '\n'.join(tool_tip_per_tier)
+            return tool_tip
 
     def profile_url(self):
         return self._data['profile_url']
