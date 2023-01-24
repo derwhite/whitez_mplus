@@ -50,7 +50,25 @@ def parse_config_file(config_file_path):
 
 	min_ilvl = config["DEFAULT"].getint("min_ilvl", 300)
 
-	return {'min_ilvl': min_ilvl}
+	client_id = config['BNET'].get('client_id', "")
+	client_secret = config['BNET'].get('client_secret', "")
+
+	# Fallback
+	if client_id == "" or client_secret == "":
+		print("INFO: bnet client_id and client_secret not found in config file. File 'bnetkeys' is used instead.")
+		print("      Please move the keys to the new settings config file!")
+		with open('bnetkeys') as f:
+			lines = f.readlines()
+		client_id = lines[0].strip()
+		client_secret = lines[1].strip()
+
+	settings = {
+		'min_ilvl': min_ilvl,
+		'client_id': client_id,
+		'client_secret': client_secret
+	}
+
+	return settings
 
 
 def cli():
@@ -121,7 +139,7 @@ def main():
 	# Grab Season from a Player (and look it up in Static Values API) to get the Full Name and Instance names
 	# set bnet client_ID and client_secret to get Instance Timers
 	season = players[0]._data['mythic_plus_scores_by_season'][0]['season']
-	inis, sname = rio.get_instances(season, proxy)
+	inis, sname = rio.get_instances(season, settings, proxy)
 	# --------------------
 	
 	# get Score_colors from API (if failed from File)

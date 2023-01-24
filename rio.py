@@ -61,19 +61,16 @@ def pull(urls, proxy=''):    #sometimes gets stuck if Proxy does not response -.
 	return results
 
 
-def get_instances(season, proxy=''):
+def get_instances(season, settings, proxy=''):
 	tmp = pull(['https://raider.io/api/v1/mythic-plus/static-data?expansion_id=9'], proxy)
-	try:
-		bnet_Token = bnet.get_bnet_access_token()
-	except:
-		bnet_Token = ""
+	bnet_Token = bnet.create_access_token(settings['client_id'], settings['client_secret'])
 	instances = []
 	season_name=""
 	for sea in tmp[0].json()['seasons']:
 		if sea['slug'] == season:
 			for ini in sea['dungeons']:
 				ini_time = 0
-				if bnet_Token != "":
+				if bnet_Token is not None:
 					ini_timer = pull([f'https://eu.api.blizzard.com/data/wow/mythic-keystone/dungeon/{ini["challenge_mode_id"]}?namespace=dynamic-eu&locale=en_EN&access_token={bnet_Token}'], proxy)
 					ini_time = ini_timer[0].json()['keystone_upgrades'][0]['qualifying_duration'] / 1000
 				instances.append({'short':ini['short_name'], 'name':ini['name'], 'timer': ini_time})
