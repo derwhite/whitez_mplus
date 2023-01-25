@@ -79,8 +79,16 @@ class Player:
 
     @staticmethod
     def create_players(player_list, responses):
+        if len(player_list) != len(responses):
+            print("ERROR: player_list and responses don't have the same length!")
+            return []
+
         players = []
         for p, r in zip(player_list, responses):
+            if r.status_code != 200:
+                print(f"WARNING: Couldn't get a valid response for player {p['name']}-{p['realm']}:")
+                print(r.json())
+                continue
             player = Player(r, alt=p['is_alt'], hidden=p.get('is_hidden', False))
             players.append(player)
         return players

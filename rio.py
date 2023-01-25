@@ -55,9 +55,6 @@ def pull(urls, proxy=''):    #sometimes gets stuck if Proxy does not response -.
 	pool.close()
 	pool.join()
 	s.close()
-	for r in reversed(results): #bereinige fehlgeschlagene requests
-		if r.status_code != 200:
-			results.remove(r)
 	return results
 
 
