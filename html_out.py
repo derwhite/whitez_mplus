@@ -177,52 +177,25 @@ def gen_site(affixes, all_tables, season_name, isTyrannical):
 		legende = "[Tyrannical | Fortified]"
 
 	# Building Website !!
-	# Head
-	myhtml = f'<!DOCTYPE html>\n'
-	myhtml += f'<html>\n'
-	myhtml += f'<head>\n'
-	myhtml += f'<link rel="icon" type="image/png" href="http://ts.chbrath.de/favicon.png"><meta charset="utf-8">\n'
-	myhtml += '<script>const whTooltips = {colorLinks: true, iconizeLinks: true, renameLinks: false};</script>\n'
-	myhtml += f'<script src="https://wow.zamimg.com/js/tooltips.js"></script>\n'
-	myhtml += '<style>\n'
-	with open('./static/style.css', 'r', encoding="utf8") as f:
-		lines = f.readlines()
-		for line in lines:
-			myhtml += line
-	myhtml += '</style>\n'
-	myhtml += f'</head>\n'
-	# Body
-	myhtml += f'<body><h1 style="Color:white;">current Season: "{season_name}"</h1><h2 style="color:white">last Update: {now}&emsp;&emsp;&emsp;{legende}</h2>\n'
-	myhtml += f'<h3 style="color:white">Affixe: {affixes}</h3>\n'
-	# Open Tab
-	myhtml += f'<div class="mytabs"><input type="radio" id="Main" name="mytabs" checked="checked"><label for="Main">Main Tracker</label><div class="tab">\n'
-	myhtml += all_tables['main_score']
-	myhtml += f'</div>\n'
-	# next Tab
-	myhtml += f'<input type="radio" id="Thisweek" name="mytabs"><label for="Thisweek">Main Weekly</label><div class="tab">'
-	myhtml += all_tables['main_weekly']
-	myhtml += f'</div>\n'
-	# next Tab
-	myhtml += f'<input type="radio" id="prevweek" name="mytabs"><label for="prevweek" style="margin-left: 1%">Alts Tracker</label><div class="tab">'
-	myhtml += all_tables['alts_score']
-	myhtml += f'</div>\n'
-	# next Tab
-	myhtml += f'<input type="radio" id="twink" name="mytabs"><label for="twink">Alts Weekly</label><div class="tab">\n'
-	myhtml += all_tables['alts_weekly']
-	myhtml += f'</div>\n'
-	# next Tab
-	myhtml += f'<input type="radio" id="TThisweek" name="mytabs"><label for="TThisweek" style="margin-left: 1%">Main prev Weekly</label><div class="tab">'
-	myhtml += all_tables['main_pweek']
-	myhtml += f'</div>\n'
-	# next Tab
-	myhtml += f'<input type="radio" id="Tprevweek" name="mytabs"><label for="Tprevweek">Alts prev Weekly</label><div class="tab">'
-	myhtml += all_tables['alts_pweek']
-	myhtml += '</div>\n'
-	myhtml += '</div>\n'
-	myhtml += '<br><br><br><p style="color:white">All data provided by <a href="https://raider.io">Raider.io</a> & <a href="https://battle.net">Battle.net</a></p>\n'
-	myhtml += '<p style="color:white">This Project source is hosted on <a href="https://github.com/derwhite/whitez_mplus">Github.com</a></p>\n'
+	with open('./templates/main.html', 'r', encoding='utf8') as f:
+		myhtml = f.read()
 
-	myhtml += '</body>\n'
-	myhtml += '</html>\n'
+		with open('./static/style.css', 'r', encoding="utf8") as f2:
+			css = f2.read()
+			myhtml = myhtml.replace('{% stylesheet_content %}', css)
+
+		myhtml = myhtml.replace('{% season_name %}', season_name)
+		myhtml = myhtml.replace('{% now %}', now)
+		myhtml = myhtml.replace('{% legende %}', legende)
+		myhtml = myhtml.replace('{% affixes %}', affixes)
+
+		myhtml = myhtml.replace('{% main_tracker_content %}', all_tables['main_score'])
+		myhtml = myhtml.replace('{% main_weekly_content %}', all_tables['main_weekly'])
+		myhtml = myhtml.replace('{% alts_tracker_content %}', all_tables['alts_score'])
+		myhtml = myhtml.replace('{% alts_weekly_content %}', all_tables['alts_weekly'])
+		myhtml = myhtml.replace('{% main_prev_weekly_content %}', all_tables['main_pweek'])
+		myhtml = myhtml.replace('{% alts_prev_weekly_content %}', all_tables['alts_pweek'])
+
+		return myhtml
 
 	return myhtml
