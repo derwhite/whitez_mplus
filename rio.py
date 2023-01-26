@@ -8,13 +8,6 @@ def get_api_list(player_list):
 	request_urls = []		# Erzeuge API Anfrage 	Liste !!
 	hidden_players = []
 	for player in player_list:
-	#	player = player.strip('\n')
-	#	if player[:1] == '#':
-	#		continue
-	#	if player[:1] == '!':
-	#		hidden_players.append(player[1:])
-		#	player = player[1:]
-		#tmp = player.split('-')
 		realm = player['realm']
 		name = player['name']
 		request_urls.append(f'https://raider.io/api/v1/characters/profile?region=eu&realm={realm}&name={name}&fields=talents,mythic_plus_best_runs,mythic_plus_scores_by_season:current,mythic_plus_alternate_runs,gear,mythic_plus_weekly_highest_level_runs,mythic_plus_previous_weekly_highest_level_runs')
@@ -51,7 +44,7 @@ def pull(urls, proxy=''):    #sometimes gets stuck if Proxy does not response -.
 			'https': f'http://{key[0].strip()}@{proxy}:8080'
 			}
 			s.proxies.update(proxies)
-	results = pool.map(s.get, urls, chunksize=1) # DL all URLS !!
+	results = pool.map(s.get, urls, chunksize=1)  # DL all URLS !!
 	pool.close()
 	pool.join()
 	s.close()
@@ -70,7 +63,7 @@ def get_instances(season, settings, proxy=''):
 				if bnet_Token is not None:
 					ini_timer = pull([f'https://eu.api.blizzard.com/data/wow/mythic-keystone/dungeon/{ini["challenge_mode_id"]}?namespace=dynamic-eu&locale=en_EN&access_token={bnet_Token}'], proxy)
 					ini_time = ini_timer[0].json()['keystone_upgrades'][0]['qualifying_duration'] / 1000
-				instances.append({'short':ini['short_name'], 'name':ini['name'], 'timer': ini_time})
+				instances.append({'short': ini['short_name'], 'name': ini['name'], 'timer': ini_time})
 			season_name = sea['name']
 			break
 	return instances, season_name
@@ -91,7 +84,6 @@ def get_tweek_affixes(proxy=''):  # Affixe ufschreiben
 	tmp = pull(['https://raider.io/api/v1/mythic-plus/affixes?region=eu&locale=en'], proxy)
 	if tmp[0].status_code == 200:
 		r = tmp[0].json()
-		tweek_affixes_out = ""
 		tyrannical = False
 		affixes_html = []
 		for x in r['affix_details']:
@@ -111,31 +103,31 @@ def get_tweek_affixes(proxy=''):  # Affixe ufschreiben
 
 
 def sort_players_by(results, weekly):
-	i=0
+	i = 0
 	while i < len(results):
-		x=i+1
+		x = i+1
 		while x < len(results):
-			sum=0
+			sum = 0
 			for r in results[x]._data[weekly]:
 				if r['mythic_level'] >= 15:
-					sum+=300
-				sum+=r['mythic_level']
-			sum2=0
+					sum += 300
+				sum += r['mythic_level']
+			sum2 = 0
 			for r in results[i]._data[weekly]:
 				if r['mythic_level'] >= 15:
-					sum2+=300
-				sum2+=r['mythic_level']
+					sum2 += 300
+				sum2 += r['mythic_level']
 			if sum > sum2:
 				#print(results[i].json()['name'],sum2,results[x].json()['name'],sum)
 				tmp = results[i]
-				results[i]=results[x]
-				results[x]=tmp
-			x+=1
-		i+=1
+				results[i] = results[x]
+				results[x] = tmp
+			x += 1
+		i += 1
 	return results
 
 
-def getColor(score_tier, points, max=0):
+def get_color(score_tier, points, max=0):
 	color = "white"
 	if max > 0:
 		points = points / 20

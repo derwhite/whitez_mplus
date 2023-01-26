@@ -66,15 +66,15 @@ def gen_score_table(players, inis, colors, isTyrannical):
 		str_html += f'<tr>\n'
 		str_html += f'<td title="Last Update: {old.days} days ago&#10;{Tier}"><a href="{p.profile_url()}" target="_blank"><img src="{p.thumbnail_url()}" width="40" height="40" style="float:left"></a><p style="font-size:{mainSize}px;color:{p.class_color};padding:10px;margin:0px;text-align:left">&emsp;{p.name}&emsp;[{p.ilvl}]</p></td>\n'
 		sum = p._score  # Player Score
-		color = rio.getColor(colors, sum)
+		color = rio.get_color(colors, sum)
 		str_html += f'<td><span style="font-size:{mainSize}px;color:{color}">{"{:.2f}".format(sum)}</span></td>\n'
 		#-----------------------------
 		for ini in inis:
 			# Iterate Instances:
 			best, alter = get_instance_from_player(p, ini['short'])
-			best.update({'color': rio.getColor(colors, best['score']*20, high_score)})
+			best.update({'color': rio.get_color(colors, best['score'] * 20, high_score)})
 			best.update({'sterne': get_sterne(best['upgrade'])})
-			alter.update({'color': rio.getColor(colors, alter['score']*20, high_score)})
+			alter.update({'color': rio.get_color(colors, alter['score'] * 20, high_score)})
 			alter.update({'sterne': get_sterne(alter['upgrade'])})
 			first = {}
 			sec = {}
@@ -158,7 +158,7 @@ def gen_weekly(players, inis, colors, weekly):
 				dt = datetime.strptime(p._data[weekly][i]['completed_at'], '%Y-%m-%dT%H:%M:%S.000Z')
 				dt = dt.replace(tzinfo=timezone.utc).astimezone(tz=None)
 				run_time = dt.strftime('%a %d.%m %H:%M %Z')
-				str_html += f'<td title="{p._data[weekly][i]["score"]} | {run_time}"><span style="color:{color}">{p._data[weekly][i]["short_name"]} (<a href="{p._data[weekly][i]["url"]}" style="color:{rio.getColor(colors, p._data[weekly][i]["score"]*20,high)}">{p._data[weekly][i]["mythic_level"]}{stern}</a>)</span></td>\n'
+				str_html += f'<td title="{p._data[weekly][i]["score"]} | {run_time}"><span style="color:{color}">{p._data[weekly][i]["short_name"]} (<a href="{p._data[weekly][i]["url"]}" style="color:{rio.get_color(colors, p._data[weekly][i]["score"] * 20, high)}">{p._data[weekly][i]["mythic_level"]}{stern}</a>)</span></td>\n'
 			except:
 				str_html += f'<td><span style="color:{color}">-</span></td>\n'
 		str_html += '</tr>\n'
@@ -197,5 +197,3 @@ def gen_site(affixes, all_tables, season_name, isTyrannical):
 		myhtml = myhtml.replace('{% alts_prev_weekly_content %}', all_tables['alts_pweek'])
 
 		return myhtml
-
-	return myhtml

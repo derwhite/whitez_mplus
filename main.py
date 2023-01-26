@@ -164,8 +164,6 @@ def main():
 	
 	with open(args['outfile'], "w", encoding="utf8") as text_file:
 		text_file.write(myhtml)
-	
-	quit()
 
 
 if __name__ == "__main__":
