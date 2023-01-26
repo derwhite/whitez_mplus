@@ -40,14 +40,14 @@ def get_sterne(upgrade):
 
 def gen_score_table(players, inis, colors, isTyrannical):
 	str_html = f'<table width="100%">\n'
-	str_html += f'<tr><th><span style="color:white;background-color:black">Player</span></th><th width=\"8%\"><span style="color:white;background-color:black">Score</span></th>\n'
+	str_html += f'<tr><th><span style="color:white">Player</span></th><th width=\"8%\"><span style="color:white">Score</span></th>\n'
 	for x in inis:
 		if x['timer'] == 0:
 			ini_timer = ""
 		else:
 			ini_timer = f'[{int(x["timer"] // 60)}:{str(int(x["timer"] % 60)).zfill(2)}]'
 
-		str_html += f'<th title="{x["name"]}" width=\"8%\"><span style="white-space:pre-line;color:white;background-color:black">{x["short"]}<br>{ini_timer}</span></th>\n'
+		str_html += f'<th title="{x["name"]}" width=\"8%\"><span style="white-space:pre-line;color:white">{x["short"]}<br>{ini_timer}</span></th>\n'
 	str_html += f'</tr>\n'
 
 	high_score = rio.get_highest_score(players)

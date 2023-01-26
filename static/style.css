@@ -1,6 +1,6 @@
 
 table th {
-	position: sticky;
+    position: sticky;
     top: 0;
     background-color: black;
     outline: 1px solid #383838;
@@ -19,7 +19,7 @@ tr:nth-child(even) {
 	background-color: #181818;
 }
 tr:not(:first-child):hover {
-     background-color: #012e31;
+    background-color: #012e31;
 }
 body {
     background-color: black;
@@ -40,7 +40,7 @@ body {
     background: black;
     font-weight: bold;
 	color: white;
-border: 1px solid #383838;
+    border: 1px solid #383838;
 	text-align: center;
 	font-size: 18px;
 	border-radius: 15px 15px 0px 0px;
