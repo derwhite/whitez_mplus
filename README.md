@@ -1,5 +1,5 @@
 # Whitez Mythic Plus
-pulls infomation about Mythic Plus runs from a custom list of wow players via Raider.io and Battle.net API.
+Pulls infomation about Mythic Plus runs from a custom list of wow players via Raider.io and Battle.net API.
 
 ## how to setup
 - in the folder "lists" create a file named "mains.txt" and "alts.txt" 
@@ -7,7 +7,7 @@ pulls infomation about Mythic Plus runs from a custom list of wow players via Ra
 - if u have python3 and all imports ur good to go.
 
 ## usage
-- the script only takes 1 argument. ( main.py *output_file* )
+- the script only need one required argument. ( main.py *output_file* )
 - if u want to get the Dungeon intime timer u need to use Battle.net API
 - I personally run this on my WebServer every 5 min and write the output to my Apache2 (/var/www/html/index.html)
 
@@ -18,7 +18,10 @@ pulls infomation about Mythic Plus runs from a custom list of wow players via Ra
 
 ## setup Battle.net API
 - go to Battle.net and get ur ClientID and ClientSecret
-- add this in 2 lines to a file named 'bnetkeys'*<br>clientID<br>clientSecret*
+- add these values to `settings.conf` (without quotes etc.)
+- Battle.net API requests are optional. 
+  If you don't have an account, the script will still work. 
+  The output page just doesn't show all the information.
 
 ## Proxy and Login
 - if u want to use a proxy or a rnd proxy to make the requests, just add a file in the folder "lists" with the name "proxy.txt"
