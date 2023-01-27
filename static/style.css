@@ -1,21 +1,14 @@
 
-table th {
-    position: sticky;
-    top: 0;
-	padding: 5px;
-	margin: 20px;
-	font-size: 18px;
-}
-table, th, td {
+.mytabs table, th, td {
 	border: 1px solid #383838;
     border-collapse: collapse;
     padding: 2px;text-align:center;
 	font-size: 17px;
 }
-tr:nth-child(even) {
+.mytabs tr:nth-child(even) {
 	background-color: #181818;
 }
-tr:not(:first-child):hover {
+.mytabs tr:not(:first-child):hover {
     background-color: #012e31;
 }
 body {
@@ -29,6 +22,11 @@ body {
     padding: none;
 }
 .mytabs th {
+    position: sticky;
+	padding: 5px;
+	margin: 20px;
+	font-size: 18px;
+    top: 0;
     background-color: black;
     outline: 1px solid #383838;
     height: 50px;
