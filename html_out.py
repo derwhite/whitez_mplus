@@ -40,7 +40,9 @@ def get_sterne(upgrade):
 
 def gen_score_table(players, inis, colors, isTyrannical):
 	str_html = f'<table width="100%">\n'
-	str_html += f'<tr><th><span style="color:white">Player</span></th><th width=\"8%\"><span style="color:white">Score</span></th>\n'
+	str_html += f'<tr><th><span style="color:white">Player</span></th>\n'
+	str_html += f'<th width=\"5%\"><span style="color:white">ilvl</span></th>\n'
+	str_html += f'<th width=\"7%\"><span style="color:white">Score</span></th>\n'
 	for x in inis:
 		if x['timer'] == 0:
 			ini_timer = ""
@@ -64,7 +66,8 @@ def gen_score_table(players, inis, colors, isTyrannical):
 		#----------------------------------
 		# Create Player Line on Website !!
 		str_html += f'<tr>\n'
-		str_html += f'<td title="Last Update: {old.days} days ago&#10;{Tier}"><a href="{p.profile_url()}" target="_blank"><img src="{p.thumbnail_url()}" width="40" height="40" style="float:left"></a><p style="font-size:{mainSize}px;color:{p.class_color};padding:10px;margin:0px;text-align:left">&emsp;{p.name}&emsp;[{p.ilvl}]</p></td>\n'
+		str_html += f'<td title="Last Update: {old.days} days ago&#10;{Tier}"><a href="{p.profile_url()}" target="_blank"><img src="{p.thumbnail_url()}" width="40" height="40" style="float:left"></a><p style="font-size:{mainSize}px;color:{p.class_color};padding:10px;margin:0px;text-align:left">&emsp;{p.name}</p></td>\n'
+		str_html += f'<td><span style="color: {p.class_color}">{p.ilvl}</span></td>'
 		sum = p._score  # Player Score
 		color = rio.get_color(colors, sum)
 		str_html += f'<td><span style="font-size:{mainSize}px;color:{color}">{"{:.2f}".format(sum)}</span></td>\n'
@@ -102,7 +105,9 @@ def gen_weekly(players, inis, colors, weekly):
 	players = rio.sort_players_by(players,weekly)
 	high = rio.get_highest_score(players)
 	str_html = f'<table width="100%">\n'
-	str_html += f'<tr><th><span style="color:white">Player</span></th><th width="7%"><span style="color:white;">+20</span></th><th width="12%"><span style="color:white">Rewards</span></th>'
+	str_html += f'<tr><th><span style="color:white">Player</span></th>'
+	str_html += f'<th width=\"5%\"><span style="color:white">ilvl</span></th>'
+	str_html += f'<th width="5%"><span style="color:white;">+20</span></th><th width="11%"><span style="color:white">Rewards</span></th>'
 	for i in range(0,8):
 		str_html += f'<th width="7%"></th>'
 	str_html += f'</tr>\n'
@@ -115,8 +120,8 @@ def gen_weekly(players, inis, colors, weekly):
 		Tier = p.get_tier_items()
 		#----------------------------------
 		str_html += f'<tr>\n'
-		str_html += f'<td title="Last Update: {old.days} days ago&#10;{Tier}"><a href="{p.profile_url()}" target="_blank"><img src="{p.thumbnail_url()}" width="40" height="40" style="float:left"></a><p style="color:{p.class_color};padding:10px;margin:0px;text-align:left;">&emsp;{p.name}&emsp;[{p.ilvl}]</p></td>\n'
-		
+		str_html += f'<td title="Last Update: {old.days} days ago&#10;{Tier}"><a href="{p.profile_url()}" target="_blank"><img src="{p.thumbnail_url()}" width="40" height="40" style="float:left"></a><p style="color:{p.class_color};padding:10px;margin:0px;text-align:left;">&emsp;{p.name}</p></td>\n'
+		str_html += f'<td><span style="color: {p.class_color}">{p.ilvl}</span></td>'
 		#--------- Show Left Instances -------#
 		count = 0
 		for i in p._data[weekly]:
