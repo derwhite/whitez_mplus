@@ -109,12 +109,12 @@ def sort_players_by(results, weekly):
 		while x < len(results):
 			sum = 0
 			for r in results[x]._data[weekly]:
-				if r['mythic_level'] >= 15:
+				if r['mythic_level'] >= 20:
 					sum += 300
 				sum += r['mythic_level']
 			sum2 = 0
 			for r in results[i]._data[weekly]:
-				if r['mythic_level'] >= 15:
+				if r['mythic_level'] >= 20:
 					sum2 += 300
 				sum2 += r['mythic_level']
 			if sum > sum2:
