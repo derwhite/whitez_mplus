@@ -117,23 +117,22 @@ def gen_weekly(players, inis, colors, weekly):
 		tday = datetime.now()
 		old = tday - dt
 		# Count Tier Items an Build a string
-		Tier = p.get_tier_items()
-		#----------------------------------
+		tier = p.get_tier_items()
+		# ----------------------------------
 		str_html += f'<tr>\n'
-		str_html += f'<td title="Last Update: {old.days} days ago&#10;{Tier}"><a href="{p.profile_url()}" target="_blank"><img src="{p.thumbnail_url()}" width="40" height="40" style="float:left"></a><p style="color:{p.class_color};padding:10px;margin:0px;text-align:left;">&emsp;{p.name}</p></td>\n'
+		str_html += f'<td title="Last Update: {old.days} days ago&#10;{tier}"><a href="{p.profile_url()}" target="_blank"><img src="{p.thumbnail_url()}" width="40" height="40" style="float:left"></a><p style="color:{p.class_color};padding:10px;margin:0px;text-align:left;">&emsp;{p.name}</p></td>\n'
 		str_html += f'<td><span style="color: {p.class_color}">{p.ilvl}</span></td>'
-		#--------- Show Left Instances -------#
+		# --------- Show Left Instances -------
 		count = 0
 		for i in p._data[weekly]:
 			if i['mythic_level'] >= 20:
 				count += 1
 		color = 'red'
-		if count > 8:
+		if count >= 8:
+			color = 'green'
 			count = 8
-		elif count == 8:
-			color='green'
 		str_html += f'<td><span style="color:{color}">{count-8}</span></td>\n'
-		#---------- 0 / 0 / 0 overview -------#
+		# ---------- 0 / 0 / 0 Rewards -------
 		str_html += f'<td><span style="color:white">'
 		for i in [0, 3, 7]:
 			if i != 0:
@@ -150,15 +149,16 @@ def gen_weekly(players, inis, colors, weekly):
 					break
 				else:
 					str_html = str_html[:-4]
-				#continue
 		str_html += f'</span></td>'
-		# ------------- Instances ------#
-		for i in range(0,8):
+		# ------------- Instances ------
+		for i in range(0, 8):
 			if i == 0 or i == 3 or i == 7:
-				color='green'
+				color = 'green'
 			else:
-				color='white'
+				color = 'white'
 			try:
+				# TODO: This should be improved. Don't abuse try-except as an if-else block.
+				#  Also don't use a bare 'except'. Name the exception which you want to catch.
 				stern = get_sterne(p._data[weekly][i]['num_keystone_upgrades'])
 				dt = datetime.strptime(p._data[weekly][i]['completed_at'], '%Y-%m-%dT%H:%M:%S.000Z')
 				dt = dt.replace(tzinfo=timezone.utc).astimezone(tz=None)
@@ -167,7 +167,6 @@ def gen_weekly(players, inis, colors, weekly):
 			except:
 				str_html += f'<td><span style="color:{color}">-</span></td>\n'
 		str_html += '</tr>\n'
-
 
 	str_html += '</table>\n'
 	return str_html
