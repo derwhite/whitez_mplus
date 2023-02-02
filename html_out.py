@@ -46,10 +46,16 @@ def gen_score_table(players, inis, colors, isTyrannical):
 	for x in inis:
 		if x['timer'] == 0:
 			ini_timer = ""
+			keystone_upgrade_timer = ""
 		else:
-			ini_timer = f'[{int(x["timer"] // 60)}:{str(int(x["timer"] % 60)).zfill(2)}]'
+			timer_dt = datetime.fromtimestamp(x['timer'])
+			keystone_upgrade_2 = datetime.fromtimestamp(x['timer'] * 0.8)
+			keystone_upgrade_3 = datetime.fromtimestamp(x['timer'] * 0.6)
 
-		str_html += f'<th title="{x["name"]}" width=\"8%\"><span style="white-space:pre-line;color:white">{x["short"]}<br>{ini_timer}</span></th>\n'
+			ini_timer = f'[{timer_dt.strftime("%M:%S")}]'
+			str_keystone_upgrade_timer = f'&#10;+2: {keystone_upgrade_2.strftime("%M:%S")}&#10;+3: {keystone_upgrade_3.strftime("%M:%S")}'
+			
+		str_html += f'<th title="{x["name"]}{str_keystone_upgrade_timer}" width=\"8%\"><span style="white-space:pre-line;color:white">{x["short"]}<br>{ini_timer}</span></th>\n'
 	str_html += f'</tr>\n'
 
 	high_score = rio.get_highest_score(players)
