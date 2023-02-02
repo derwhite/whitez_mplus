@@ -46,7 +46,7 @@ def gen_score_table(players, inis, colors, isTyrannical):
 	for x in inis:
 		if x['timer'] == 0:
 			ini_timer = ""
-			keystone_upgrade_timer = ""
+			str_keystone_upgrade_timer = ""
 		else:
 			time_format = "%M:%S"
 			timer_dt = datetime.fromtimestamp(x['timer'])
