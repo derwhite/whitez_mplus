@@ -5,6 +5,7 @@ from datetime import datetime
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 import configparser
 
+import os
 import rio
 import lists
 import html_out
@@ -57,10 +58,11 @@ def parse_config_file(config_file_path):
 	if client_id == "" or client_secret == "":
 		print("INFO: bnet client_id and client_secret not found in config file. File 'bnetkeys' is used instead.")
 		print("      Please move the keys to the new settings config file!")
-		with open('bnetkeys') as f:
-			lines = f.readlines()
-		client_id = lines[0].strip()
-		client_secret = lines[1].strip()
+		if os.path.isfile('bnetkeys'):
+			with open('bnetkeys') as f:
+				lines = f.readlines()
+			client_id = lines[0].strip()
+			client_secret = lines[1].strip()
 
 	settings = {
 		'min_ilvl': min_ilvl,
