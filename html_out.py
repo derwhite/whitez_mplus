@@ -48,12 +48,13 @@ def gen_score_table(players, inis, colors, isTyrannical):
 			ini_timer = ""
 			keystone_upgrade_timer = ""
 		else:
+			time_format = "%M:%S"
 			timer_dt = datetime.fromtimestamp(x['timer'])
-			keystone_upgrade_2 = datetime.fromtimestamp(x['timer'] * 0.8)
-			keystone_upgrade_3 = datetime.fromtimestamp(x['timer'] * 0.6)
+			keystone_upgrade_2 = datetime.fromtimestamp(x['upgrade_2'])
+			keystone_upgrade_3 = datetime.fromtimestamp(x['upgrade_3'])
 
-			ini_timer = f'[{timer_dt.strftime("%M:%S")}]'
-			str_keystone_upgrade_timer = f'&#10;+2: {keystone_upgrade_2.strftime("%M:%S")}&#10;+3: {keystone_upgrade_3.strftime("%M:%S")}'
+			ini_timer = f'[{timer_dt.strftime(time_format)}]'
+			str_keystone_upgrade_timer = f'&#10;+2: {keystone_upgrade_2.strftime(time_format)}&#10;+3: {keystone_upgrade_3.strftime(time_format)}'
 			
 		str_html += f'<th title="{x["name"]}{str_keystone_upgrade_timer}" width=\"8%\"><span style="white-space:pre-line;color:white">{x["short"]}<br>{ini_timer}</span></th>\n'
 	str_html += f'</tr>\n'

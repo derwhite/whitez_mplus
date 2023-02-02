@@ -63,7 +63,9 @@ def get_instances(season, settings, proxy=''):
 				if bnet_Token is not None:
 					ini_timer = pull([f'https://eu.api.blizzard.com/data/wow/mythic-keystone/dungeon/{ini["challenge_mode_id"]}?namespace=dynamic-eu&locale=en_EN&access_token={bnet_Token}'], proxy)
 					ini_time = ini_timer[0].json()['keystone_upgrades'][0]['qualifying_duration'] / 1000
-				instances.append({'short': ini['short_name'], 'name': ini['name'], 'timer': ini_time})
+					upgrade_2 = ini_timer[0].json()['keystone_upgrades'][1]['qualifying_duration'] / 1000
+					upgrade_3 = ini_timer[0].json()['keystone_upgrades'][2]['qualifying_duration'] / 1000
+				instances.append({'short': ini['short_name'], 'name': ini['name'], 'timer': ini_time, 'upgrade_2': upgrade_2, 'upgrade_3': upgrade_3})
 			season_name = sea['name']
 			break
 	return instances, season_name
