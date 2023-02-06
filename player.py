@@ -1,3 +1,5 @@
+from datetime import datetime
+
 CLASS_COLOR = {
     'Death Knight': '#C41F3B',
     'Demon Hunter': '#A330C9',
@@ -47,7 +49,13 @@ class Player:
         return self._data['mythic_plus_alternate_runs']
 
     def last_crawled_at(self):
-        return self._data['last_crawled_at']
+        return datetime.strptime(self._data['last_crawled_at'], '%Y-%m-%dT%H:%M:%S.000Z')
+
+    def days_since_last_update(self):
+        last_crawled = self.last_crawled_at()
+        tday = datetime.now()
+        days = (tday - last_crawled).days
+        return days
 
     def get_tier_items(self):
         tset_pieces = ['head', 'shoulder', 'chest', 'hands', 'legs']

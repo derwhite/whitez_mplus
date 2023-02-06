@@ -50,6 +50,7 @@ def parse_config_file(config_file_path):
 	config.read(config_file_path)
 
 	min_ilvl = config["DEFAULT"].getint("min_ilvl", 300)
+	max_inactive_days = config["DEFAULT"].getint("max_inactive_days", 30)
 
 	client_id = config['BNET'].get('client_id', "")
 	client_secret = config['BNET'].get('client_secret', "")
@@ -66,6 +67,7 @@ def parse_config_file(config_file_path):
 
 	settings = {
 		'min_ilvl': min_ilvl,
+		'max_inactive_days': max_inactive_days,
 		'client_id': client_id,
 		'client_secret': client_secret
 	}
@@ -127,14 +129,15 @@ def main():
 	score_sorted_players = list(sorted(ilvl_sorted_players, key=lambda p: p._score, reverse=True))
 	# --------------------
 
-	# Remove low Item level Chars
+	# Filter low iLvl and inactive players
 	ilvl_filtered_players = list(filter(lambda player: player.ilvl >= settings['min_ilvl'], score_sorted_players))
+	inactive_filtered_players = list(filter(lambda player: player.days_since_last_update() < settings['max_inactive_days'], ilvl_filtered_players))
 	# --------------------
 	
 	export_data_to_json(players)
 
 	# remove hidden mains
-	hidden_filtered_players = list(filter(lambda player: not player._is_hidden, ilvl_filtered_players))
+	hidden_filtered_players = list(filter(lambda player: not player._is_hidden, inactive_filtered_players))
 	players = hidden_filtered_players
 	#---------------------
 

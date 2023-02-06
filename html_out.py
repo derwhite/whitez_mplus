@@ -63,17 +63,13 @@ def gen_score_table(players, inis, colors, isTyrannical):
 	for p in players:
 		mainSize=17
 		secSize=13
-		# Last Crawled at
-		dt = datetime.strptime(p.last_crawled_at(), '%Y-%m-%dT%H:%M:%S.000Z')
-		tday = datetime.now()
-		old = tday - dt
 		#-----------------------------------------------------------
 		# Count Tier Items an Build a string
-		Tier = p.get_tier_items()
+		tier = p.get_tier_items()
 		#----------------------------------
 		# Create Player Line on Website !!
 		str_html += f'<tr>\n'
-		str_html += f'<td title="Last Update: {old.days} days ago&#10;{Tier}"><a href="{p.profile_url()}" target="_blank"><img src="{p.thumbnail_url()}" width="40" height="40" style="float:left"></a><p style="font-size:{mainSize}px;color:{p.class_color};padding:10px;margin:0px;text-align:left">&emsp;{p.name}</p></td>\n'
+		str_html += f'<td title="Last Update: {p.days_since_last_update()} days ago&#10;{tier}"><a href="{p.profile_url()}" target="_blank"><img src="{p.thumbnail_url()}" width="40" height="40" style="float:left"></a><p style="font-size:{mainSize}px;color:{p.class_color};padding:10px;margin:0px;text-align:left">&emsp;{p.name}</p></td>\n'
 		str_html += f'<td><span style="color: {p.class_color}">{p.ilvl}</span></td>'
 		sum = p._score  # Player Score
 		color = rio.get_color(colors, sum)
@@ -120,14 +116,11 @@ def gen_weekly(players, inis, colors, weekly):
 	str_html += f'</tr>\n'
 	for p in players:
 		# ------------ PLAYER and SCORE -----------
-		dt = datetime.strptime(p.last_crawled_at(), '%Y-%m-%dT%H:%M:%S.000Z')
-		tday = datetime.now()
-		old = tday - dt
 		# Count Tier Items an Build a string
 		tier = p.get_tier_items()
 		# ----------------------------------
 		str_html += f'<tr>\n'
-		str_html += f'<td title="Last Update: {old.days} days ago&#10;{tier}"><a href="{p.profile_url()}" target="_blank"><img src="{p.thumbnail_url()}" width="40" height="40" style="float:left"></a><p style="color:{p.class_color};padding:10px;margin:0px;text-align:left;">&emsp;{p.name}</p></td>\n'
+		str_html += f'<td title="Last Update: {p.days_since_last_update()} days ago&#10;{tier}"><a href="{p.profile_url()}" target="_blank"><img src="{p.thumbnail_url()}" width="40" height="40" style="float:left"></a><p style="color:{p.class_color};padding:10px;margin:0px;text-align:left;">&emsp;{p.name}</p></td>\n'
 		str_html += f'<td><span style="color: {p.class_color}">{p.ilvl}</span></td>'
 		# --------- Show Left Instances -------
 		count = 0
