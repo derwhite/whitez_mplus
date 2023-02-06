@@ -4,12 +4,30 @@ import json
 from datetime import datetime
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 import configparser
+import subprocess
 
 import os
 import rio
 import lists
 import html_out
 from player import Player
+
+
+def get_git_revision_short_hash():
+	try:
+		sub_output = subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD'])
+		return sub_output.decode('ascii').strip()
+	except subprocess.CalledProcessError as e:
+		print(f"WARNING: {e}")
+		return ""
+
+
+def generate_version_string():
+	git_short_hash = get_git_revision_short_hash()
+	if git_short_hash:
+		return f"Version: {git_short_hash}"
+	else:
+		return ""
 
 
 def clean_lists(mains, hidden):
@@ -165,7 +183,7 @@ def main():
 	tables.update({'alts_weekly': html_out.gen_weekly(alts, inis, scolors, 'mythic_plus_weekly_highest_level_runs')})
 	tables.update({'alts_pweek': html_out.gen_weekly(alts, inis, scolors, 'mythic_plus_previous_weekly_highest_level_runs')})
 
-	myhtml = html_out.gen_site(affixe, tables, sname, tyrannical)
+	myhtml = html_out.gen_site(affixe, tables, sname, tyrannical, generate_version_string())
 	
 	with open(args['outfile'], "w", encoding="utf8") as text_file:
 		text_file.write(myhtml)

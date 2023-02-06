@@ -172,7 +172,7 @@ def gen_weekly(players, inis, colors, weekly):
 	return str_html
 
 
-def gen_site(affixes, all_tables, season_name, isTyrannical):
+def gen_site(affixes, all_tables, season_name, isTyrannical, version_string):
 	now = datetime.now()
 	now = now.strftime("%d.%m.%Y %H:%M:%S")
 	
@@ -199,5 +199,6 @@ def gen_site(affixes, all_tables, season_name, isTyrannical):
 		myhtml = myhtml.replace('{% alts_weekly_content %}', all_tables['alts_weekly'])
 		myhtml = myhtml.replace('{% main_prev_weekly_content %}', all_tables['main_pweek'])
 		myhtml = myhtml.replace('{% alts_prev_weekly_content %}', all_tables['alts_pweek'])
+		myhtml = myhtml.replace('{% version_string %}', version_string)
 
 		return myhtml
