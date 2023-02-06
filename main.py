@@ -15,10 +15,10 @@ from player import Player
 
 def get_git_revision_short_hash():
 	try:
-		sub_output = subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD'])
-		return sub_output.decode('ascii').strip()
+		sub_output = subprocess.run(['git', 'rev-parse', '--short', 'HEAD'], check=True, capture_output=True)
+		return sub_output.stdout.decode('ascii').strip()
 	except subprocess.CalledProcessError as e:
-		print(f"WARNING: {e}")
+		print(f"WARNING: {e} {e.output}")
 		return ""
 
 
