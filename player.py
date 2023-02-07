@@ -95,7 +95,11 @@ class Player:
         for p, r in zip(player_list, responses):
             if r.status_code != 200:
                 print(f"WARNING: Couldn't get a valid response for player {p['name']}-{p['realm']}:")
-                print(r.json())
+                print(f"status-code: {r.status_code}")
+                if r is None:
+                    print(r)
+                else:
+                    print(r.json())
                 continue
             player = Player(r, alt=p['is_alt'], hidden=p.get('is_hidden', False))
             players.append(player)
