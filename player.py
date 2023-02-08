@@ -97,11 +97,12 @@ class Player:
             if r.status_code != 200:
                 print(f"WARNING: Couldn't get a valid response for player {p['name']}-{p['realm']}:")
                 print(f"status-code: {r.status_code}")
+                print(f"Reason: {r.reason}")
+                print(f"URL: {r.url}")
                 try:
                     print(f"Response: {r.json()}")
                 except requests.exceptions.JSONDecodeError as e:
-                    print(f"Error: {e}")
-                    print(f"Response: {r}")
+                    print(f"Response: {r.text}")
                 continue
             player = Player(r, alt=p['is_alt'], hidden=p.get('is_hidden', False))
             players.append(player)
