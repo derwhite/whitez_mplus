@@ -1,4 +1,4 @@
-from requests import JSONDecodeError
+import requests
 from datetime import datetime
 
 CLASS_COLOR = {
@@ -99,7 +99,7 @@ class Player:
                 print(f"status-code: {r.status_code}")
                 try:
                     print(f"Response: {r.json()}")
-                except JSONDecodeError as e:
+                except requests.exceptions.JSONDecodeError as e:
                     print(f"Error: {e}")
                     print(f"Response: {r}")
                 continue
