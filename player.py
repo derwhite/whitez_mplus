@@ -1,3 +1,4 @@
+from requests import JSONDecodeError
 from datetime import datetime
 
 CLASS_COLOR = {
@@ -96,10 +97,11 @@ class Player:
             if r.status_code != 200:
                 print(f"WARNING: Couldn't get a valid response for player {p['name']}-{p['realm']}:")
                 print(f"status-code: {r.status_code}")
-                if r is None:
-                    print(r)
-                else:
-                    print(r.json())
+                try:
+                    print(f"Response: {r.json()}")
+                except JSONDecodeError as e:
+                    print(f"Error: {e}")
+                    print(f"Response: {r}")
                 continue
             player = Player(r, alt=p['is_alt'], hidden=p.get('is_hidden', False))
             players.append(player)
