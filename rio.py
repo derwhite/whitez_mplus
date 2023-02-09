@@ -3,6 +3,12 @@ import requests
 import json
 import bnet
 
+def is_json(myjson):
+	try:
+		json.loads(myjson)
+	except ValueError as e:
+		return False
+	return True
 
 def get_api_list(player_list):
 	request_urls = []		# Erzeuge API Anfrage 	Liste !!
@@ -47,8 +53,18 @@ def pull(urls, proxy=''):    #sometimes gets stuck if Proxy does not response -.
 	results = pool.map(s.get, urls, chunksize=1)  # DL all URLS !!
 	pool.close()
 	pool.join()
+	checked_results = []
+	for r in results:
+		for x in range(3):
+			if r.status_code == 200 and is_json(r.text):
+				checked_results.append(r)
+				break
+			else:
+				r = s.get(r.url)
+			if x == 2:
+				checked_results.append(r)
 	s.close()
-	return results
+	return checked_results
 
 
 def get_instances(season, settings, proxy=''):
