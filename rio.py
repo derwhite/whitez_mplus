@@ -56,7 +56,7 @@ def pull(urls, proxy=''):    #sometimes gets stuck if Proxy does not response -.
 	checked_results = []
 	for r in results:
 		for x in range(3):
-			if r.status_code == 200 and is_json(r.text):
+			if r.ok and is_json(r.text):
 				checked_results.append(r)
 				break
 			else:

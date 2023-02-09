@@ -94,7 +94,7 @@ class Player:
 
         players = []
         for p, r in zip(player_list, responses):
-            if r.status_code != 200:
+            if not r.ok:
                 print(f"WARNING: Couldn't get a valid response for player {p['name']}-{p['realm']}:")
                 print(f"status-code: {r.status_code}")
                 print(f"Reason: {r.reason}")
