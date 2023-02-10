@@ -1,7 +1,7 @@
 from multiprocessing.dummy import Pool as ThreadPool
 import requests
 import json
-import bnet
+
 
 def is_json(myjson):
 	try:
@@ -9,6 +9,7 @@ def is_json(myjson):
 	except ValueError as e:
 		return False
 	return True
+
 
 def get_api_list(player_list):
 	request_urls = []		# Erzeuge API Anfrage 	Liste !!
@@ -67,20 +68,19 @@ def pull(urls, proxy=''):    #sometimes gets stuck if Proxy does not response -.
 	return checked_results
 
 
-def get_instances(season, settings, proxy=''):
+def get_instances(season, bnet_token=None, proxy=''):
 	tmp = pull(['https://raider.io/api/v1/mythic-plus/static-data?expansion_id=9'], proxy)
-	bnet_Token = bnet.create_access_token(settings['client_id'], settings['client_secret'])
 	instances = []
-	season_name=""
+	season_name = ""
 	for sea in tmp[0].json()['seasons']:
 		if sea['slug'] == season:
 			for ini in sea['dungeons']:
 				ini_time = 0
 				upgrade_2 = 0
 				upgrade_3 = 0
-				if bnet_Token is not None:
+				if bnet_token is not None:
 					try:
-						ini_timer = pull([f'https://eu.api.blizzard.com/data/wow/mythic-keystone/dungeon/{ini["challenge_mode_id"]}?namespace=dynamic-eu&locale=en_EN&access_token={bnet_Token}'], proxy)
+						ini_timer = pull([f'https://eu.api.blizzard.com/data/wow/mythic-keystone/dungeon/{ini["challenge_mode_id"]}?namespace=dynamic-eu&locale=en_EN&access_token={bnet_token}'], proxy)
 						ini_time = ini_timer[0].json()['keystone_upgrades'][0]['qualifying_duration'] / 1000
 						upgrade_2 = ini_timer[0].json()['keystone_upgrades'][1]['qualifying_duration'] / 1000
 						upgrade_3 = ini_timer[0].json()['keystone_upgrades'][2]['qualifying_duration'] / 1000
@@ -105,7 +105,7 @@ def get_score_colors(proxy=''):
 
 def get_tweek_affixes(proxy=''):  # Affixe ufschreiben
 	tmp = pull(['https://raider.io/api/v1/mythic-plus/affixes?region=eu&locale=en'], proxy)
-	if tmp[0].status_code == 200:
+	if tmp[0].ok:
 		r = tmp[0].json()
 		tyrannical = False
 		affixes_html = []

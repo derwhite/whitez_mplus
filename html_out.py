@@ -14,6 +14,7 @@ DUNGEONS_BACKGROUND = {
 	"NO": "resources/dungeons/DF/NO.png",
 }
 
+
 def get_instance_from_player(player, ini):
 	best = {}
 	alter = {}

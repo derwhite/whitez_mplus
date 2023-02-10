@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+import os
 from pathlib import Path
 import json
 from datetime import datetime
@@ -6,10 +7,10 @@ from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 import configparser
 import subprocess
 
-import os
 import rio
 import lists
 import html_out
+from bnet import create_access_token
 from player import Player
 
 
@@ -116,6 +117,7 @@ def main():
 		exit(1)
 
 	settings = parse_config_file(args['config'])
+	bnet_token = create_access_token(settings['client_id'], settings['client_secret'])
 
 	#urls.append('https://checkip.perfect-privacy.com/json')  # Test with your Proxy
 
@@ -162,7 +164,7 @@ def main():
 	# Grab Season from a Player (and look it up in Static Values API) to get the Full Name and Instance names
 	# set bnet client_ID and client_secret to get Instance Timers
 	season = players[0]._data['mythic_plus_scores_by_season'][0]['season']
-	inis, sname = rio.get_instances(season, settings, proxy)
+	inis, sname = rio.get_instances(season, bnet_token, proxy)
 	# --------------------
 	
 	# get Score_colors from API (if failed from File)
