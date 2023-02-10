@@ -3,7 +3,16 @@ from datetime import datetime, timezone
 
 # WREWARD=[0,0,278,278,278,281,281,285,288,288,291,294,298,298,301,304] # Season 4
 WREWARD=[0,0,382,385,385,389,389,392,395,395,398,402,405,408,408,411,415,415,418,418,421] # Season 1 DF
-
+DUNGEONS_BACKGROUND = {
+	"AA": "resources/dungeons/DF/AA.png",
+	"COS": "resources/dungeons/DF/COS.png",
+	"HOV": "resources/dungeons/DF/HOV.png",
+	"RLP": "resources/dungeons/DF/RLP.png",
+	"SBG": "resources/dungeons/DF/SBG.png",
+	"TJS": "resources/dungeons/DF/TJS.png",
+	"AV": "resources/dungeons/DF/AV.png",
+	"NO": "resources/dungeons/DF/NO.png",
+}
 
 def get_instance_from_player(player, ini):
 	best = {}
@@ -56,7 +65,7 @@ def gen_score_table(players, inis, colors, isTyrannical):
 			ini_timer = f'[{timer_dt.strftime(time_format)}]'
 			str_keystone_upgrade_timer = f'&#10;+2: {keystone_upgrade_2.strftime(time_format)}&#10;+3: {keystone_upgrade_3.strftime(time_format)}'
 			
-		str_html += f'<th title="{x["name"]}{str_keystone_upgrade_timer}" width=\"8%\"><span style="white-space:pre-line;color:white">{x["short"]}<br>{ini_timer}</span></th>\n'
+		str_html += f'<th class="{x["short"]}" title="{x["name"]}{str_keystone_upgrade_timer}" width=\"8%\"><span style="white-space:pre-line;color:white">{x["short"]}<br>{ini_timer}</span></th>\n'
 	str_html += f'</tr>\n'
 
 	high_score = rio.get_highest_score(players)
@@ -161,6 +170,7 @@ def gen_weekly(players, inis, colors, weekly):
 				dt = datetime.strptime(p._data[weekly][i]['completed_at'], '%Y-%m-%dT%H:%M:%S.000Z')
 				dt = dt.replace(tzinfo=timezone.utc).astimezone(tz=None)
 				run_time = dt.strftime('%a %d.%m %H:%M %Z')
+				## TODO Maybe we want to Add instance Picture to Weekly runs, too. 
 				str_html += f'<td title="{p._data[weekly][i]["score"]} | {run_time}"><span style="color:{color}">{p._data[weekly][i]["short_name"]} (<a href="{p._data[weekly][i]["url"]}" style="color:{rio.get_color(colors, p._data[weekly][i]["score"] * 20, high)}">{p._data[weekly][i]["mythic_level"]}{stern}</a>)</span></td>\n'
 			else:
 				str_html += f'<td><span style="color:{color}">-</span></td>\n'
@@ -182,8 +192,16 @@ def gen_site(affixes, all_tables, season_name, isTyrannical, version_string):
 	with open('./templates/main.html', 'r', encoding='utf8') as f:
 		myhtml = f.read()
 
+		dynamic_css = "\n"		## Maybe you want to Change this to a cleaner way ^_-
+		for k, v in DUNGEONS_BACKGROUND.items():
+			dynamic_css += ".mytabs ." + k + " {\n"
+			dynamic_css += f"background-image: url({v});\n"
+			dynamic_css += f"background-size: 100% 100%;\n"
+			dynamic_css += "}\n\n"
+
 		with open('./static/style.css', 'r', encoding="utf8") as f2:
 			css = f2.read()
+			css += dynamic_css
 			myhtml = myhtml.replace('{% stylesheet_content %}', css)
 
 		myhtml = myhtml.replace('{% season_name %}', season_name)
