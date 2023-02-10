@@ -4,6 +4,7 @@
     border-collapse: collapse;
     padding: 2px;text-align:center;
 	font-size: 17px;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
 .mytabs tr:nth-child(even) {
 	background-color: #181818;
