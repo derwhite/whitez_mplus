@@ -1,5 +1,5 @@
 from rio import pull
-
+from pathlib import Path
 
 AFFIX_ROTATION = [
     [9, 7, 3, 132],
@@ -17,14 +17,17 @@ AFFIX_ROTATION = [
 
 class AffixServant:
     def __init__(self, bnet_token=None, proxy=''):
+        self.bnet_token = bnet_token
+        self.proxy = proxy
+
         urls = []
         rio_current_affixes_url = 'https://raider.io/api/v1/mythic-plus/affixes?region=eu&locale=en'
         urls.append(rio_current_affixes_url)
-        if bnet_token:
-            bnet_all_affixes_url = f'https://eu.api.blizzard.com/data/wow/keystone-affix/index?namespace=static-eu&locale=en_US&access_token={bnet_token}'
+        if self.bnet_token:
+            bnet_all_affixes_url = f'https://eu.api.blizzard.com/data/wow/keystone-affix/index?namespace=static-eu&locale=en_US&access_token={self.bnet_token}'
             urls.append(bnet_all_affixes_url)
 
-        responses = pull(urls, proxy)
+        responses = pull(urls, self.proxy)
 
         self.current_affixes = []
         if len(responses) >= 1 and responses[0].ok:
@@ -36,7 +39,6 @@ class AffixServant:
             r = responses[1].json()
             for affix in r['affixes']:
                 self.all_affixes[affix['id']] = affix['name']
-        print("stop")
 
     def get_this_week_affixes(self):
         return self.current_affixes
@@ -50,7 +52,7 @@ class AffixServant:
             affix['id'] = affix_id
             affix['name'] = self.all_affixes[affix_id]
             affix['description'] = ""  # TODO: You can get this here: /data/wow/keystone-affix/{keystoneAffixId}
-            affix['icon'] = ""  # TODO: You can (maybe) get this here:  /data/wow/media/keystone-affix/{keystoneAffixId}
+            affix['icon'] = self.get_affix_icon_name(affix_id)
             affix['wowhead_url'] = f'https://wowhead.com/affix={affix_id}'
             next_week_affixes.append(affix)
         return next_week_affixes
@@ -58,7 +60,21 @@ class AffixServant:
     def search_next_affix_week(self):
         current_affix_ids = [affix['id'] for affix in self.current_affixes]
         for i, possible_affix_week in enumerate(AFFIX_ROTATION):
-            print(i, possible_affix_week)
             if possible_affix_week == current_affix_ids:
                 return AFFIX_ROTATION[(i+1) % len(AFFIX_ROTATION)]
         return None
+
+    def get_affix_icon_name(self, affix_id):
+        if self.bnet_token is None:
+            return ""
+        affix_media_url = f'https://us.api.blizzard.com/data/wow/media/keystone-affix/{affix_id}?namespace=static-us&locale=en_US&access_token={self.bnet_token}'
+        responses = pull([affix_media_url], self.proxy)
+        if len(responses) == 1 and responses[0].ok:
+            r = responses[0].json()
+            for asset in r['assets']:
+                if asset['key'] == 'icon':
+                    icon_url = asset['value']
+                    # NOTE: this is maybe a little bit hacky
+                    p = Path(icon_url)
+                    return p.stem
+        return ""
