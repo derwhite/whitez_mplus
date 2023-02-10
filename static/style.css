@@ -6,6 +6,12 @@
 	font-size: 17px;
     text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
+.mytabs table {
+    width: 100%;
+}
+.mytabs .rewards {
+    color: white;
+}
 .mytabs tr:nth-child(even) {
 	background-color: #181818;
 }
@@ -23,6 +29,7 @@ body {
     padding: none;
 }
 .mytabs th {
+    color: white;
     position: sticky;
 	padding: 5px;
 	margin: 20px;

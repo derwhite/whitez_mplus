@@ -48,10 +48,10 @@ def get_sterne(upgrade):
 
 
 def gen_score_table(players, inis, colors, isTyrannical):
-	str_html = f'<table width="100%">\n'
-	str_html += f'<tr><th><span style="color:white">Player</span></th>\n'
-	str_html += f'<th width=\"5%\"><span style="color:white">ilvl</span></th>\n'
-	str_html += f'<th width=\"7%\"><span style="color:white">Score</span></th>\n'
+	str_html = f'<table>\n'
+	str_html += f'<tr><th>Player</th>\n'
+	str_html += f'<th width=\"5%\">ilvl</th>\n'
+	str_html += f'<th width=\"7%\">Score</th>\n'
 	for x in inis:
 		if x['timer'] == 0:
 			ini_timer = ""
@@ -65,7 +65,7 @@ def gen_score_table(players, inis, colors, isTyrannical):
 			ini_timer = f'[{timer_dt.strftime(time_format)}]'
 			str_keystone_upgrade_timer = f'&#10;+2: {keystone_upgrade_2.strftime(time_format)}&#10;+3: {keystone_upgrade_3.strftime(time_format)}'
 			
-		str_html += f'<th class="{x["short"]}" title="{x["name"]}{str_keystone_upgrade_timer}" width=\"8%\"><span style="white-space:pre-line;color:white">{x["short"]}<br>{ini_timer}</span></th>\n'
+		str_html += f'<th class="{x["short"]}" title="{x["name"]}{str_keystone_upgrade_timer}" width=\"8%\">{x["short"]}<br>{ini_timer}</th>\n'
 	str_html += f'</tr>\n'
 
 	high_score = rio.get_highest_score(players)
@@ -116,10 +116,10 @@ def gen_score_table(players, inis, colors, isTyrannical):
 def gen_weekly(players, inis, colors, weekly):
 	players = rio.sort_players_by(players,weekly)
 	high = rio.get_highest_score(players)
-	str_html = f'<table width="100%">\n'
-	str_html += f'<tr><th><span style="color:white">Player</span></th>'
-	str_html += f'<th width=\"5%\"><span style="color:white">ilvl</span></th>'
-	str_html += f'<th width="5%"><span style="color:white;">+20</span></th><th width="11%"><span style="color:white">Rewards</span></th>'
+	str_html = f'<table>\n'
+	str_html += f'<tr><th>Player</th>'
+	str_html += f'<th width=\"5%\">ilvl</th>'
+	str_html += f'<th width="5%">+20</th><th width="11%">Rewards</th>'
 	for i in range(0,8):
 		str_html += f'<th width="7%"></th>'
 	str_html += f'</tr>\n'
@@ -142,7 +142,7 @@ def gen_weekly(players, inis, colors, weekly):
 			count = 8
 		str_html += f'<td><span style="color:{color}">{count-8}</span></td>\n'
 		# ---------- 0 / 0 / 0 Rewards -------
-		str_html += f'<td><span style="color:white">'
+		str_html += f'<td class="rewards">'
 		for i in [0, 3, 7]:
 			if i != 0:
 				str_html += f' / '
@@ -158,7 +158,7 @@ def gen_weekly(players, inis, colors, weekly):
 					break
 				else:
 					str_html = str_html[:-4]
-		str_html += f'</span></td>'
+		str_html += f'</td>'
 		# ------------- Instances ------
 		for i in range(0, 8):
 			if i == 0 or i == 3 or i == 7:
