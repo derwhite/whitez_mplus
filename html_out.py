@@ -50,8 +50,8 @@ def get_sterne(upgrade):
 def gen_score_table(players, inis, colors, isTyrannical):
 	str_html = f'<table>\n'
 	str_html += f'<tr><th>Player</th>\n'
-	str_html += f'<th width=\"5%\">ilvl</th>\n'
-	str_html += f'<th width=\"7%\">Score</th>\n'
+	str_html += f'<th class="ilvl">ilvl</th>\n'
+	str_html += f'<th class="score">Score</th>\n'
 	for x in inis:
 		if x['timer'] == 0:
 			ini_timer = ""
@@ -65,7 +65,7 @@ def gen_score_table(players, inis, colors, isTyrannical):
 			ini_timer = f'[{timer_dt.strftime(time_format)}]'
 			str_keystone_upgrade_timer = f'&#10;+2: {keystone_upgrade_2.strftime(time_format)}&#10;+3: {keystone_upgrade_3.strftime(time_format)}'
 			
-		str_html += f'<th class="{x["short"]}" title="{x["name"]}{str_keystone_upgrade_timer}" width=\"8%\">{x["short"]}<br>{ini_timer}</th>\n'
+		str_html += f'<th class="dungeon {x["short"]}" title="{x["name"]}{str_keystone_upgrade_timer}">{x["short"]}<br>{ini_timer}</th>\n'
 	str_html += f'</tr>\n'
 
 	high_score = rio.get_highest_score(players)
@@ -118,10 +118,10 @@ def gen_weekly(players, inis, colors, weekly):
 	high = rio.get_highest_score(players)
 	str_html = f'<table>\n'
 	str_html += f'<tr><th>Player</th>'
-	str_html += f'<th width=\"5%\">ilvl</th>'
-	str_html += f'<th width="5%">+20</th><th width="11%">Rewards</th>'
+	str_html += f'<th class="ilvl">ilvl</th>'
+	str_html += f'<th class="twenty">+20</th><th class="rewards">Rewards</th>'
 	for i in range(0,8):
-		str_html += f'<th width="7%"></th>'
+		str_html += f'<th class="runs_weekly"></th>'
 	str_html += f'</tr>\n'
 	for p in players:
 		# ------------ PLAYER and SCORE -----------
@@ -142,7 +142,7 @@ def gen_weekly(players, inis, colors, weekly):
 			count = 8
 		str_html += f'<td><span style="color:{color}">{count-8}</span></td>\n'
 		# ---------- 0 / 0 / 0 Rewards -------
-		str_html += f'<td class="rewards">'
+		str_html += f'<td>'
 		for i in [0, 3, 7]:
 			if i != 0:
 				str_html += f' / '
@@ -196,8 +196,7 @@ def gen_site(affixes, all_tables, season_name, isTyrannical, version_string):
 		for k, v in DUNGEONS_BACKGROUND.items():
 			dynamic_css += ".mytabs ." + k + " {\n"
 			dynamic_css += f"background-image: url({v});\n"
-			dynamic_css += f"background-size: 100% 100%;\n"
-			dynamic_css += "}\n\n"
+			dynamic_css += "}\n"
 
 		with open('./static/style.css', 'r', encoding="utf8") as f2:
 			css = f2.read()

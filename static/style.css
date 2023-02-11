@@ -1,76 +1,99 @@
 
-.mytabs table, th, td {
-	border: 1px solid #383838;
-    border-collapse: collapse;
-    padding: 2px;text-align:center;
-	font-size: 17px;
-}
-.mytabs table {
-    width: 100%;
-}
-.mytabs .rewards {
-    color: white;
-}
-.mytabs tr:nth-child(even) {
-	background-color: #181818;
-}
-.mytabs tr:not(:first-child):hover {
-    background-color: #012e31;
-}
-body {
+/* complete site */
+html {
     background-color: black;
     color: white;
 }
+/* Affix tooltip class */
+.icontiny {
+    background: left center no-repeat;
+}
+/* all in mytabs (complete table and select section) */
 .mytabs {
     display: flex;
     flex-wrap: wrap;
     max-width: 100%;
-    margin: none;
-    padding: none;
+	font-size: 17px;
+	text-align:center;
 }
+/* table and td cells in mytabs */
+.mytabs table, td {
+	border: 1px solid #383838;
+    border-collapse: collapse;
+}
+/* th in mytabs */
 .mytabs th {
-    color: white;
     position: sticky;
-	padding: 5px;
-	margin: 20px;
+	background-color: black;
 	font-size: 18px;
-    top: 0;
-    background-color: black;
+    top: -1px;
     outline: 1px solid #383838;
-    height: 50px;
-    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    height: 45px;
+	background-size: 100% 100%;
 }
+/* only table in mytabs */
+.mytabs table {
+    width: 100%;
+}
+/* every 2nd row in mytabs */
+.mytabs tr:nth-child(even) {
+	background-color: #181818;
+}
+/* every row except first, because this is th (on mouse hover) in mytabs*/
+.mytabs tr:not(:first-child):hover {
+    background-color: #012e31;
+}
+/* radio buttons in mytabs (table select)*/
+/* display: none; hides the small dot selector */
 .mytabs input[type="radio"] {
     display: none;
 }
+/* the labels of radio buttons in mytabs */
 .mytabs label {
     padding: 10px;
 	width: 85px;
-    background: black;
     font-weight: bold;
-	color: white;
     border: 1px solid #383838;
-	text-align: center;
 	font-size: 18px;
 	border-radius: 15px 15px 0px 0px;
 }
+/* has to do with the tabs itself, makes all invisable except the selected one.
+changing order destroys the radio button lineup */
 .mytabs .tab {
     width: 100%;
-    padding: none;
-    background: black;
     order: 1;
     display: none;
 }
-.mytabs .tab h2 {
-    font-size: 3em;
-}
+/* has also todo with table display on checked radio button */
 .mytabs input[type='radio']:checked + label + .tab {
     display: block;
 }
+/* checked radio button */
 .mytabs input[type="radio"]:checked + label {
-    background: black;
 	color: red;
 }
-.icontiny {
-    background: left center no-repeat;
+/* all dungeons th in mythic score table */
+.mytabs .dungeon {
+	width: 8%;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+/* ilvl th in all tables */
+.mytabs .ilvl {
+    width: 5%;
+}
+/* score th in mythic score table */
+.mytabs .score {
+    width: 7%;
+}
+/* rewards th in weekly table */
+.mytabs .rewards {
+    width: 11%;
+}
+/* +20 th in wekkly table */
+.mytabs .twenty {
+    width: 5%;
+}
+/* empty th fields in weekly table */
+.mytabs .runs_weekly {
+    width: 7%;
 }
