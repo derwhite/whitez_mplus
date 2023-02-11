@@ -6,7 +6,7 @@ from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 import configparser
 import subprocess
 
-import os
+import os, shutil
 import rio
 import lists
 import html_out
@@ -103,6 +103,7 @@ def cli():
 	parser.add_argument('--config', help='path to config file', default='lists/settings.conf')
 	parser.add_argument('--mains', help='mains file path', default='lists/mains.txt')
 	parser.add_argument('--alts', help='alts file path', default='lists/alts.txt')
+	parser.add_argument('--copy_res', help='copys resouces to output directoy', action='store_true')
 
 	args = vars(parser.parse_args())
 	return args
@@ -114,6 +115,18 @@ def main():
 	if Path(args['outfile']).is_dir():
 		print(f"ERROR: outfile '{args['outfile']}' isn't a valid file path!")
 		exit(1)
+
+	## Copys resources to Output directory ##
+	if args['copy_res']:
+		if os.path.dirname(Path(args['outfile']).absolute()) == os.getcwd():
+			print(f"ERROR: Your output path matches your script path !")
+			exit(1)
+		try:
+			os.makedirs(f"{os.path.dirname(Path(args['outfile']).absolute())}/resources")
+		except FileExistsError:
+			pass
+		shutil.copytree('resources', f"{os.path.dirname(Path(args['outfile']).absolute())}/resources", dirs_exist_ok=True)
+	## ---------------------------------------
 
 	settings = parse_config_file(args['config'])
 
