@@ -19,6 +19,7 @@
 }
 body {
     background-color: black;
+    color: white;
 }
 .mytabs {
     display: flex;
@@ -69,4 +70,7 @@ body {
 .mytabs input[type="radio"]:checked + label {
     background: black;
 	color: red;
+}
+.icontiny {
+    background: left center no-repeat;
 }

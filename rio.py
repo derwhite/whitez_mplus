@@ -110,7 +110,7 @@ def get_tweek_affixes(proxy=''):  # Affixe ufschreiben
 		tyrannical = False
 		affixes_html = []
 		for x in r['affix_details']:
-			affix_html = f'<a class="icontiny" style="background: left center no-repeat;" ' \
+			affix_html = f'<a class="icontiny" ' \
 						 f'data-game="wow" data-type="affix" href="{x["wowhead_url"]}">' \
 						 f'<img src="https://wow.zamimg.com/images/wow/icons/tiny/{x["icon"]}.gif" ' \
 						 f'style="vertical-align: middle;" loading="lazy">' \
