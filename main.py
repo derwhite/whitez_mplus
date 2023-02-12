@@ -12,6 +12,53 @@ import lists
 import html_out
 from player import Player
 
+def sync_directories(source_dir, dest_dir): #AHAHAHA from ChatGPT ^^
+    """
+    Synchronize the contents of two directories, source_dir and dest_dir.
+    Create the corresponding directories if necessary.
+    Delete content from dest_dir if not present in source_dir.
+    Returns a list of changes made.
+    """
+    changes = []
+    # Create source and destination directories if they don't exist
+    if not os.path.exists(source_dir):
+        os.makedirs(source_dir)
+    if not os.path.exists(dest_dir):
+        os.makedirs(dest_dir)
+    # Get a list of all files in source_dir
+    source_files = os.listdir(source_dir)
+    # Loop through all files in source_dir
+    for file in source_files:
+        # Get the full path of the file
+        source_file_path = os.path.join(source_dir, file)
+        dest_file_path = os.path.join(dest_dir, file)
+        # If the file is a directory, call the function recursively
+        if os.path.isdir(source_file_path):
+            changes.extend(sync_directories(source_file_path, dest_file_path))
+        # If the file is a file, copy it to dest_dir if it doesn't exist
+        elif not os.path.exists(dest_file_path):
+            shutil.copy(source_file_path, dest_file_path)
+            changes.append("Copied {} to {}".format(source_file_path, dest_file_path))
+        # If the file exists in both directories, check if it has been modified
+        else:
+            source_file_time = os.path.getmtime(source_file_path)
+            dest_file_time = os.path.getmtime(dest_file_path)
+            # If the file has been modified, copy it to dest_dir
+            if source_file_time > dest_file_time:
+                shutil.copy(source_file_path, dest_file_path)
+                changes.append("Updated {} to {}".format(source_file_path, dest_file_path))
+    # Get a list of all files in dest_dir
+    dest_files = os.listdir(dest_dir)
+    # Loop through all files in dest_dir
+    for file in dest_files:
+        # Get the full path of the file
+        source_file_path = os.path.join(source_dir, file)
+        dest_file_path = os.path.join(dest_dir, file)
+        # If the file doesn't exist in source_dir, delete it from dest_dir
+        if not os.path.exists(source_file_path):
+            os.remove(dest_file_path)
+            changes.append("Deleted {}".format(dest_file_path))
+    return changes
 
 def get_git_revision_short_hash():
 	try:
@@ -116,16 +163,12 @@ def main():
 		print(f"ERROR: outfile '{args['outfile']}' isn't a valid file path!")
 		exit(1)
 
-	## Copys resources to Output directory ##
+	## --copy_res flag is set ##
 	if args['copy_res']:
 		if os.path.dirname(Path(args['outfile']).absolute()) == os.getcwd():
 			print(f"ERROR: Your output path matches your script path !")
 			exit(1)
-		try:
-			os.makedirs(f"{os.path.dirname(Path(args['outfile']).absolute())}/resources")
-		except FileExistsError:
-			pass
-		shutil.copytree('resources', f"{os.path.dirname(Path(args['outfile']).absolute())}/resources", dirs_exist_ok=True)
+		sync_directories('resources', f"{os.path.dirname(Path(args['outfile']).absolute())}/resources")
 	## ---------------------------------------
 
 	settings = parse_config_file(args['config'])
