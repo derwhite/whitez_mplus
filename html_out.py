@@ -80,7 +80,7 @@ def gen_score_table(players, inis, colors, isTyrannical):
 		str_html += f'<tr>\n'
 		str_html += f'<td title="Last Update: {p.days_since_last_update()} days ago&#10;{tier}"><a href="{p.profile_url()}" target="_blank"><img src="{p.thumbnail_url()}" width="40" height="40" style="float:left"></a><p style="font-size:{mainSize}px;color:{p.class_color};padding:10px;margin:0px;text-align:left">&emsp;{p.name}</p></td>\n'
 		str_html += f'<td><span style="color: {p.class_color}">{p.ilvl}</span></td>'
-		sum = p._score  # Player Score
+		sum = p.score  # Player Score
 		color = rio.get_color(colors, sum)
 		str_html += f'<td><span style="font-size:{mainSize}px;color:{color}">{"{:.2f}".format(sum)}</span></td>\n'
 		#-----------------------------

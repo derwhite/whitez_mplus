@@ -115,6 +115,7 @@ def parse_config_file(config_file_path):
 	config.read(config_file_path)
 
 	min_ilvl = config["DEFAULT"].getint("min_ilvl", 300)
+	min_score = config["DEFAULT"].getint("min_score", 1)
 	max_inactive_days = config["DEFAULT"].getint("max_inactive_days", 30)
 
 	client_id = config['BNET'].get('client_id', "")
@@ -132,6 +133,7 @@ def parse_config_file(config_file_path):
 
 	settings = {
 		'min_ilvl': min_ilvl,
+		'min_score': min_score,
 		'max_inactive_days': max_inactive_days,
 		'client_id': client_id,
 		'client_secret': client_secret
@@ -141,7 +143,7 @@ def parse_config_file(config_file_path):
 
 
 def cli():
-	parser = ArgumentParser(description='Pulls infomation about M+ runs from a custom list of wow mains via Raider.io '
+	parser = ArgumentParser(description='Pulls information about M+ runs from a custom list of wow mains via Raider.io '
 										'and Battle.net API.',
 							formatter_class=ArgumentDefaultsHelpFormatter)
 	# required arguments, e.g.: ./main.py /var/www/html/index.html
@@ -200,12 +202,13 @@ def main():
 
 	# sort Players
 	ilvl_sorted_players = list(sorted(players, key=lambda player: player.ilvl, reverse=True))
-	score_sorted_players = list(sorted(ilvl_sorted_players, key=lambda p: p._score, reverse=True))
+	score_sorted_players = list(sorted(ilvl_sorted_players, key=lambda p: p.score, reverse=True))
 	# --------------------
 
 	# Filter low iLvl and inactive players
 	ilvl_filtered_players = list(filter(lambda player: player.ilvl >= settings['min_ilvl'], score_sorted_players))
-	inactive_filtered_players = list(filter(lambda player: player.days_since_last_update() < settings['max_inactive_days'], ilvl_filtered_players))
+	score_filtered_players = list(filter(lambda player: player.score >= settings['min_score'], ilvl_filtered_players))
+	inactive_filtered_players = list(filter(lambda player: player.days_since_last_update() < settings['max_inactive_days'], score_filtered_players))
 	# --------------------
 	
 	export_data_to_json(players)

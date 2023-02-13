@@ -29,7 +29,6 @@ class Player:
         self._is_hidden = hidden
 
         self._class = self._data['class']
-        self._score = self._data['mythic_plus_scores_by_season'][0]['scores']['all']
 
     @property
     def name(self):
@@ -38,6 +37,10 @@ class Player:
     @property
     def ilvl(self):
         return self._data['gear']['item_level_equipped']
+
+    @property
+    def score(self):
+        return self._data['mythic_plus_scores_by_season'][0]['scores']['all']
 
     @property
     def class_color(self):
