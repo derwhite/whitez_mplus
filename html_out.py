@@ -14,6 +14,7 @@ DUNGEONS_BACKGROUND = {
 	"NO": "resources/dungeons/DF/NO.png",
 }
 
+
 def get_instance_from_player(player, ini):
 	best = {}
 	alter = {}
@@ -180,13 +181,44 @@ def gen_weekly(players, inis, colors, weekly):
 	return str_html
 
 
-def gen_site(affixes, all_tables, season_name, isTyrannical, version_string):
+def gen_affixes_html(affixes):
+	tweek_affixes_html = []
+	for a in affixes['this_week']:
+		affix_html = f'<a class="icontiny" style="background: left center no-repeat;" ' \
+					 f'data-game="wow" data-type="affix" href="{a["wowhead_url"]}">' \
+					 f'<img src="https://wow.zamimg.com/images/wow/icons/tiny/{a["icon"]}.gif" ' \
+					 f'style="vertical-align: middle;" loading="lazy">' \
+					 f'<span class="tinycontxt"> {a["name"]}</span></a>'
+		tweek_affixes_html.append(affix_html)
+	tweek_affixes_out = "+0: " + ', '.join(tweek_affixes_html)
+
+	if affixes['next_week'] is None:
+		return tweek_affixes_out + "\n"
+
+	nweek_affixes_html = []
+	for a in affixes['next_week']:
+		affix_html = f'<a class="icontiny" style="background: left center no-repeat;" ' \
+					 f'data-game="wow" data-type="affix" href="{a["wowhead_url"]}">' \
+					 f'<img src="https://wow.zamimg.com/images/wow/icons/tiny/{a["icon"]}.gif" ' \
+					 f'style="vertical-align: middle;" loading="lazy">' \
+					 f'<span class="tinycontxt"> {a["name"]}</span></a>'
+		nweek_affixes_html.append(affix_html)
+	nweek_affixes_out = "+1: " + ', '.join(nweek_affixes_html)
+
+	affixes_out = tweek_affixes_out + "\n" + "<br>" + nweek_affixes_out
+	return affixes_out
+
+
+def gen_site(affixes, all_tables, season_name, version_string):
 	now = datetime.now()
 	now = now.strftime("%d.%m.%Y %H:%M:%S")
-	
-	legende = "[Fortified | Tyrannical]"
-	if isTyrannical == True:
-		legende = "[Tyrannical | Fortified]"
+
+	if affixes['tyrannical']:
+		legend = "[Tyrannical | Fortified]"
+	else:
+		legend = "[Fortified | Tyrannical]"
+
+	affixes_html = gen_affixes_html(affixes)
 
 	# Building Website !!
 	with open('./templates/main.html', 'r', encoding='utf8') as f:
@@ -205,8 +237,8 @@ def gen_site(affixes, all_tables, season_name, isTyrannical, version_string):
 
 		myhtml = myhtml.replace('{% season_name %}', season_name)
 		myhtml = myhtml.replace('{% now %}', now)
-		myhtml = myhtml.replace('{% legende %}', legende)
-		myhtml = myhtml.replace('{% affixes %}', affixes)
+		myhtml = myhtml.replace('{% legend %}', legend)
+		myhtml = myhtml.replace('{% affixes %}', affixes_html)
 
 		myhtml = myhtml.replace('{% main_tracker_content %}', all_tables['main_score'])
 		myhtml = myhtml.replace('{% main_weekly_content %}', all_tables['main_weekly'])

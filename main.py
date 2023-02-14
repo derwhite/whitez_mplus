@@ -1,4 +1,6 @@
 #!/usr/bin/python3
+import os
+import shutil
 from pathlib import Path
 import json
 from datetime import datetime
@@ -6,59 +8,62 @@ from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 import configparser
 import subprocess
 
-import os, shutil
 import rio
 import lists
 import html_out
+from bnet import create_access_token
 from player import Player
+from affix_servant import AffixServant
+
 
 def sync_directories(source_dir, dest_dir): #AHAHAHA from ChatGPT ^^
-    """
-    Synchronize the contents of two directories, source_dir and dest_dir.
-    Create the corresponding directories if necessary.
-    Delete content from dest_dir if not present in source_dir.
-    Returns a list of changes made.
-    """
-    changes = []
-    # Create source and destination directories if they don't exist
-    if not os.path.exists(source_dir):
-        os.makedirs(source_dir)
-    if not os.path.exists(dest_dir):
-        os.makedirs(dest_dir)
-    # Get a list of all files in source_dir
-    source_files = os.listdir(source_dir)
-    # Loop through all files in source_dir
-    for file in source_files:
-        # Get the full path of the file
-        source_file_path = os.path.join(source_dir, file)
-        dest_file_path = os.path.join(dest_dir, file)
-        # If the file is a directory, call the function recursively
-        if os.path.isdir(source_file_path):
-            changes.extend(sync_directories(source_file_path, dest_file_path))
-        # If the file is a file, copy it to dest_dir if it doesn't exist
-        elif not os.path.exists(dest_file_path):
-            shutil.copy(source_file_path, dest_file_path)
-            changes.append("Copied {} to {}".format(source_file_path, dest_file_path))
-        # If the file exists in both directories, check if it has been modified
-        else:
-            source_file_time = os.path.getmtime(source_file_path)
-            dest_file_time = os.path.getmtime(dest_file_path)
-            # If the file has been modified, copy it to dest_dir
-            if source_file_time > dest_file_time:
-                shutil.copy(source_file_path, dest_file_path)
-                changes.append("Updated {} to {}".format(source_file_path, dest_file_path))
-    # Get a list of all files in dest_dir
-    dest_files = os.listdir(dest_dir)
-    # Loop through all files in dest_dir
-    for file in dest_files:
-        # Get the full path of the file
-        source_file_path = os.path.join(source_dir, file)
-        dest_file_path = os.path.join(dest_dir, file)
-        # If the file doesn't exist in source_dir, delete it from dest_dir
-        if not os.path.exists(source_file_path):
-            os.remove(dest_file_path)
-            changes.append("Deleted {}".format(dest_file_path))
-    return changes
+	"""
+	Synchronize the contents of two directories, source_dir and dest_dir.
+	Create the corresponding directories if necessary.
+	Delete content from dest_dir if not present in source_dir.
+	Returns a list of changes made.
+	"""
+	changes = []
+	# Create source and destination directories if they don't exist
+	if not os.path.exists(source_dir):
+		os.makedirs(source_dir)
+	if not os.path.exists(dest_dir):
+		os.makedirs(dest_dir)
+	# Get a list of all files in source_dir
+	source_files = os.listdir(source_dir)
+	# Loop through all files in source_dir
+	for file in source_files:
+		# Get the full path of the file
+		source_file_path = os.path.join(source_dir, file)
+		dest_file_path = os.path.join(dest_dir, file)
+		# If the file is a directory, call the function recursively
+		if os.path.isdir(source_file_path):
+			changes.extend(sync_directories(source_file_path, dest_file_path))
+		# If the file is a file, copy it to dest_dir if it doesn't exist
+		elif not os.path.exists(dest_file_path):
+			shutil.copy(source_file_path, dest_file_path)
+			changes.append("Copied {} to {}".format(source_file_path, dest_file_path))
+		# If the file exists in both directories, check if it has been modified
+		else:
+			source_file_time = os.path.getmtime(source_file_path)
+			dest_file_time = os.path.getmtime(dest_file_path)
+			# If the file has been modified, copy it to dest_dir
+			if source_file_time > dest_file_time:
+				shutil.copy(source_file_path, dest_file_path)
+				changes.append("Updated {} to {}".format(source_file_path, dest_file_path))
+	# Get a list of all files in dest_dir
+	dest_files = os.listdir(dest_dir)
+	# Loop through all files in dest_dir
+	for file in dest_files:
+		# Get the full path of the file
+		source_file_path = os.path.join(source_dir, file)
+		dest_file_path = os.path.join(dest_dir, file)
+		# If the file doesn't exist in source_dir, delete it from dest_dir
+		if not os.path.exists(source_file_path):
+			os.remove(dest_file_path)
+			changes.append("Deleted {}".format(dest_file_path))
+	return changes
+
 
 def get_git_revision_short_hash():
 	try:
@@ -174,6 +179,7 @@ def main():
 	## ---------------------------------------
 
 	settings = parse_config_file(args['config'])
+	bnet_token = create_access_token(settings['client_id'], settings['client_secret'])
 
 	#urls.append('https://checkip.perfect-privacy.com/json')  # Test with your Proxy
 
@@ -216,17 +222,19 @@ def main():
 	# remove hidden mains
 	hidden_filtered_players = list(filter(lambda player: not player._is_hidden, inactive_filtered_players))
 	players = hidden_filtered_players
-	#---------------------
+	# ---------------------
+
+	affix_s = AffixServant(bnet_token, proxy)
+	affixes = affix_s.get_affixes()
 
 	# Grab Season from a Player (and look it up in Static Values API) to get the Full Name and Instance names
 	# set bnet client_ID and client_secret to get Instance Timers
 	season = players[0]._data['mythic_plus_scores_by_season'][0]['season']
-	inis, sname = rio.get_instances(season, settings, proxy)
+	inis, sname = rio.get_instances(season, bnet_token, proxy)
 	# --------------------
 	
 	# get Score_colors from API (if failed from File)
 	scolors = rio.get_score_colors(proxy)
-	affixe, tyrannical = rio.get_tweek_affixes(proxy)
 	# --------------------
 
 	mains = [p for p in players if not p._is_alt]
@@ -234,15 +242,15 @@ def main():
 	# Generate Tables
 	tables = {}
 	# Mains
-	tables.update({'main_score': html_out.gen_score_table(mains, inis, scolors, tyrannical)})
+	tables.update({'main_score': html_out.gen_score_table(mains, inis, scolors, affixes['tyrannical'])})
 	tables.update({'main_weekly': html_out.gen_weekly(mains, inis, scolors, 'mythic_plus_weekly_highest_level_runs')})
 	tables.update({'main_pweek': html_out.gen_weekly(mains, inis, scolors, 'mythic_plus_previous_weekly_highest_level_runs')})
 	# Alts
-	tables.update({'alts_score': html_out.gen_score_table(alts, inis, scolors, tyrannical)})
+	tables.update({'alts_score': html_out.gen_score_table(alts, inis, scolors, affixes['tyrannical'])})
 	tables.update({'alts_weekly': html_out.gen_weekly(alts, inis, scolors, 'mythic_plus_weekly_highest_level_runs')})
 	tables.update({'alts_pweek': html_out.gen_weekly(alts, inis, scolors, 'mythic_plus_previous_weekly_highest_level_runs')})
 
-	myhtml = html_out.gen_site(affixe, tables, sname, tyrannical, generate_version_string())
+	myhtml = html_out.gen_site(affixes, tables, sname, generate_version_string())
 	
 	with open(args['outfile'], "w", encoding="utf8") as text_file:
 		text_file.write(myhtml)
