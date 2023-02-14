@@ -40,6 +40,7 @@ class AffixServant:
         if len(responses) >= 1 and responses[0].ok:
             r = responses[0].json()
             self.current_affixes = r['affix_details']
+        self._fix_current_affixes()
 
         self.all_affixes = {}
         if len(responses) == 2 and responses[1].ok:
@@ -100,3 +101,11 @@ class AffixServant:
     def is_tyrannical_week(self):
         affixes = self.get_this_week_affixes()
         return affixes[0]['id'] == 9
+
+    def _fix_current_affixes(self):
+        # Note: fix the affix icons for the raider.io pulled affixes.
+        # e.g. they use a different icon for thundering than the official source (bnet)
+        if self.bnet_token is None:
+            return
+        for a in self.current_affixes:
+            a['icon'] = self.get_affix_icon_name(a['id'])
