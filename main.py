@@ -12,6 +12,7 @@ import lists
 import html_out
 from bnet import create_access_token
 from player import Player
+from affix_servant import AffixServant
 
 
 def get_git_revision_short_hash():
@@ -159,7 +160,10 @@ def main():
 	# remove hidden mains
 	hidden_filtered_players = list(filter(lambda player: not player._is_hidden, inactive_filtered_players))
 	players = hidden_filtered_players
-	#---------------------
+	# ---------------------
+
+	affix_s = AffixServant(bnet_token, proxy)
+	affixes = affix_s.get_affixes()
 
 	# Grab Season from a Player (and look it up in Static Values API) to get the Full Name and Instance names
 	# set bnet client_ID and client_secret to get Instance Timers
@@ -169,7 +173,6 @@ def main():
 	
 	# get Score_colors from API (if failed from File)
 	scolors = rio.get_score_colors(proxy)
-	affixe, tyrannical = rio.get_tweek_affixes(proxy)
 	# --------------------
 
 	mains = [p for p in players if not p._is_alt]
@@ -177,15 +180,15 @@ def main():
 	# Generate Tables
 	tables = {}
 	# Mains
-	tables.update({'main_score': html_out.gen_score_table(mains, inis, scolors, tyrannical)})
+	tables.update({'main_score': html_out.gen_score_table(mains, inis, scolors, affixes['tyrannical'])})
 	tables.update({'main_weekly': html_out.gen_weekly(mains, inis, scolors, 'mythic_plus_weekly_highest_level_runs')})
 	tables.update({'main_pweek': html_out.gen_weekly(mains, inis, scolors, 'mythic_plus_previous_weekly_highest_level_runs')})
 	# Alts
-	tables.update({'alts_score': html_out.gen_score_table(alts, inis, scolors, tyrannical)})
+	tables.update({'alts_score': html_out.gen_score_table(alts, inis, scolors, affixes['tyrannical'])})
 	tables.update({'alts_weekly': html_out.gen_weekly(alts, inis, scolors, 'mythic_plus_weekly_highest_level_runs')})
 	tables.update({'alts_pweek': html_out.gen_weekly(alts, inis, scolors, 'mythic_plus_previous_weekly_highest_level_runs')})
 
-	myhtml = html_out.gen_site(affixe, tables, sname, tyrannical, generate_version_string())
+	myhtml = html_out.gen_site(affixes, tables, sname, generate_version_string())
 	
 	with open(args['outfile'], "w", encoding="utf8") as text_file:
 		text_file.write(myhtml)

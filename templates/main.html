@@ -11,8 +11,11 @@
 </head>
 <body>
 	<h1 style="Color:white;">current Season: "{% season_name %}"</h1>
-	<h2 style="color:white">last Update: {% now %}&emsp;&emsp;&emsp;{% legende %}</h2>
-	<h3 style="color:white">Affixe: {% affixes %}</h3>
+	<h2 style="color:white">last Update: {% now %}&emsp;&emsp;&emsp;{% legend %}</h2>
+	<h3 style="color:white">Affixes:</h3>
+	<p style="color:white">
+		{% affixes %}
+	</p>
 	<!-- Table -->
 	<div class="mytabs">
 		<!-- Main Tracker -->

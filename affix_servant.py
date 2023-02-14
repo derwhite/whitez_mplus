@@ -16,9 +16,16 @@ AFFIX_ROTATION = [
 
 
 class AffixServant:
+    """
+    Provides the current affixes.
+    This week affixes are pulled from raider.io.
+    Next week affixes are only available if a valid bnet token is provided.
+    """
+
     def __init__(self, bnet_token=None, proxy=''):
         self.bnet_token = bnet_token
         self.proxy = proxy
+        self.next_week_affixes_available = False
 
         urls = []
         rio_current_affixes_url = 'https://raider.io/api/v1/mythic-plus/affixes?region=eu&locale=en'
@@ -39,13 +46,24 @@ class AffixServant:
             r = responses[1].json()
             for affix in r['affixes']:
                 self.all_affixes[affix['id']] = affix['name']
+            self.next_week_affixes_available = True
+
+    def get_affixes(self):
+        affixes = {
+            'this_week': self.get_this_week_affixes(),
+            'next_week': self.get_next_week_affixes(),
+            'tyrannical': self.is_tyrannical_week()
+        }
+        return affixes
 
     def get_this_week_affixes(self):
         return self.current_affixes
 
     def get_next_week_affixes(self):
-        next_week_affixes = []
+        if not self.next_week_affixes_available:
+            return None
 
+        next_week_affixes = []
         next_week_affix_ids = self.search_next_affix_week()
         for affix_id in next_week_affix_ids:
             affix = {}
@@ -78,3 +96,7 @@ class AffixServant:
                     p = Path(icon_url)
                     return p.stem
         return ""
+
+    def is_tyrannical_week(self):
+        affixes = self.get_this_week_affixes()
+        return affixes[0]['id'] == 9
