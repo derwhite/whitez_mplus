@@ -103,28 +103,6 @@ def get_score_colors(proxy=''):
 			return json.load(f)
 
 
-def get_tweek_affixes(proxy=''):  # Affixe ufschreiben
-	tmp = pull(['https://raider.io/api/v1/mythic-plus/affixes?region=eu&locale=en'], proxy)
-	if tmp[0].ok:
-		r = tmp[0].json()
-		tyrannical = False
-		affixes_html = []
-		for x in r['affix_details']:
-			affix_html = f'<a class="icontiny" style="background: left center no-repeat;" ' \
-						 f'data-game="wow" data-type="affix" href="{x["wowhead_url"]}">' \
-						 f'<img src="https://wow.zamimg.com/images/wow/icons/tiny/{x["icon"]}.gif" ' \
-						 f'style="vertical-align: middle;" loading="lazy">' \
-						 f'<span class="tinycontxt"> {x["name"]}</span></a>'
-			affixes_html.append(affix_html)
-			if x['id'] == 9:
-				tyrannical = True
-		tweek_affixes_out = ', '.join(affixes_html) + "\n"
-	else:
-		tweek_affixes_out = "RaiderIO Affixes Error"
-		tyrannical = False
-	return tweek_affixes_out, tyrannical
-
-
 def sort_players_by(results, weekly):
 	i = 0
 	while i < len(results):
