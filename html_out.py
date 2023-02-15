@@ -184,7 +184,7 @@ def gen_weekly(players, inis, colors, weekly):
 def gen_affixes_html(affixes):
 	tweek_affixes_html = []
 	for a in affixes['this_week']:
-		affix_html = f'<a class="icontiny" style="background: left center no-repeat;" ' \
+		affix_html = f'<a class="icontiny" ' \
 					 f'data-game="wow" data-type="affix" href="{a["wowhead_url"]}">' \
 					 f'<img src="https://wow.zamimg.com/images/wow/icons/tiny/{a["icon"]}.gif" ' \
 					 f'style="vertical-align: middle;" loading="lazy">' \
@@ -197,7 +197,7 @@ def gen_affixes_html(affixes):
 
 	nweek_affixes_html = []
 	for a in affixes['next_week']:
-		affix_html = f'<a class="icontiny" style="background: left center no-repeat;" ' \
+		affix_html = f'<a class="icontiny" ' \
 					 f'data-game="wow" data-type="affix" href="{a["wowhead_url"]}">' \
 					 f'<img src="https://wow.zamimg.com/images/wow/icons/tiny/{a["icon"]}.gif" ' \
 					 f'style="vertical-align: middle;" loading="lazy">' \
@@ -205,7 +205,7 @@ def gen_affixes_html(affixes):
 		nweek_affixes_html.append(affix_html)
 	nweek_affixes_out = "+1: " + ', '.join(nweek_affixes_html)
 
-	affixes_out = tweek_affixes_out + "\n" + "<br>" + nweek_affixes_out
+	affixes_out = tweek_affixes_out + "\n\t\t" + "<br>" + "\n\t\t" + nweek_affixes_out
 	return affixes_out
 
 
