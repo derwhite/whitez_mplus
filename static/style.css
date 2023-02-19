@@ -8,6 +8,10 @@ html {
 .icontiny {
     background: left center no-repeat;
 }
+/* highlights row, that was clicked, through javascript */
+.click_highlight {
+	background-color: #404b13 !important;
+}
 /* all in mytabs (complete table and select section) */
 .mytabs {
     display: flex;
