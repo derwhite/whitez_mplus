@@ -184,28 +184,28 @@ def gen_weekly(players, inis, colors, weekly):
 def gen_affixes_html(affixes):
 	tweek_affixes_html = []
 	for a in affixes['this_week']:
-		affix_html = f'<a class="icontiny" ' \
+		affix_html = f'<td class=\"tbl_affixe\"><a class="icontiny" ' \
 					 f'data-game="wow" data-type="affix" href="{a["wowhead_url"]}">' \
 					 f'<img src="https://wow.zamimg.com/images/wow/icons/tiny/{a["icon"]}.gif" ' \
 					 f'style="vertical-align: middle;" loading="lazy">' \
-					 f'<span class="tinycontxt"> {a["name"]}</span></a>'
+					 f'<span class="tinycontxt"> {a["name"]}</span></a></td>'
 		tweek_affixes_html.append(affix_html)
-	tweek_affixes_out = "+0: " + ', '.join(tweek_affixes_html)
+	tweek_affixes_out = "<td class=\"tbl_affixe\">This Week:</td>" + ''.join(tweek_affixes_html)
 
 	if affixes['next_week'] is None:
 		return tweek_affixes_out + "\n"
 
 	nweek_affixes_html = []
 	for a in affixes['next_week']:
-		affix_html = f'<a class="icontiny" ' \
+		affix_html = f'<td class=\"tbl_affixe\"><a class="icontiny" ' \
 					 f'data-game="wow" data-type="affix" href="{a["wowhead_url"]}">' \
 					 f'<img src="https://wow.zamimg.com/images/wow/icons/tiny/{a["icon"]}.gif" ' \
 					 f'style="vertical-align: middle;" loading="lazy">' \
-					 f'<span class="tinycontxt"> {a["name"]}</span></a>'
+					 f'<span class="tinycontxt"> {a["name"]}</span></a></td>'
 		nweek_affixes_html.append(affix_html)
-	nweek_affixes_out = "+1: " + ', '.join(nweek_affixes_html)
+	nweek_affixes_out = "<td class=\"tbl_affixe\">Next Week:</td>" + ''.join(nweek_affixes_html)
 
-	affixes_out = tweek_affixes_out + "\n\t\t" + "<br>" + "\n\t\t" + nweek_affixes_out
+	affixes_out = "<table><tr><th class=\"tbl_affixe\" spancol=5 style=\"font-size: 20px;\">Affixes:</th></tr>\n<tr>" + tweek_affixes_out + "\n" + "</tr><tr>" + nweek_affixes_out + "</tr></table>"
 	return affixes_out
 
 

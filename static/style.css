@@ -12,6 +12,12 @@ html {
 .click_highlight {
 	background-color: #404b13 !important;
 }
+/*<th> and <td> of table affixes */
+.tbl_affixe {
+    text-align: left;
+    padding-right: 10px;
+    border: none;
+}
 /* all in mytabs (complete table and select section) */
 .mytabs {
     display: flex;
