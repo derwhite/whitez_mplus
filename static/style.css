@@ -66,11 +66,11 @@ html {
 }
 /* the labels of radio buttons in mytabs */
 .mytabs label {
-    padding: 10px;
+    padding: 5px;
 	width: 85px;
     font-weight: bold;
     border: 1px solid #383838;
-	font-size: 18px;
+	font-size: 17px;
 	border-radius: 15px 15px 0px 0px;
 }
 /* has to do with the tabs itself, makes all invisable except the selected one.
