@@ -6,6 +6,12 @@
     <script>
     	const whTooltips = {colorLinks: true, iconizeLinks: true, renameLinks: false};
 		function highlightRow(row) {
+			var trList = document.getElementsByTagName("tr");
+			for (var i = 0; i < trList.length; i++) {
+				if (trList[i] != row) {
+					trList[i].classList.remove("click_highlight");
+				}
+			};
   			row.classList.toggle("click_highlight");
 		};
 	</script>
