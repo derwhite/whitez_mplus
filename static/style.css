@@ -15,7 +15,8 @@ html {
 }
 /* highlights row, that was clicked, through javascript */
 .click_highlight {
-	background-color: #404b13 !important;
+	background-color: #123456 !important;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
 /*<th> and <td> of table affixes */
 .tbl_affixe {
