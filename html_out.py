@@ -49,6 +49,13 @@ def get_sterne(upgrade):
 	return '*' * upgrade
 
 
+def gen_score_tt(scores):
+	tt = ""
+	for k, v in scores.items():
+		tt += k + f": {v}\n"
+	return tt
+
+
 def gen_score_table(players, inis, colors, isTyrannical):
 	table_id = uuid.uuid4().hex
 	str_html = f'<table id="{table_id}">\n'
@@ -83,9 +90,10 @@ def gen_score_table(players, inis, colors, isTyrannical):
 		str_html += f'<tr onclick="highlightRow(this)">\n'
 		str_html += f'<td title="Last Update: {p.days_since_last_update()} days ago&#10;{tier}"><a href="{p.profile_url()}" target="_blank"><img src="{p.thumbnail_url()}" width="35" height="35" style="float:left"></a><p style="font-size:{mainSize}px;color:{p.class_color};padding:6px;margin:0px;text-align:left">&emsp;{p.name}</p></td>\n'
 		str_html += f'<td><span style="color: {p.class_color}">{p.ilvl}</span></td>'
-		sum = p.score  # Player Score
-		color = rio.get_color(colors, sum)
-		str_html += f'<td><span style="font-size:{mainSize}px;color:{color}">{"{:.2f}".format(sum)}</span></td>\n'
+		score = p.score  # Player Score
+		score_tt = gen_score_tt(p.relevant_scores())
+		color = rio.get_color(colors, score)
+		str_html += f'<td><span style="font-size:{mainSize}px;color:{color}" title="{score_tt}">{score:.1f}</span></td>\n'
 		#-----------------------------
 		for ini in inis:
 			# Iterate Instances:
@@ -110,7 +118,14 @@ def gen_score_table(players, inis, colors, isTyrannical):
 				else:
 					sec = best
 					first = alter
-			str_html += f'<td title="{first["score"]} / {sec["score"]} / {round(best["score"]*1.5+alter["score"]*0.5,2)}"><span style="font-size:{mainSize}px;color:{first["color"]}">{first["run"]}</span><span style="font-size:{mainSize}px;color:yellow">{first["sterne"]}</span><span style="color:white"> | </span><span style="font-size:{secSize}px;color:{sec["color"]}">{sec["run"]}</span><span style="font-size:{secSize}px;color:yellow">{sec["sterne"]}</span></td>\n'
+			ini_score = round(best["score"] * 1.5 + alter["score"] * 0.5, 1)
+			str_html += f'<td title="{first["score"]} | {sec["score"]} &Sigma; {ini_score}">' \
+						f'<span style="font-size:{mainSize}px;color:{first["color"]}">{first["run"]}</span>' \
+						f'<span style="font-size:{mainSize}px;color:yellow">{first["sterne"]}</span>' \
+						f'<span style="color:white"> | </span>' \
+						f'<span style="font-size:{secSize}px;color:{sec["color"]}">{sec["run"]}</span>' \
+						f'<span style="font-size:{secSize}px;color:yellow">{sec["sterne"]}</span>' \
+						f'</td>\n'
 		str_html += f'</tr>\n'
 	str_html += f'</table>\n'
 	return str_html
