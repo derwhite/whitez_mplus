@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <script>
     	const whTooltips = {colorLinks: true, iconizeLinks: true, renameLinks: false};
+		var sorted = false;
 		function highlightRow(row) {
 			var trList = document.getElementsByTagName("tr");
 			for (var i = 0; i < trList.length; i++) {
@@ -13,6 +14,40 @@
 				}
 			};
   			row.classList.toggle("click_highlight");
+		};
+		function sortTable(columnIndex, table_name) {   /* Sortiert vorerst nur Zahlen, innerHTML gibt den ganzen Zellen-Inhalt aus, deshalb musste ich noch per match den eigentlichen Wert aus 'lalala>213</span> exportieren*/
+			var table, rows, switching, i, x, y, shouldSwitch;
+			table = document.getElementById(table_name);
+			switching = true;
+			while (switching) {
+				switching = false;
+				rows = table.getElementsByTagName("tr");
+				for (i = 1; i < (rows.length - 1); i++) {
+					shouldSwitch = false;
+					x = rows[i].getElementsByTagName("td")[columnIndex];
+					y = rows[i + 1].getElementsByTagName("td")[columnIndex];
+					if (sorted == true){
+						if (Number(x.innerHTML.match('>(.*?)<')[1]) < Number(y.innerHTML.match('>(.*?)<')[1])) {
+							shouldSwitch = true;
+							break;
+						}
+					}else{
+						if (Number(x.innerHTML.match('>(.*?)<')[1]) > Number(y.innerHTML.match('>(.*?)<')[1])) {
+							shouldSwitch = true;
+							break;
+						}
+					}
+				}
+				if (shouldSwitch) {
+					rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+					switching = true;
+				}
+			}
+			if (sorted == false){
+				sorted = true;
+			}else{
+				sorted = false
+			}
 		};
 	</script>
     <script src="https://wow.zamimg.com/js/tooltips.js"></script>

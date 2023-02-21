@@ -1,4 +1,5 @@
 import rio
+import uuid
 from datetime import datetime, timezone
 
 # WREWARD=[0,0,278,278,278,281,281,285,288,288,291,294,298,298,301,304] # Season 4
@@ -49,10 +50,11 @@ def get_sterne(upgrade):
 
 
 def gen_score_table(players, inis, colors, isTyrannical):
-	str_html = f'<table>\n'
+	table_id = uuid.uuid4().hex
+	str_html = f'<table id="{table_id}">\n'
 	str_html += f'<tr><th>Player</th>\n'
-	str_html += f'<th class="ilvl">ilvl</th>\n'
-	str_html += f'<th class="score">Score</th>\n'
+	str_html += f'<th onclick="sortTable(1, \'{table_id}\')" class="ilvl">ilvl</th>\n'
+	str_html += f'<th onclick="sortTable(2, \'{table_id}\')" class="score">Score</th>\n'
 	for x in inis:
 		if x['timer'] == 0:
 			ini_timer = ""
