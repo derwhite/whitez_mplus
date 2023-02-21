@@ -61,6 +61,19 @@ class Player:
         days = (tday - last_crawled).days
         return days
 
+    def relevant_scores(self):
+        scores = dict()
+        score_dps = self._data['mythic_plus_scores_by_season'][0]['scores']['dps']
+        if score_dps > 0:
+            scores['dps'] = score_dps
+        score_healer = self._data['mythic_plus_scores_by_season'][0]['scores']['healer']
+        if score_healer > 0:
+            scores['healer'] = score_healer
+        score_tank = self._data['mythic_plus_scores_by_season'][0]['scores']['tank']
+        if score_tank > 0:
+            scores['tank'] = score_tank
+        return scores
+
     def get_tier_items(self):
         tset_pieces = ['head', 'shoulder', 'chest', 'hands', 'legs']
         tset_equiped = [0, 0, 0, 0, 0]

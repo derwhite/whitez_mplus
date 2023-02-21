@@ -49,6 +49,13 @@ def get_sterne(upgrade):
 	return '*' * upgrade
 
 
+def gen_score_tt(scores):
+	tt = ""
+	for k, v in scores.items():
+		tt += k + f": {v}\n"
+	return tt
+
+
 def gen_score_table(players, inis, colors, isTyrannical):
 	table_id = uuid.uuid4().hex
 	str_html = f'<table id="{table_id}">\n'
@@ -83,9 +90,10 @@ def gen_score_table(players, inis, colors, isTyrannical):
 		str_html += f'<tr onclick="highlightRow(this)">\n'
 		str_html += f'<td title="Last Update: {p.days_since_last_update()} days ago&#10;{tier}"><a href="{p.profile_url()}" target="_blank"><img src="{p.thumbnail_url()}" width="35" height="35" style="float:left"></a><p style="font-size:{mainSize}px;color:{p.class_color};padding:6px;margin:0px;text-align:left">&emsp;{p.name}</p></td>\n'
 		str_html += f'<td><span style="color: {p.class_color}">{p.ilvl}</span></td>'
-		sum = p.score  # Player Score
-		color = rio.get_color(colors, sum)
-		str_html += f'<td><span style="font-size:{mainSize}px;color:{color}">{"{:.2f}".format(sum)}</span></td>\n'
+		score = p.score  # Player Score
+		score_tt = gen_score_tt(p.relevant_scores())
+		color = rio.get_color(colors, score)
+		str_html += f'<td><span style="font-size:{mainSize}px;color:{color}" title="{score_tt}">{"{:.2f}".format(score)}</span></td>\n'
 		#-----------------------------
 		for ini in inis:
 			# Iterate Instances:
