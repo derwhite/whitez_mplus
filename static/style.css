@@ -28,6 +28,7 @@ html {
 .mytabs {
     display: flex;
     flex-wrap: wrap;
+    white-space: nowrap;
     max-width: 100%;
 	font-size: 17px;
 	text-align:center;
@@ -41,7 +42,7 @@ html {
 .mytabs th {
     position: sticky;
 	background-color: black;
-	font-size: 18px;
+	font-size: 17px;
     top: -1px;
     outline: 1px solid #383838;
     height: 45px;
