@@ -118,7 +118,14 @@ def gen_score_table(players, inis, colors, isTyrannical):
 				else:
 					sec = best
 					first = alter
-			str_html += f'<td title="{first["score"]} / {sec["score"]} / {round(best["score"]*1.5+alter["score"]*0.5,2)}"><span style="font-size:{mainSize}px;color:{first["color"]}">{first["run"]}</span><span style="font-size:{mainSize}px;color:yellow">{first["sterne"]}</span><span style="color:white"> | </span><span style="font-size:{secSize}px;color:{sec["color"]}">{sec["run"]}</span><span style="font-size:{secSize}px;color:yellow">{sec["sterne"]}</span></td>\n'
+			ini_score = round(best["score"] * 1.5 + alter["score"] * 0.5, 1)
+			str_html += f'<td title="{first["score"]} | {sec["score"]} &Sigma; {ini_score}">' \
+						f'<span style="font-size:{mainSize}px;color:{first["color"]}">{first["run"]}</span>' \
+						f'<span style="font-size:{mainSize}px;color:yellow">{first["sterne"]}</span>' \
+						f'<span style="color:white"> | </span>' \
+						f'<span style="font-size:{secSize}px;color:{sec["color"]}">{sec["run"]}</span>' \
+						f'<span style="font-size:{secSize}px;color:yellow">{sec["sterne"]}</span>' \
+						f'</td>\n'
 		str_html += f'</tr>\n'
 	str_html += f'</table>\n'
 	return str_html
