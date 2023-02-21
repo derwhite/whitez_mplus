@@ -45,7 +45,7 @@ html {
 	font-size: 17px;
     top: -1px;
     outline: 1px solid #383838;
-    height: 45px;
+    height: 53px;
 	background-size: 100% 100%;
 }
 /* only table in mytabs */
@@ -108,7 +108,7 @@ changing order destroys the radio button lineup */
 }
 /* +20 th in wekkly table */
 .mytabs .twenty {
-    width: 5%;
+    width: 4%;
 }
 /* empty th fields in weekly table */
 .mytabs .runs_weekly {
