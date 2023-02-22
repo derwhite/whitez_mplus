@@ -254,7 +254,11 @@ def gen_site(affixes, all_tables, season_name, version_string):
 			dynamic_css += "}\n"
 
 		with open('./static/style.css', 'r', encoding="utf8") as f2:
-			css = f2.read()
+			css = f2.readlines()
+			for line in list(css):
+				if '/*' in line or '*/' in line:
+					css.remove(line)
+			css = ''.join(css)
 			css += dynamic_css
 			myhtml = myhtml.replace('{% stylesheet_content %}', css)
 
