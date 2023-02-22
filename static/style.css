@@ -47,6 +47,7 @@ html {
     outline: 1px solid #383838;
     height: 53px;
 	background-size: 100% 100%;
+	z-index: 10;
 }
 /* only table in mytabs */
 .mytabs table {
@@ -113,4 +114,48 @@ changing order destroys the radio button lineup */
 /* empty th fields in weekly table */
 .mytabs .runs_weekly {
     width: 7%;
+}
+/* Improved tooltips which looks like a speach bubble and can contain any kind of html content, e.g. images */
+/* add 'class="tooltip"' to the html element which should show a tooltip */
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+/* add a <span class="tooltiptext></span> element inside the 'class="tooltip"' element which contains everything you want to show in the tooltip bubble */
+.tooltip .tooltiptext {
+  font-size: 0.8em;
+  visibility: hidden;
+  width: 80px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 11;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -40px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+/* creates the tooltip speach bubble arrow */
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+/* show tooltip if hovered */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+/* set role icon size in tooltips */
+#roleicon {
+  width: 12px;
 }
