@@ -93,7 +93,7 @@ def gen_score_table(players, inis, colors, isTyrannical):
 		score = p.score  # Player Score
 		score_tt = gen_score_tt(p.relevant_scores())
 		color = rio.get_color(colors, score)
-		str_html += f'<td><span style="font-size:{mainSize}px;color:{color}" title="{score_tt}">{score:.1f}</span></td>\n'
+		str_html += f'<td title="{score_tt}"><span style="font-size:{mainSize}px;color:{color}">{score:.1f}</span></td>\n'
 		#-----------------------------
 		for ini in inis:
 			# Iterate Instances:
