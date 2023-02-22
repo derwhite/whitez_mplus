@@ -27,12 +27,12 @@
 					x = rows[i].getElementsByTagName("td")[columnIndex];
 					y = rows[i + 1].getElementsByTagName("td")[columnIndex];
 					if (sorted == true){
-						if (Number(x.innerHTML.match('color\:.+?>(.*?)</span>.*?')[1]) < Number(y.innerHTML.match('color\:.+?>(.*?)</span>.*?')[1])) {
+						if (Number(x.innerHTML.match('\>([0-9]+\.*?[0-9]*?)\<')[1]) < Number(y.innerHTML.match('\>([0-9]+\.*?[0-9]*?)\<')[1])) {
 							shouldSwitch = true;
 							break;
 						}
 					}else{
-						if (Number(x.innerHTML.match('color\:.+?>(.*?)</span>.*?')[1]) > Number(y.innerHTML.match('color\:.+?>(.*?)</span>.*?')[1])) {
+						if (Number(x.innerHTML.match('\>([0-9]+\.*?[0-9]*?)\<')[1]) > Number(y.innerHTML.match('\>([0-9]+\.*?[0-9]*?)\<')[1])) {
 							shouldSwitch = true;
 							break;
 						}
