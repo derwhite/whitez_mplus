@@ -96,7 +96,7 @@ def gen_score_table(players, inis, colors, isTyrannical):
 		color = rio.get_color(colors, score)
 		str_html += f'<td>' \
 					f'<div class="tooltip">' \
-					f'<span style="font-size:{mainSize}px;color:{color}">{score:.1f}</span>' \
+					f'<span style="color:{color}">{score:.1f}</span>' \
 					f'<span class="tooltiptext">{score_tt}</span>' \
 					f'</div>' \
 					f'</td>\n'
