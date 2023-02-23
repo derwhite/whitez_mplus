@@ -91,7 +91,7 @@ def gen_score_table(players, inis, colors, isTyrannical):
 		tier = p.get_tier_items()
 		#----------------------------------
 		# Create Player Line on Website !!
-		str_html += f'<tr onclick="highlightRow(this)">\n'
+		str_html += f'<tr class="player_row" onclick="highlightRow(this)">\n'
 		str_html += f'<td title="Last Update: {p.days_since_last_update()} days ago&#10;{tier}"><a href="{p.profile_url()}" target="_blank"><img src="{p.thumbnail_url()}" width="35" height="35" style="float:left"></a><p style="font-size:{mainSize}px;color:{p.class_color};padding:6px;margin:0px;text-align:left">&emsp;{p.name}</p></td>\n'
 		str_html += f'<td><span style="color: {p.class_color}">{p.ilvl}</span></td>'
 		score = p.score  # Player Score

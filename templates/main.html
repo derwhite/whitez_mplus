@@ -21,8 +21,8 @@
 			switching = true;
 			while (switching) {
 				switching = false;
-				rows = table.getElementsByTagName("tr");
-				for (i = 1; i < (rows.length - 1); i++) {
+				rows = table.getElementsByClassName("player_row");
+				for (i = 0; i < (rows.length - 1); i++) {
 					shouldSwitch = false;
 					x = rows[i].getElementsByTagName("td")[columnIndex];
 					y = rows[i + 1].getElementsByTagName("td")[columnIndex];
