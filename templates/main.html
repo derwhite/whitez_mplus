@@ -2,10 +2,20 @@
 <html>
 <head>
     <link rel="icon" type="image/png" href="resources/favicon.png">
-    <meta charset="utf-8">
+    <meta charset="utf-8" http-equiv="refresh" content="300">
     <script>
+		document.addEventListener('DOMContentLoaded', activeRadio, false);
     	const whTooltips = {colorLinks: true, iconizeLinks: true, renameLinks: false};
 		var sorted = false;
+		function activeRadio(){
+			var data = sessionStorage.getItem('data');
+			if(JSON.parse(data).myRadioButtonID != ''){
+				document.getElementById(JSON.parse(data).myRadioButtonID).checked = true;
+			};
+		};
+		function setRadioActive(myRadio) {
+			sessionStorage.setItem("data",JSON.stringify({"myRadioButtonID": myRadio.id}));
+		};
 		function highlightRow(row) {
 			var trList = document.getElementsByTagName("tr");
 			for (var i = 0; i < trList.length; i++) {
@@ -65,37 +75,37 @@
 	<!-- Table -->
 	<div class="mytabs">
 		<!-- Main Tracker -->
-		<input type="radio" id="Main" name="mytabs" checked="checked">
+		<input onclick="setRadioActive(this);" type="radio" id="Main" name="mytabs" checked="checked">
 		<label for="Main">Main<br>Tracker</label>
 		<div class="tab">
 	        {% main_tracker_content %}
     	</div>
 		<!-- Main Weekly -->
-    	<input type="radio" id="Thisweek" name="mytabs">
+    	<input onclick="setRadioActive(this);" type="radio" id="Thisweek" name="mytabs">
 		<label for="Thisweek">Main<br>Weekly</label>
     	<div class="tab">
 			{% main_weekly_content %}
 	    </div>
     	<!-- Alts Tracker -->
-	    <input type="radio" id="prevweek" name="mytabs">
+	    <input onclick="setRadioActive(this);" type="radio" id="prevweek" name="mytabs">
 		<label for="prevweek" style="margin-left: 1%">Alts<br>Tracker</label>
     	<div class="tab">
 			{% alts_tracker_content %}
     	</div>
     	<!-- Alts Weekly -->
-	    <input type="radio" id="twink" name="mytabs">
+	    <input onclick="setRadioActive(this);" type="radio" id="twink" name="mytabs">
 		<label for="twink">Alts<br>Weekly</label>
     	<div class="tab">
 			{% alts_weekly_content %}
     	</div>
     	<!-- Main prev Weekly -->
-	    <input type="radio" id="TThisweek" name="mytabs">
+	    <input onclick="setRadioActive(this);" type="radio" id="TThisweek" name="mytabs">
 		<label for="TThisweek" style="margin-left: 1%">Main prev<br>Weekly</label>
     	<div class="tab">
 			{% main_prev_weekly_content %}
     	</div>
     	<!-- Alts prev Weekly -->
-	    <input type="radio" id="Tprevweek" name="mytabs">
+	    <input onclick="setRadioActive(this);" type="radio" id="Tprevweek" name="mytabs">
 		<label for="Tprevweek">Alts prev<br>Weekly</label>
     	<div class="tab">
 			{% alts_prev_weekly_content %}
