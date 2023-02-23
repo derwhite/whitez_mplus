@@ -143,10 +143,11 @@ def gen_score_table(players, inis, colors, isTyrannical):
 def gen_weekly(players, inis, colors, weekly):
 	players = rio.sort_players_by(players,weekly)
 	high = rio.get_highest_score(players)
-	str_html = f'<table>\n'
+	table_id = uuid.uuid4().hex
+	str_html = f'<table id="{table_id}">\n'
 	str_html += f'<tr><th>Player</th>'
-	str_html += f'<th class="ilvl">ilvl</th>'
-	str_html += f'<th class="twenty">+20</th><th class="rewards">Rewards</th>'
+	str_html += f'<th onclick="sortTable(1, \'{table_id}\')" class="ilvl">ilvl</th>'
+	str_html += f'<th onclick="sortTable(2, \'{table_id}\')" class="twenty">+20</th><th class="rewards">Rewards</th>'
 	for i in range(0,8):
 		str_html += f'<th class="runs_weekly"></th>'
 	str_html += f'</tr>\n'
@@ -155,7 +156,7 @@ def gen_weekly(players, inis, colors, weekly):
 		# Count Tier Items an Build a string
 		tier = p.get_tier_items()
 		# ----------------------------------
-		str_html += f'<tr onclick="highlightRow(this)">\n'
+		str_html += f'<tr class="player_row" onclick="highlightRow(this)">\n'
 		str_html += f'<td title="Last Update: {p.days_since_last_update()} days ago&#10;{tier}"><a href="{p.profile_url()}" target="_blank"><img src="{p.thumbnail_url()}" width="35" height="35" style="float:left"></a><p style="color:{p.class_color};padding:6px;margin:0px;text-align:left;">&emsp;{p.name}</p></td>\n'
 		str_html += f'<td><span style="color: {p.class_color}">{p.ilvl}</span></td>'
 		# --------- Show Left Instances -------
