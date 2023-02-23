@@ -159,3 +159,7 @@ changing order destroys the radio button lineup */
 #roleicon {
   width: 12px;
 }
+.tbl_tt td {
+    /*padding-right: 10px;*/
+    border: none;
+}

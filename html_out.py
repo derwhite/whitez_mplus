@@ -50,10 +50,13 @@ def get_sterne(upgrade):
 
 
 def gen_score_tt(scores):
-	tt = ""
+	tt = '<table class="tbl_tt" style="border: none;width:unset;margin-left: auto; margin-right: auto;">'
 	for k, v in scores.items():
+		tt += '<tr style="background-color: unset">'
 		icon = f'<img id="roleicon" src=resources/icons/role_{k}.png>'
-		tt += icon + f' {v}<br>'
+		tt += f'<td style="text-align: center;">{icon}</td><td style="text-align: left;">&thinsp;{v}</td>'
+		tt += '</tr>'
+	tt += '</table>'
 	return tt
 
 
