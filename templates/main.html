@@ -25,7 +25,7 @@
 			};
   			row.classList.toggle("click_highlight");
 		};
-		function sortTable(columnIndex, table_name) {   /* Sortiert vorerst nur Zahlen, innerHTML gibt den ganzen Zellen-Inhalt aus, deshalb musste ich noch per match den eigentlichen Wert aus 'lalala>213</span> exportieren*/
+		function sortTable(classColumn, elementClass, table_name) {   /* Sortiert vorerst nur Zahlen, innerHTML gibt den ganzen Zellen-Inhalt aus, deshalb musste ich noch per match den eigentlichen Wert aus 'lalala>213</span> exportieren*/
 			var table, rows, switching, i, x, y, shouldSwitch;
 			table = document.getElementById(table_name);
 			switching = true;
@@ -34,18 +34,33 @@
 				rows = table.getElementsByClassName("player_row");
 				for (i = 0; i < (rows.length - 1); i++) {
 					shouldSwitch = false;
-					x = rows[i].getElementsByTagName("td")[columnIndex];
-					y = rows[i + 1].getElementsByTagName("td")[columnIndex];
-					regex_FindNumbers = '\>(\-*?[0-9]+\.*?[0-9]*?)\<';
-					if (sorted == true){
-						if (Number(x.innerHTML.match(regex_FindNumbers)[1]) < Number(y.innerHTML.match(regex_FindNumbers)[1])) {
-							shouldSwitch = true;
-							break;
+					x = rows[i].getElementsByClassName(elementClass)[classColumn];
+					y = rows[i + 1].getElementsByClassName(elementClass)[classColumn];
+					if (elementClass == "td_dungeon"){
+						regex_FindNumbers = '\"([0-9]+\.*?[0-9]*?)\ ';
+						if (sorted == true){
+							if (Number(x.outerHTML.match(regex_FindNumbers)[1]) < Number(y.outerHTML.match(regex_FindNumbers)[1])) {
+								shouldSwitch = true;
+								break;
+							}
+						}else{
+							if (Number(x.outerHTML.match(regex_FindNumbers)[1]) > Number(y.outerHTML.match(regex_FindNumbers)[1])) {
+								shouldSwitch = true;
+								break;
+							}
 						}
 					}else{
-						if (Number(x.innerHTML.match(regex_FindNumbers)[1]) > Number(y.innerHTML.match(regex_FindNumbers)[1])) {
-							shouldSwitch = true;
-							break;
+						regex_FindNumbers = '\>(\-*?[0-9]+\.*?[0-9]*?)\<';
+						if (sorted == true){
+							if (Number(x.innerHTML.match(regex_FindNumbers)[1]) < Number(y.innerHTML.match(regex_FindNumbers)[1])) {
+								shouldSwitch = true;
+								break;
+							}
+						}else{
+							if (Number(x.innerHTML.match(regex_FindNumbers)[1]) > Number(y.innerHTML.match(regex_FindNumbers)[1])) {
+								shouldSwitch = true;
+								break;
+							}
 						}
 					}
 				}

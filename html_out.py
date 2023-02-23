@@ -64,9 +64,9 @@ def gen_score_table(players, inis, colors, isTyrannical):
 	table_id = uuid.uuid4().hex
 	str_html = f'<table id="{table_id}">\n'
 	str_html += f'<tr><th>Player</th>\n'
-	str_html += f'<th onclick="sortTable(1, \'{table_id}\')" class="ilvl">ilvl</th>\n'
-	str_html += f'<th onclick="sortTable(2, \'{table_id}\')" class="score">Score</th>\n'
-	for x in inis:
+	str_html += f'<th onclick="sortTable(0, \'td_ilvl\', \'{table_id}\')" class="ilvl">ilvl</th>\n'
+	str_html += f'<th onclick="sortTable(0, \'td_score\', \'{table_id}\')" class="score">Score</th>\n'
+	for count, x in enumerate(inis):
 		if x['timer'] == 0:
 			ini_timer = ""
 			str_keystone_upgrade_timer = ""
@@ -79,7 +79,7 @@ def gen_score_table(players, inis, colors, isTyrannical):
 			ini_timer = f'[{timer_dt.strftime(time_format)}]'
 			str_keystone_upgrade_timer = f'&#10;+2: {keystone_upgrade_2.strftime(time_format)}&#10;+3: {keystone_upgrade_3.strftime(time_format)}'
 			
-		str_html += f'<th class="dungeon {x["short"]}" title="{x["name"]}{str_keystone_upgrade_timer}">{x["short"]}<br>{ini_timer}</th>\n'
+		str_html += f'<th onclick="sortTable({count}, \'td_dungeon\', \'{table_id}\')" class="dungeon {x["short"]}" title="{x["name"]}{str_keystone_upgrade_timer}">{x["short"]}<br>{ini_timer}</th>\n'
 	str_html += f'</tr>\n'
 
 	high_score = rio.get_highest_score(players)
@@ -93,11 +93,11 @@ def gen_score_table(players, inis, colors, isTyrannical):
 		# Create Player Line on Website !!
 		str_html += f'<tr class="player_row" onclick="highlightRow(this)">\n'
 		str_html += f'<td title="Last Update: {p.days_since_last_update()} days ago&#10;{tier}"><a href="{p.profile_url()}" target="_blank"><img src="{p.thumbnail_url()}" width="35" height="35" style="float:left"></a><p style="font-size:{mainSize}px;color:{p.class_color};padding:6px;margin:0px;text-align:left">&emsp;{p.name}</p></td>\n'
-		str_html += f'<td><span style="color: {p.class_color}">{p.ilvl}</span></td>'
+		str_html += f'<td class="td_ilvl"><span style="color: {p.class_color}">{p.ilvl}</span></td>'
 		score = p.score  # Player Score
 		score_tt = gen_score_tt(p.relevant_scores())
 		color = rio.get_color(colors, score)
-		str_html += f'<td>' \
+		str_html += f'<td class="td_score">' \
 					f'<div class="tooltip">' \
 					f'<span style="color:{color}">{score:.1f}</span>' \
 					f'<span class="tooltiptext">{score_tt}</span>' \
@@ -128,7 +128,7 @@ def gen_score_table(players, inis, colors, isTyrannical):
 					sec = best
 					first = alter
 			ini_score = round(best["score"] * 1.5 + alter["score"] * 0.5, 1)
-			str_html += f'<td title="{first["score"]} | {sec["score"]} &Sigma; {ini_score}">' \
+			str_html += f'<td class="td_dungeon" title="{first["score"]} | {sec["score"]} &Sigma; {ini_score}">' \
 						f'<span style="font-size:{mainSize}px;color:{first["color"]}">{first["run"]}</span>' \
 						f'<span style="font-size:{mainSize}px;color:yellow">{first["sterne"]}</span>' \
 						f'<span style="color:white"> | </span>' \
@@ -146,8 +146,8 @@ def gen_weekly(players, inis, colors, weekly):
 	table_id = uuid.uuid4().hex
 	str_html = f'<table id="{table_id}">\n'
 	str_html += f'<tr><th>Player</th>'
-	str_html += f'<th onclick="sortTable(1, \'{table_id}\')" class="ilvl">ilvl</th>'
-	str_html += f'<th onclick="sortTable(2, \'{table_id}\')" class="twenty">+20</th><th class="rewards">Rewards</th>'
+	str_html += f'<th onclick="sortTable(0, \'td_ilvl\', \'{table_id}\')" class="ilvl">ilvl</th>'
+	str_html += f'<th onclick="sortTable(0, \'td_twenty\', \'{table_id}\')" class="twenty">+20</th><th class="rewards">Rewards</th>'
 	for i in range(0,8):
 		str_html += f'<th class="runs_weekly"></th>'
 	str_html += f'</tr>\n'
@@ -158,7 +158,7 @@ def gen_weekly(players, inis, colors, weekly):
 		# ----------------------------------
 		str_html += f'<tr class="player_row" onclick="highlightRow(this)">\n'
 		str_html += f'<td title="Last Update: {p.days_since_last_update()} days ago&#10;{tier}"><a href="{p.profile_url()}" target="_blank"><img src="{p.thumbnail_url()}" width="35" height="35" style="float:left"></a><p style="color:{p.class_color};padding:6px;margin:0px;text-align:left;">&emsp;{p.name}</p></td>\n'
-		str_html += f'<td><span style="color: {p.class_color}">{p.ilvl}</span></td>'
+		str_html += f'<td class="td_ilvl"><span style="color: {p.class_color}">{p.ilvl}</span></td>'
 		# --------- Show Left Instances -------
 		count = 0
 		for i in p._data[weekly]:
@@ -168,7 +168,7 @@ def gen_weekly(players, inis, colors, weekly):
 		if count >= 8:
 			color = 'green'
 			count = 8
-		str_html += f'<td><span style="color:{color}">{count-8}</span></td>\n'
+		str_html += f'<td class="td_twenty"><span style="color:{color}">{count-8}</span></td>\n'
 		# ---------- 0 / 0 / 0 Rewards -------
 		str_html += f'<td>'
 		for i in [0, 3, 7]:
