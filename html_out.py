@@ -60,6 +60,10 @@ def gen_score_tt(scores):
 	return tt
 
 
+def gen_general_tab(players):
+	return "<p>:D</p>"
+
+
 def gen_score_table(players, inis, colors, isTyrannical):
 	table_id = uuid.uuid4().hex
 	str_html = f'<table id="{table_id}">\n'
@@ -275,6 +279,7 @@ def gen_site(affixes, all_tables, season_name, version_string):
 		myhtml = myhtml.replace('{% legend %}', legend)
 		myhtml = myhtml.replace('{% affixes %}', affixes_html)
 
+		myhtml = myhtml.replace('{% general_content %}', all_tables['general'])
 		myhtml = myhtml.replace('{% main_tracker_content %}', all_tables['main_score'])
 		myhtml = myhtml.replace('{% main_weekly_content %}', all_tables['main_weekly'])
 		myhtml = myhtml.replace('{% alts_tracker_content %}', all_tables['alts_score'])
