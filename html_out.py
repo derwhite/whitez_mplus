@@ -251,6 +251,10 @@ def gen_site(affixes, all_tables, season_name, version_string):
 	with open('./templates/main.html', 'r', encoding='utf8') as f:
 		myhtml = f.read()
 
+		with open('./static/script.js', 'r', encoding="utf8") as f2:
+			js = f2.read()
+			myhtml = myhtml.replace('{% script_content %}', js)
+
 		dynamic_css = "\n"		## Maybe you want to Change this to a cleaner way ^_-
 		for k, v in DUNGEONS_BACKGROUND.items():
 			dynamic_css += ".mytabs ." + k + " {\n"
