@@ -66,6 +66,8 @@ def gen_general_tab(players):
 	str_html += f'<tr>'
 	str_html += f'<th>Player</th>\n'
 	str_html += f'<th onclick="sortTable(0, \'td_ilvl\', \'{table_id}\')" class="ilvl">ilvl</th>\n'
+	str_html += f'<th>Spec</th>'
+	str_html += f'<th>Professions</th>\n'
 	str_html += f'</tr>\n'
 
 	for p in players:
@@ -77,6 +79,8 @@ def gen_general_tab(players):
 		str_html += f'<tr class="player_row" onclick="highlightRow(this)">\n'
 		str_html += f'<td title="Last Update: {p.days_since_last_update()} days ago"><a href="{p.profile_url()}" target="_blank"><img src="{p.thumbnail_url()}" width="35" height="35" style="float:left"></a><p style="color:{p.class_color};padding:6px;margin:0px;text-align:left">&emsp;{p.name}</p></td>\n'
 		str_html += f'<td class="td_ilvl" title="{tier}"><span style="color: {p.class_color}">{p.ilvl}</span></td>'
+		str_html += f'<td><img src="{p.spec_icon()}" style="display:block; margin-left: auto; margin-right: auto;"></td>\n'
+		str_html += f'<td>-</td>\n'
 		str_html += f'</tr>\n'
 	str_html += f'</table>\n'
 	return str_html

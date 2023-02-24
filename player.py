@@ -17,6 +17,20 @@ CLASS_COLOR = {
     'Evoker': '#33937F',
 }
 
+CLASS_ICONS = {
+    # TODO: finish this and add classes, because restoration is ambiguous
+    'Blood': 'https://wow.zamimg.com/images/wow/icons/medium/spell_deathknight_frostpresence.jpg',
+    'Frost': 'https://wow.zamimg.com/images/wow/icons/medium/spell_deathknight_frostpresence.jpg',
+    'Unholy': 'https://wow.zamimg.com/images/wow/icons/medium/spell_deathknight_unholypresence.jpg',
+    'Havoc': 'https://wow.zamimg.com/images/wow/icons/medium/ability_demonhunter_specdps.jpg',
+    'Vengeance': 'https://wow.zamimg.com/images/wow/icons/medium/ability_demonhunter_spectank.jpg',
+    'Balance': 'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_starfall.jpg',
+    'Feral': 'https://wow.zamimg.com/images/wow/icons/medium/ability_druid_catform.jpg',
+    'Guardian': 'https://wow.zamimg.com/images/wow/icons/medium/ability_racial_bearform.jpg',
+    'Restoration': 'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_healingtouch.jpg',
+    'Retribution': 'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_auraoflight.jpg',
+}
+
 
 class Player:
     """Class contains all relevant informations about a player (wow-character)"""
@@ -37,6 +51,10 @@ class Player:
     @property
     def ilvl(self):
         return self._data['gear']['item_level_equipped']
+
+    @property
+    def spec(self):
+        return self._data['active_spec_name']
 
     @property
     def score(self):
@@ -101,6 +119,13 @@ class Player:
 
     def thumbnail_url(self):
         return self._data['thumbnail_url']
+
+    def spec_icon(self):
+        spec = self.spec
+        if spec in CLASS_ICONS:
+            return CLASS_ICONS[spec]
+        else:
+            return ""
 
     @staticmethod
     def create_players(player_list, responses):
