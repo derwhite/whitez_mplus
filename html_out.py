@@ -61,7 +61,25 @@ def gen_score_tt(scores):
 
 
 def gen_general_tab(players):
-	return "<p>:D</p>"
+	table_id = uuid.uuid4().hex
+	str_html = f'<table id="{table_id}">\n'
+	str_html += f'<tr>'
+	str_html += f'<th>Player</th>\n'
+	str_html += f'<th onclick="sortTable(0, \'td_ilvl\', \'{table_id}\')" class="ilvl">ilvl</th>\n'
+	str_html += f'</tr>\n'
+
+	for p in players:
+		# -----------------------------------------------------------
+		# Count Tier Items an Build a string
+		tier = p.get_tier_items()
+		# ----------------------------------
+		# Create Player Line on Website !!
+		str_html += f'<tr class="player_row" onclick="highlightRow(this)">\n'
+		str_html += f'<td title="Last Update: {p.days_since_last_update()} days ago&#10;{tier}"><a href="{p.profile_url()}" target="_blank"><img src="{p.thumbnail_url()}" width="35" height="35" style="float:left"></a><p style="color:{p.class_color};padding:6px;margin:0px;text-align:left">&emsp;{p.name}</p></td>\n'
+		str_html += f'<td class="td_ilvl"><span style="color: {p.class_color}">{p.ilvl}</span></td>'
+		str_html += f'</tr>\n'
+	str_html += f'</table>\n'
+	return str_html
 
 
 def gen_score_table(players, inis, colors, isTyrannical):
