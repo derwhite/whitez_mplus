@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="icon" type="image/png" href="resources/favicon.png">
-    <meta charset="utf-8" http-equiv="refresh" content="300">
-    <script>
+	<link rel="icon" type="image/png" href="resources/favicon.png">
+	<meta charset="utf-8" http-equiv="refresh" content="300">
+	<script>
 		document.addEventListener('DOMContentLoaded', activeRadio, false);
-    	const whTooltips = {colorLinks: true, iconizeLinks: true, renameLinks: false};
+		const whTooltips = {colorLinks: true, iconizeLinks: true, renameLinks: false};
 		var sorted = false;
 		function activeRadio(){
 			var data = sessionStorage.getItem('data');
@@ -23,7 +23,7 @@
 					trList[i].classList.remove("click_highlight");
 				}
 			};
-  			row.classList.toggle("click_highlight");
+			row.classList.toggle("click_highlight");
 		};
 		function sortTable(classColumn, elementClass, table_name) {   /* Sortiert vorerst nur Zahlen, innerHTML gibt den ganzen Zellen-Inhalt aus, deshalb musste ich noch per match den eigentlichen Wert aus 'lalala>213</span> exportieren*/
 			var table, rows, switching, i, x, y, shouldSwitch;
@@ -76,7 +76,7 @@
 			}
 		};
 	</script>
-    <script src="https://wow.zamimg.com/js/tooltips.js"></script>
+	<script src="https://wow.zamimg.com/js/tooltips.js"></script>
 	<style>{% stylesheet_content %}</style>
 </head>
 <body>
@@ -94,38 +94,38 @@
 		<input onclick="setRadioActive(this);" type="radio" id="Main" name="mytabs" checked="checked">
 		<label for="Main">Main<br>Tracker</label>
 		<div class="tab">
-	        {% main_tracker_content %}
-    	</div>
+			{% main_tracker_content %}
+		</div>
 		<!-- Main Weekly -->
-    	<input onclick="setRadioActive(this);" type="radio" id="Thisweek" name="mytabs">
+		<input onclick="setRadioActive(this);" type="radio" id="Thisweek" name="mytabs">
 		<label for="Thisweek">Main<br>Weekly</label>
-    	<div class="tab">
+		<div class="tab">
 			{% main_weekly_content %}
-	    </div>
-    	<!-- Alts Tracker -->
-	    <input onclick="setRadioActive(this);" type="radio" id="prevweek" name="mytabs">
+		</div>
+		<!-- Alts Tracker -->
+		<input onclick="setRadioActive(this);" type="radio" id="prevweek" name="mytabs">
 		<label for="prevweek" style="margin-left: 1%">Alts<br>Tracker</label>
-    	<div class="tab">
+		<div class="tab">
 			{% alts_tracker_content %}
-    	</div>
-    	<!-- Alts Weekly -->
-	    <input onclick="setRadioActive(this);" type="radio" id="twink" name="mytabs">
+		</div>
+		<!-- Alts Weekly -->
+		<input onclick="setRadioActive(this);" type="radio" id="twink" name="mytabs">
 		<label for="twink">Alts<br>Weekly</label>
-    	<div class="tab">
+		<div class="tab">
 			{% alts_weekly_content %}
-    	</div>
-    	<!-- Main prev Weekly -->
-	    <input onclick="setRadioActive(this);" type="radio" id="TThisweek" name="mytabs">
+		</div>
+		<!-- Main prev Weekly -->
+		<input onclick="setRadioActive(this);" type="radio" id="TThisweek" name="mytabs">
 		<label for="TThisweek" style="margin-left: 1%">Main prev<br>Weekly</label>
-    	<div class="tab">
+		<div class="tab">
 			{% main_prev_weekly_content %}
-    	</div>
-    	<!-- Alts prev Weekly -->
-	    <input onclick="setRadioActive(this);" type="radio" id="Tprevweek" name="mytabs">
+		</div>
+		<!-- Alts prev Weekly -->
+		<input onclick="setRadioActive(this);" type="radio" id="Tprevweek" name="mytabs">
 		<label for="Tprevweek">Alts prev<br>Weekly</label>
-    	<div class="tab">
+		<div class="tab">
 			{% alts_prev_weekly_content %}
-    	</div>
+		</div>
 	</div>
 	<br><br><br>
 	<p>All data provided by <a href="https://raider.io">Raider.io</a> & <a href="https://battle.net">Battle.net</a></p>
