@@ -79,7 +79,10 @@ def gen_score_table(players, inis, colors, isTyrannical):
 			ini_timer = f'[{timer_dt.strftime(time_format)}]'
 			str_keystone_upgrade_timer = f'&#10;+2: {keystone_upgrade_2.strftime(time_format)}&#10;+3: {keystone_upgrade_3.strftime(time_format)}'
 			
-		str_html += f'<th onclick="sortTable({count}, \'td_dungeon\', \'{table_id}\')" class="dungeon {x["short"]}" title="{x["name"]}{str_keystone_upgrade_timer}">{x["short"]}<br>{ini_timer}</th>\n'
+		str_html += f'<th onclick="sortTable({count}, \'td_dungeon\', \'{table_id}\')" '\
+			f'class="dungeon" style="background-image: url({DUNGEONS_BACKGROUND[x["short"]]})" ' \
+			f'title="{x["name"]}{str_keystone_upgrade_timer}">{x["short"]}<br>{ini_timer}</th>\n'
+		
 	str_html += f'</tr>\n'
 
 	high_score = rio.get_highest_score(players)
@@ -250,25 +253,6 @@ def gen_site(affixes, all_tables, season_name, version_string):
 	# Building Website !!
 	with open('./templates/main.html', 'r', encoding='utf8') as f:
 		myhtml = f.read()
-
-		with open('./static/script.js', 'r', encoding="utf8") as f2:
-			js = f2.read()
-			myhtml = myhtml.replace('{% script_content %}', js)
-
-		dynamic_css = "\n"		## Maybe you want to Change this to a cleaner way ^_-
-		for k, v in DUNGEONS_BACKGROUND.items():
-			dynamic_css += ".mytabs ." + k + " {\n"
-			dynamic_css += f"background-image: url({v});\n"
-			dynamic_css += "}\n"
-
-		with open('./static/style.css', 'r', encoding="utf8") as f2:
-			css = f2.readlines()
-			for line in list(css):
-				if '/*' in line or '*/' in line:
-					css.remove(line)
-			css = ''.join(css)
-			css += dynamic_css
-			myhtml = myhtml.replace('{% stylesheet_content %}', css)
 
 		myhtml = myhtml.replace('{% season_name %}', season_name)
 		myhtml = myhtml.replace('{% now %}', now)
