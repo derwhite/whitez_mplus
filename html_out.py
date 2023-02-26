@@ -95,7 +95,7 @@ def gen_score_table(players, inis, colors, isTyrannical):
 		#----------------------------------
 		# Create Player Line on Website !!
 		str_html += f'<tr class="player_row" onclick="highlightRow(this)">\n'
-		str_html += f'<td title="Last Update: {p.days_since_last_update()} days ago&#10;{tier}"><a href="{p.profile_url()}" target="_blank"><img src="{p.thumbnail_url()}" width="35" height="35" style="float:left"></a><p style="font-size:{mainSize}px;color:{p.class_color};padding:6px;margin:0px;text-align:left">&emsp;{p.name}</p></td>\n'
+		str_html += f'<td title="Last Update: {p.days_since_last_update()} days ago&#10;{tier}"><a href="{p.profile_url()}" target="_blank"><img src="{p.thumbnail_url()}" width="35" height="35" style="float:left"></a><p style="font-size:{mainSize}px;color:{p.class_color};padding:7px 0px 0px 3em;margin:0px;text-align:left">{p.name}</p></td>\n'
 		str_html += f'<td class="td_ilvl"><span style="color: {p.class_color}">{p.ilvl}</span></td>'
 		score = p.score  # Player Score
 		score_tt = gen_score_tt(p.relevant_scores())
@@ -149,7 +149,7 @@ def gen_weekly(players, inis, colors, weekly):
 	table_id = uuid.uuid4().hex
 	str_html = f'<table id="{table_id}">\n'
 	str_html += f'<tr><th>Player</th>'
-	#str_html += f'<th onclick="sortTable(0, \'td_ilvl\', \'{table_id}\')" class="ilvl">ilvl</th>'
+	str_html += f'<th onclick="sortTable(0, \'td_ilvl\', \'{table_id}\')" class="ilvl">ilvl</th>'
 	str_html += f'<th onclick="sortTable(0, \'td_twenty\', \'{table_id}\')" class="twenty">+20</th><th class="rewards">Rewards</th>'
 	for i in range(0,8):
 		str_html += f'<th class="runs_weekly"></th>'
@@ -160,8 +160,8 @@ def gen_weekly(players, inis, colors, weekly):
 		tier = p.get_tier_items()
 		# ----------------------------------
 		str_html += f'<tr class="player_row" onclick="highlightRow(this)">\n'
-		str_html += f'<td title="Last Update: {p.days_since_last_update()} days ago&#10;{tier}"><a href="{p.profile_url()}" target="_blank"><img src="{p.thumbnail_url()}" width="35" height="35" style="float:left"></a><p style="color:{p.class_color};padding:6px;margin:0px;text-align:left;">&emsp;{p.name}</p></td>\n'
-		#str_html += f'<td class="td_ilvl"><span style="color: {p.class_color}">{p.ilvl}</span></td>'
+		str_html += f'<td title="Last Update: {p.days_since_last_update()} days ago&#10;{tier}"><a href="{p.profile_url()}" target="_blank"><img src="{p.thumbnail_url()}" width="35" height="35" style="float:left"></a><p style="color:{p.class_color};padding:6px 0px 0px 3em;margin:0px;text-align:left;">{p.name}</p></td>\n'
+		str_html += f'<td class="td_ilvl"><span style="color: {p.class_color}">{p.ilvl}</span></td>'
 		# --------- Show Left Instances -------
 		count = 0
 		for i in p._data[weekly]:
