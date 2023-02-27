@@ -61,6 +61,10 @@ class Player:
         return self._data['mythic_plus_scores_by_season'][0]['scores']['all']
 
     @property
+    def achievement_points(self):
+        return self._data['achievement_points']
+
+    @property
     def class_color(self):
         return CLASS_COLOR[self._data['class']]
 
