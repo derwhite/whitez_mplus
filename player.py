@@ -1,86 +1,110 @@
 import requests
 from datetime import datetime
 
-CLASS_COLOR = {
-    'Death Knight': '#C41F3B',
-    'Demon Hunter': '#A330C9',
-    'Druid': '#FF7D0A',
-    'Evoker': '#33937F',
-    'Hunter': '#ABD473',
-    'Mage': '#69CCF0',
-    'Monk': '#00FF96',
-    'Paladin': '#F58CBA',
-    'Priest': '#FFFFFF',
-    'Rogue': '#FFF569',
-    'Shaman': '#0070DE',
-    'Warlock': '#9482C9',
-    'Warrior': '#C79C6E',
-}
 
-CLASS_ICONS = {
+CLASS_DATA = {
     'Death Knight': {
-        'Blood': 'https://wow.zamimg.com/images/wow/icons/medium/spell_deathknight_frostpresence.jpg',
-        'Frost': 'https://wow.zamimg.com/images/wow/icons/medium/spell_deathknight_frostpresence.jpg',
-        'Unholy': 'https://wow.zamimg.com/images/wow/icons/medium/spell_deathknight_unholypresence.jpg',
+        'color': '#C41F3B',
+        'specs': {
+            'Blood': 'https://wow.zamimg.com/images/wow/icons/medium/spell_deathknight_frostpresence.jpg',
+            'Frost': 'https://wow.zamimg.com/images/wow/icons/medium/spell_deathknight_frostpresence.jpg',
+            'Unholy': 'https://wow.zamimg.com/images/wow/icons/medium/spell_deathknight_unholypresence.jpg',
+        },
     },
     'Demon Hunter': {
-        'Havoc': 'https://wow.zamimg.com/images/wow/icons/medium/ability_demonhunter_specdps.jpg',
-        'Vengeance': 'https://wow.zamimg.com/images/wow/icons/medium/ability_demonhunter_spectank.jpg',
+        'color': '#A330C9',
+        'specs': {
+            'Havoc': 'https://wow.zamimg.com/images/wow/icons/medium/ability_demonhunter_specdps.jpg',
+            'Vengeance': 'https://wow.zamimg.com/images/wow/icons/medium/ability_demonhunter_spectank.jpg',
+        },
     },
     'Druid': {
-        'Balance': 'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_starfall.jpg',
-        'Feral': 'https://wow.zamimg.com/images/wow/icons/medium/ability_druid_catform.jpg',
-        'Guardian': 'https://wow.zamimg.com/images/wow/icons/medium/ability_racial_bearform.jpg',
-        'Restoration': 'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_healingtouch.jpg',
+        'color': '#FF7D0A',
+        'specs': {
+            'Balance': 'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_starfall.jpg',
+            'Feral': 'https://wow.zamimg.com/images/wow/icons/medium/ability_druid_catform.jpg',
+            'Guardian': 'https://wow.zamimg.com/images/wow/icons/medium/ability_racial_bearform.jpg',
+            'Restoration': 'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_healingtouch.jpg',
+        },
     },
     'Evoker': {
-        'Devastation': 'https://wow.zamimg.com/images/wow/icons/medium/classicon_evoker_devastation.jpg',
-        'Preservation': 'https://wow.zamimg.com/images/wow/icons/medium/classicon_evoker_preservation.jpg',
+        'color': '#33937F',
+        'specs': {
+            'Devastation': 'https://wow.zamimg.com/images/wow/icons/medium/classicon_evoker_devastation.jpg',
+            'Preservation': 'https://wow.zamimg.com/images/wow/icons/medium/classicon_evoker_preservation.jpg',
+        },
     },
     'Hunter': {
-        'Beast Mastery': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_bestialdiscipline.jpg',
-        'Marksmanship': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_focusedaim.jpg',
-        'Survival': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_camouflage.jpg',
+        'color': '#ABD473',
+        'specs': {
+            'Beast Mastery': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_bestialdiscipline.jpg',
+            'Marksmanship': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_focusedaim.jpg',
+            'Survival': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_camouflage.jpg',
+        },
     },
     'Mage': {
-        'Arcane': 'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_magicalsentry.jpg',
-        'Fire': 'https://wow.zamimg.com/images/wow/icons/medium/spell_fire_firebolt02.jpg',
-        'Frost': 'https://wow.zamimg.com/images/wow/icons/medium/spell_frost_frostbolt02.jpg',
+        'color': '#69CCF0',
+        'specs': {
+            'Arcane': 'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_magicalsentry.jpg',
+            'Fire': 'https://wow.zamimg.com/images/wow/icons/medium/spell_fire_firebolt02.jpg',
+            'Frost': 'https://wow.zamimg.com/images/wow/icons/medium/spell_frost_frostbolt02.jpg',
+        },
     },
     'Monk': {
-        'Brewmaster': 'https://wow.zamimg.com/images/wow/icons/medium/spell_monk_brewmaster_spec.jpg',
-        'Mistweaver': 'https://wow.zamimg.com/images/wow/icons/medium/spell_monk_mistweaver_spec.jpg',
-        'Windwalker': 'https://wow.zamimg.com/images/wow/icons/medium/spell_monk_windwalker_spec.jpg',
+        'color': '#00FF96',
+        'specs': {
+            'Brewmaster': 'https://wow.zamimg.com/images/wow/icons/medium/spell_monk_brewmaster_spec.jpg',
+            'Mistweaver': 'https://wow.zamimg.com/images/wow/icons/medium/spell_monk_mistweaver_spec.jpg',
+            'Windwalker': 'https://wow.zamimg.com/images/wow/icons/medium/spell_monk_windwalker_spec.jpg',
+        },
     },
     'Paladin': {
-        'Holy': 'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_holybolt.jpg',
-        'Protection': 'https://wow.zamimg.com/images/wow/icons/medium/ability_paladin_shieldofthetemplar.jpg',
-        'Retribution': 'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_auraoflight.jpg',
+        'color': '#F58CBA',
+        'specs': {
+            'Holy': 'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_holybolt.jpg',
+            'Protection': 'https://wow.zamimg.com/images/wow/icons/medium/ability_paladin_shieldofthetemplar.jpg',
+            'Retribution': 'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_auraoflight.jpg',
+        },
     },
     'Priest': {
-        'Discipline': 'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_powerwordshield.jpg',
-        'Holy': 'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_guardianspirit.jpg',
-        'Shadow': 'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_shadowwordpain.jpg',
+        'color': '#FFFFFF',
+        'specs': {
+            'Discipline': 'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_powerwordshield.jpg',
+            'Holy': 'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_guardianspirit.jpg',
+            'Shadow': 'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_shadowwordpain.jpg',
+        },
     },
     'Rogue': {
-        'Assassination': 'https://wow.zamimg.com/images/wow/icons/medium/ability_rogue_deadlybrew.jpg',
-        'Outlaw': 'https://wow.zamimg.com/images/wow/icons/medium/inv_sword_30.jpg',
-        'Subtlety': 'https://wow.zamimg.com/images/wow/icons/medium/ability_stealth.jpg',
+        'color': '#FFF569',
+        'specs': {
+            'Assassination': 'https://wow.zamimg.com/images/wow/icons/medium/ability_rogue_deadlybrew.jpg',
+            'Outlaw': 'https://wow.zamimg.com/images/wow/icons/medium/inv_sword_30.jpg',
+            'Subtlety': 'https://wow.zamimg.com/images/wow/icons/medium/ability_stealth.jpg',
+        },
     },
     'Shaman': {
-        'Elemental': 'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_lightning.jpg',
-        'Enhancement': 'https://wow.zamimg.com/images/wow/icons/medium/spell_shaman_improvedstormstrike.jpg',
-        'Restoration': 'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_magicimmunity.jpg',
+        'color': '#0070DE',
+        'specs': {
+            'Elemental': 'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_lightning.jpg',
+            'Enhancement': 'https://wow.zamimg.com/images/wow/icons/medium/spell_shaman_improvedstormstrike.jpg',
+            'Restoration': 'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_magicimmunity.jpg',
+        },
     },
     'Warlock': {
-        'Affliction': 'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_deathcoil.jpg',
-        'Demonology': 'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_metamorphosis.jpg',
-        'Destruction': 'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_rainoffire.jpg',
+        'color': '#9482C9',
+        'specs': {
+            'Affliction': 'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_deathcoil.jpg',
+            'Demonology': 'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_metamorphosis.jpg',
+            'Destruction': 'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_rainoffire.jpg',
+        },
     },
     'Warrior': {
-        'Arms': 'https://wow.zamimg.com/images/wow/icons/medium/ability_warrior_savageblow.jpg',
-        'Fury': 'https://wow.zamimg.com/images/wow/icons/medium/ability_warrior_innerrage.jpg',
-        'Protection': 'https://wow.zamimg.com/images/wow/icons/medium/ability_warrior_defensivestance.jpg',
+        'color': '#C79C6E',
+        'specs': {
+            'Arms': 'https://wow.zamimg.com/images/wow/icons/medium/ability_warrior_savageblow.jpg',
+            'Fury': 'https://wow.zamimg.com/images/wow/icons/medium/ability_warrior_innerrage.jpg',
+            'Protection': 'https://wow.zamimg.com/images/wow/icons/medium/ability_warrior_defensivestance.jpg',
+        },
     },
 }
 
@@ -119,7 +143,7 @@ class Player:
 
     @property
     def class_color(self):
-        return CLASS_COLOR[self._class]
+        return CLASS_DATA[self._class]['color']
 
     def mythic_plus_best_runs(self):
         return self._data['mythic_plus_best_runs']
@@ -180,8 +204,8 @@ class Player:
     def spec_icon(self):
         class_ = self._class
         spec = self.spec
-        if class_ in CLASS_ICONS:
-            class_specs = CLASS_ICONS[class_]
+        if class_ in CLASS_DATA:
+            class_specs = CLASS_DATA[class_]['specs']
             if spec in class_specs:
                 return class_specs[spec]
             return ""
