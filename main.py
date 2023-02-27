@@ -24,9 +24,6 @@ def sync_directories(source_dir, dest_dir): #AHAHAHA from ChatGPT ^^
 	Returns a list of changes made.
 	"""
 	changes = []
-	# Create source and destination directories if they don't exist
-	if not os.path.exists(source_dir):
-		os.makedirs(source_dir)
 	if not os.path.exists(dest_dir):
 		os.makedirs(dest_dir)
 	# Get a list of all files in source_dir
@@ -176,6 +173,8 @@ def main():
 			print(f"ERROR: Your output path matches your script path !")
 			exit(1)
 		sync_directories('resources', f"{os.path.dirname(Path(args['outfile']).absolute())}/resources")
+		sync_directories('static', f"{os.path.dirname(Path(args['outfile']).absolute())}/static")
+		# TODO Minify CSS and JS
 	## ---------------------------------------
 
 	settings = parse_config_file(args['config'])

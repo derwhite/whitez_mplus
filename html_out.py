@@ -105,7 +105,10 @@ def gen_score_table(players, inis, colors, isTyrannical):
 			ini_timer = f'[{timer_dt.strftime(time_format)}]'
 			str_keystone_upgrade_timer = f'&#10;+2: {keystone_upgrade_2.strftime(time_format)}&#10;+3: {keystone_upgrade_3.strftime(time_format)}'
 			
-		str_html += f'<th onclick="sortTable({count}, \'td_dungeon\', \'{table_id}\')" class="dungeon {x["short"]}" title="{x["name"]}{str_keystone_upgrade_timer}">{x["short"]}<br>{ini_timer}</th>\n'
+		str_html += f'<th onclick="sortTable({count}, \'td_dungeon\', \'{table_id}\')" '\
+			f'class="dungeon" style="background-image: url({DUNGEONS_BACKGROUND[x["short"]]})" ' \
+			f'title="{x["name"]}{str_keystone_upgrade_timer}">{x["short"]}<br>{ini_timer}</th>\n'
+		
 	str_html += f'</tr>\n'
 
 	high_score = rio.get_highest_score(players)
@@ -118,7 +121,7 @@ def gen_score_table(players, inis, colors, isTyrannical):
 		#----------------------------------
 		# Create Player Line on Website !!
 		str_html += f'<tr class="player_row" onclick="highlightRow(this)">\n'
-		str_html += f'<td title="Last Update: {p.days_since_last_update()} days ago&#10;{tier}"><a href="{p.profile_url()}" target="_blank"><img src="{p.thumbnail_url()}" width="35" height="35" style="float:left"></a><p style="font-size:{mainSize}px;color:{p.class_color};padding:6px;margin:0px;text-align:left">&emsp;{p.name}</p></td>\n'
+		str_html += f'<td title="Last Update: {p.days_since_last_update()} days ago&#10;{tier}"><a href="{p.profile_url()}" target="_blank"><img src="{p.thumbnail_url()}" width="35" height="35" style="float:left"></a><p style="font-size:{mainSize}px;color:{p.class_color};padding:7px 0px 0px 3em;margin:0px;text-align:left">{p.name}</p></td>\n'
 		str_html += f'<td class="td_ilvl"><span style="color: {p.class_color}">{p.ilvl}</span></td>'
 		score = p.score  # Player Score
 		score_tt = gen_score_tt(p.relevant_scores())
@@ -183,7 +186,7 @@ def gen_weekly(players, inis, colors, weekly):
 		tier = p.get_tier_items()
 		# ----------------------------------
 		str_html += f'<tr class="player_row" onclick="highlightRow(this)">\n'
-		str_html += f'<td title="Last Update: {p.days_since_last_update()} days ago&#10;{tier}"><a href="{p.profile_url()}" target="_blank"><img src="{p.thumbnail_url()}" width="35" height="35" style="float:left"></a><p style="color:{p.class_color};padding:6px;margin:0px;text-align:left;">&emsp;{p.name}</p></td>\n'
+		str_html += f'<td title="Last Update: {p.days_since_last_update()} days ago&#10;{tier}"><a href="{p.profile_url()}" target="_blank"><img src="{p.thumbnail_url()}" width="35" height="35" style="float:left"></a><p style="color:{p.class_color};padding:6px 0px 0px 3em;margin:0px;text-align:left;">{p.name}</p></td>\n'
 		str_html += f'<td class="td_ilvl"><span style="color: {p.class_color}">{p.ilvl}</span></td>'
 		# --------- Show Left Instances -------
 		count = 0
@@ -276,25 +279,6 @@ def gen_site(affixes, all_tables, season_name, version_string):
 	# Building Website !!
 	with open('./templates/main.html', 'r', encoding='utf8') as f:
 		myhtml = f.read()
-
-		with open('./static/script.js', 'r', encoding="utf8") as f2:
-			js = f2.read()
-			myhtml = myhtml.replace('{% script_content %}', js)
-
-		dynamic_css = "\n"		## Maybe you want to Change this to a cleaner way ^_-
-		for k, v in DUNGEONS_BACKGROUND.items():
-			dynamic_css += ".mytabs ." + k + " {\n"
-			dynamic_css += f"background-image: url({v});\n"
-			dynamic_css += "}\n"
-
-		with open('./static/style.css', 'r', encoding="utf8") as f2:
-			css = f2.readlines()
-			for line in list(css):
-				if '/*' in line or '*/' in line:
-					css.remove(line)
-			css = ''.join(css)
-			css += dynamic_css
-			myhtml = myhtml.replace('{% stylesheet_content %}', css)
 
 		myhtml = myhtml.replace('{% season_name %}', season_name)
 		myhtml = myhtml.replace('{% now %}', now)
