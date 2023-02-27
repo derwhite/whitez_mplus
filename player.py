@@ -5,6 +5,7 @@ CLASS_COLOR = {
     'Death Knight': '#C41F3B',
     'Demon Hunter': '#A330C9',
     'Druid': '#FF7D0A',
+    'Evoker': '#33937F',
     'Hunter': '#ABD473',
     'Mage': '#69CCF0',
     'Monk': '#00FF96',
@@ -14,21 +15,73 @@ CLASS_COLOR = {
     'Shaman': '#0070DE',
     'Warlock': '#9482C9',
     'Warrior': '#C79C6E',
-    'Evoker': '#33937F',
 }
 
 CLASS_ICONS = {
-    # TODO: finish this and add classes, because restoration is ambiguous
-    'Blood': 'https://wow.zamimg.com/images/wow/icons/medium/spell_deathknight_frostpresence.jpg',
-    'Frost': 'https://wow.zamimg.com/images/wow/icons/medium/spell_deathknight_frostpresence.jpg',
-    'Unholy': 'https://wow.zamimg.com/images/wow/icons/medium/spell_deathknight_unholypresence.jpg',
-    'Havoc': 'https://wow.zamimg.com/images/wow/icons/medium/ability_demonhunter_specdps.jpg',
-    'Vengeance': 'https://wow.zamimg.com/images/wow/icons/medium/ability_demonhunter_spectank.jpg',
-    'Balance': 'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_starfall.jpg',
-    'Feral': 'https://wow.zamimg.com/images/wow/icons/medium/ability_druid_catform.jpg',
-    'Guardian': 'https://wow.zamimg.com/images/wow/icons/medium/ability_racial_bearform.jpg',
-    'Restoration': 'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_healingtouch.jpg',
-    'Retribution': 'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_auraoflight.jpg',
+    'Death Knight': {
+        'Blood': 'https://wow.zamimg.com/images/wow/icons/medium/spell_deathknight_frostpresence.jpg',
+        'Frost': 'https://wow.zamimg.com/images/wow/icons/medium/spell_deathknight_frostpresence.jpg',
+        'Unholy': 'https://wow.zamimg.com/images/wow/icons/medium/spell_deathknight_unholypresence.jpg',
+    },
+    'Demon Hunter': {
+        'Havoc': 'https://wow.zamimg.com/images/wow/icons/medium/ability_demonhunter_specdps.jpg',
+        'Vengeance': 'https://wow.zamimg.com/images/wow/icons/medium/ability_demonhunter_spectank.jpg',
+    },
+    'Druid': {
+        'Balance': 'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_starfall.jpg',
+        'Feral': 'https://wow.zamimg.com/images/wow/icons/medium/ability_druid_catform.jpg',
+        'Guardian': 'https://wow.zamimg.com/images/wow/icons/medium/ability_racial_bearform.jpg',
+        'Restoration': 'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_healingtouch.jpg',
+    },
+    'Evoker': {
+        'Devastation': 'https://wow.zamimg.com/images/wow/icons/medium/classicon_evoker_devastation.jpg',
+        'Preservation': 'https://wow.zamimg.com/images/wow/icons/medium/classicon_evoker_preservation.jpg',
+    },
+    'Hunter': {
+        'Beast Mastery': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_bestialdiscipline.jpg',
+        'Marksmanship': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_focusedaim.jpg',
+        'Survival': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_camouflage.jpg',
+    },
+    'Mage': {
+        'Arcane': 'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_magicalsentry.jpg',
+        'Fire': 'https://wow.zamimg.com/images/wow/icons/medium/spell_fire_firebolt02.jpg',
+        'Frost': 'https://wow.zamimg.com/images/wow/icons/medium/spell_frost_frostbolt02.jpg',
+    },
+    'Monk': {
+        'Brewmaster': 'https://wow.zamimg.com/images/wow/icons/medium/spell_monk_brewmaster_spec.jpg',
+        'Mistweaver': 'https://wow.zamimg.com/images/wow/icons/medium/spell_monk_mistweaver_spec.jpg',
+        'Windwalker': 'https://wow.zamimg.com/images/wow/icons/medium/spell_monk_windwalker_spec.jpg',
+    },
+    'Paladin': {
+        'Holy': 'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_holybolt.jpg',
+        'Protection': 'https://wow.zamimg.com/images/wow/icons/medium/ability_paladin_shieldofthetemplar.jpg',
+        'Retribution': 'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_auraoflight.jpg',
+    },
+    'Priest': {
+        'Discipline': 'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_powerwordshield.jpg',
+        'Holy': 'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_guardianspirit.jpg',
+        'Shadow': 'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_shadowwordpain.jpg',
+    },
+    'Rogue': {
+        'Assassination': 'https://wow.zamimg.com/images/wow/icons/medium/ability_rogue_deadlybrew.jpg',
+        'Outlaw': 'https://wow.zamimg.com/images/wow/icons/medium/inv_sword_30.jpg',
+        'Subtlety': 'https://wow.zamimg.com/images/wow/icons/medium/ability_stealth.jpg',
+    },
+    'Shaman': {
+        'Elemental': 'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_lightning.jpg',
+        'Enhancement': 'https://wow.zamimg.com/images/wow/icons/medium/spell_shaman_improvedstormstrike.jpg',
+        'Restoration': 'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_magicimmunity.jpg',
+    },
+    'Warlock': {
+        'Affliction': 'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_deathcoil.jpg',
+        'Demonology': 'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_metamorphosis.jpg',
+        'Destruction': 'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_rainoffire.jpg',
+    },
+    'Warrior': {
+        'Arms': 'https://wow.zamimg.com/images/wow/icons/medium/ability_warrior_savageblow.jpg',
+        'Fury': 'https://wow.zamimg.com/images/wow/icons/medium/ability_warrior_innerrage.jpg',
+        'Protection': 'https://wow.zamimg.com/images/wow/icons/medium/ability_warrior_defensivestance.jpg',
+    },
 }
 
 
@@ -49,12 +102,12 @@ class Player:
         return self._data['name']
 
     @property
-    def ilvl(self):
-        return self._data['gear']['item_level_equipped']
-
-    @property
     def spec(self):
         return self._data['active_spec_name']
+
+    @property
+    def ilvl(self):
+        return self._data['gear']['item_level_equipped']
 
     @property
     def score(self):
@@ -66,7 +119,7 @@ class Player:
 
     @property
     def class_color(self):
-        return CLASS_COLOR[self._data['class']]
+        return CLASS_COLOR[self._class]
 
     def mythic_plus_best_runs(self):
         return self._data['mythic_plus_best_runs']
@@ -125,9 +178,13 @@ class Player:
         return self._data['thumbnail_url']
 
     def spec_icon(self):
+        class_ = self._class
         spec = self.spec
-        if spec in CLASS_ICONS:
-            return CLASS_ICONS[spec]
+        if class_ in CLASS_ICONS:
+            class_specs = CLASS_ICONS[class_]
+            if spec in class_specs:
+                return class_specs[spec]
+            return ""
         else:
             return ""
 
