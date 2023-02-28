@@ -11,9 +11,9 @@ import subprocess
 import rio
 import lists
 import html_out
-from bnet import create_access_token
 from player import Player
 from affix_servant import AffixServant
+from bnet import BnetBroker
 
 
 def sync_directories(source_dir, dest_dir): #AHAHAHA from ChatGPT ^^
@@ -178,7 +178,9 @@ def main():
 	## ---------------------------------------
 
 	settings = parse_config_file(args['config'])
-	bnet_token = create_access_token(settings['client_id'], settings['client_secret'])
+	# initialize BnetBroker singleton
+	bnet_broker = BnetBroker(settings['client_id'], settings['client_secret'])
+	bnet_token = bnet_broker.bnet_token
 
 	#urls.append('https://checkip.perfect-privacy.com/json')  # Test with your Proxy
 
