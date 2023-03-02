@@ -57,7 +57,10 @@ def sync_directories(source_dir, dest_dir): #AHAHAHA from ChatGPT ^^
 		dest_file_path = os.path.join(dest_dir, file)
 		# If the file doesn't exist in source_dir, delete it from dest_dir
 		if not os.path.exists(source_file_path):
-			os.remove(dest_file_path)
+			if os.path.isdir(dest_file_path):
+				shutil.rmtree(dest_file_path)
+			else:
+				os.remove(dest_file_path)
 			changes.append("Deleted {}".format(dest_file_path))
 	return changes
 
