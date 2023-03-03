@@ -231,7 +231,7 @@ def main():
 	# Grab Season from a Player (and look it up in Static Values API) to get the Full Name and Instance names
 	# set bnet client_ID and client_secret to get Instance Timers
 	season = players[0]._data['mythic_plus_scores_by_season'][0]['season']
-	inis, sname = rio.get_instances(season, bnet_token, proxy)
+	inis, sname = rio.get_instances(season, proxy)
 	# --------------------
 	
 	# get Score_colors from API (if failed from File)

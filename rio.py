@@ -2,6 +2,8 @@ from multiprocessing.dummy import Pool as ThreadPool
 import requests
 import json
 
+from bnet import BnetBroker
+
 
 def is_json(myjson):
 	try:
@@ -68,24 +70,25 @@ def pull(urls, proxy=''):    #sometimes gets stuck if Proxy does not response -.
 	return checked_results
 
 
-def get_instances(season, bnet_token=None, proxy=''):
+def get_instances(season, proxy=''):
 	tmp = pull(['https://raider.io/api/v1/mythic-plus/static-data?expansion_id=9'], proxy)
 	instances = []
 	season_name = ""
+	bnet_broker = BnetBroker()
 	for sea in tmp[0].json()['seasons']:
 		if sea['slug'] == season:
 			for ini in sea['dungeons']:
 				ini_time = 0
 				upgrade_2 = 0
 				upgrade_3 = 0
-				if bnet_token is not None:
-					try:
-						ini_timer = pull([f'https://eu.api.blizzard.com/data/wow/mythic-keystone/dungeon/{ini["challenge_mode_id"]}?namespace=dynamic-eu&locale=en_EN&access_token={bnet_token}'], proxy)
-						ini_time = ini_timer[0].json()['keystone_upgrades'][0]['qualifying_duration'] / 1000
-						upgrade_2 = ini_timer[0].json()['keystone_upgrades'][1]['qualifying_duration'] / 1000
-						upgrade_3 = ini_timer[0].json()['keystone_upgrades'][2]['qualifying_duration'] / 1000
-					except Exception as e:
-						print(f"ERROR: {e}")
+				try:
+					url = f'https://eu.api.blizzard.com/data/wow/mythic-keystone/dungeon/{ini["challenge_mode_id"]}'
+					ini_timer = bnet_broker.pull(url, 'dynamic-eu')
+					ini_time = ini_timer['keystone_upgrades'][0]['qualifying_duration'] / 1000
+					upgrade_2 = ini_timer['keystone_upgrades'][1]['qualifying_duration'] / 1000
+					upgrade_3 = ini_timer['keystone_upgrades'][2]['qualifying_duration'] / 1000
+				except Exception as e:
+					print(f"ERROR: {e}")
 				instances.append({'short': ini['short_name'], 'name': ini['name'], 'timer': ini_time, 'upgrade_2': upgrade_2, 'upgrade_3': upgrade_3})
 			season_name = sea['name']
 			break

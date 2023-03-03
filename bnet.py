@@ -1,9 +1,6 @@
 import requests
 
 
-
-
-
 class Singleton(type):
 	_instances = {}
 
@@ -22,10 +19,19 @@ class BnetBroker(metaclass=Singleton):
 	def bnet_token(self):
 		return self._bnet_token
 
-	def pull(self):
-		realmSlug = 'nathrezim'
-		characterName = 'käseknacker'
-		url = f'https://eu.api.blizzard.com/profile/wow/character/{realmSlug}/{characterName}/professions?namespace=profile-eu&locale=en_US&access_token={self.bnet_token}'
+	@property
+	def locale(self):
+		return 'en_EN'
+
+	def pull(self, url, namespace):
+		if self.bnet_token is None:
+			return {}
+
+		url += f'?namespace={namespace}&locale={self.locale}&access_token={self.bnet_token}'
+
+		#realmSlug = 'nathrezim'
+		#characterName = 'käseknacker'
+		#url = f'https://eu.api.blizzard.com/profile/wow/character/{realmSlug}/{characterName}/professions?namespace=profile-eu&locale=en_US&access_token={self.bnet_token}'
 		r = requests.get(url)
 		if r.ok:
 			return r.json()
