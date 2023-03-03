@@ -82,7 +82,7 @@ def get_instances(season, proxy=''):
 				upgrade_2 = 0
 				upgrade_3 = 0
 				try:
-					url = f'https://eu.api.blizzard.com/data/wow/mythic-keystone/dungeon/{ini["challenge_mode_id"]}'
+					url = f'/data/wow/mythic-keystone/dungeon/{ini["challenge_mode_id"]}'
 					ini_timer = bnet_broker.pull(url, 'dynamic-eu')
 					ini_time = ini_timer['keystone_upgrades'][0]['qualifying_duration'] / 1000
 					upgrade_2 = ini_timer['keystone_upgrades'][1]['qualifying_duration'] / 1000

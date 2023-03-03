@@ -2,6 +2,13 @@ import requests
 
 
 class Singleton(type):
+	# TODO: only create a singleton if Broker is_operational / bnet_token is set
+	# otherwise this happens:
+	# bb = BnetBroker()
+	# bb.is_operational()  # => False
+	# bb2 = BnetBroker(settings['client_id'], settings['client_secret'])
+	# bb2.is_operational()  # => False, because singleton was already created
+
 	_instances = {}
 
 	def __call__(cls, *args, **kwargs):
@@ -13,25 +20,38 @@ class Singleton(type):
 class BnetBroker(metaclass=Singleton):
 
 	def __init__(self, client_id='', client_secret=''):
-		self._bnet_token = BnetBroker._create_access_token(client_id, client_secret)
+		self._region = 'eu'
+		self._locale = 'en_US'
+		self._url_prefix = f'https://{self.region}.api.blizzard.com'
+
+		self._bnet_token = BnetBroker._create_access_token(client_id, client_secret, self.region)
 
 	@property
 	def bnet_token(self):
 		return self._bnet_token
 
 	@property
+	def region(self):
+		return self._region
+
+	@property
 	def locale(self):
-		return 'en_US'
+		return self._locale
 
-	def pull(self, url, namespace):
-		if self.bnet_token is None:
+	def is_operational(self):
+		return self.bnet_token is not None
+
+	def pull(self, endpoint, namespace):
+		if not self.is_operational:
 			return {}
-
-		url += f'?namespace={namespace}&locale={self.locale}&access_token={self.bnet_token}'
 
 		#realmSlug = 'nathrezim'
 		#characterName = 'käseknacker'
 		#url = f'https://eu.api.blizzard.com/profile/wow/character/{realmSlug}/{characterName}/professions?namespace=profile-eu&locale=en_US&access_token={self.bnet_token}'
+
+		query_parameters = f'?namespace={namespace}&locale={self.locale}&access_token={self.bnet_token}'
+		url = self._url_prefix + endpoint + query_parameters
+
 		r = requests.get(url)
 		if r.ok:
 			return r.json()

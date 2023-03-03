@@ -33,7 +33,7 @@ class AffixServant:
 
         bnet_response = {}
         if self._bnet_broker.bnet_token is not None:
-            bnet_all_affixes_url = f'https://eu.api.blizzard.com/data/wow/keystone-affix/index'
+            bnet_all_affixes_url = f'/data/wow/keystone-affix/index'
             bnet_response = self._bnet_broker.pull(bnet_all_affixes_url, 'static-eu')
 
         self.current_affixes = []
@@ -86,7 +86,7 @@ class AffixServant:
     def get_affix_icon_name(self, affix_id):
         if self._bnet_broker.bnet_token is None:
             return ""
-        affix_media_url = f'https://eu.api.blizzard.com/data/wow/media/keystone-affix/{affix_id}'
+        affix_media_url = f'/data/wow/media/keystone-affix/{affix_id}'
         response = self._bnet_broker.pull(affix_media_url, 'static-eu')
         if response:
             for asset in response['assets']:
