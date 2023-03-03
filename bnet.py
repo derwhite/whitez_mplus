@@ -66,5 +66,5 @@ class BnetBroker(metaclass=Singleton):
 		if response.status_code == 200:
 			return response.json()['access_token']
 		else:
-			print("WARNING: No valid bnet client_id / client_secret set. Bnet API requests woun't be available!")
+			print("WARNING: No valid bnet client_id / client_secret set. Bnet API requests won't be available!")
 			return None

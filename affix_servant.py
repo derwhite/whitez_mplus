@@ -32,9 +32,11 @@ class AffixServant:
         responses = pull([rio_current_affixes_url], self.proxy)
 
         bnet_response = {}
-        if self._bnet_broker.bnet_token is not None:
+        if self._bnet_broker.is_operational():
             bnet_all_affixes_url = f'/data/wow/keystone-affix/index'
             bnet_response = self._bnet_broker.pull(bnet_all_affixes_url, 'static-eu')
+        else:
+            print("WARNING: bnet_broker not operational! Affix display will be incomplete.")
 
         self.current_affixes = []
         if len(responses) >= 0 and responses[0].ok:
@@ -84,7 +86,7 @@ class AffixServant:
         return None
 
     def get_affix_icon_name(self, affix_id):
-        if self._bnet_broker.bnet_token is None:
+        if not self._bnet_broker.is_operational():
             return ""
         affix_media_url = f'/data/wow/media/keystone-affix/{affix_id}'
         response = self._bnet_broker.pull(affix_media_url, 'static-eu')
@@ -104,7 +106,6 @@ class AffixServant:
     def _fix_current_affixes(self):
         # Note: fix the affix icons for the raider.io pulled affixes.
         # e.g. they use a different icon for thundering than the official source (bnet)
-        if self._bnet_broker.bnet_token is None:
-            return
-        for a in self.current_affixes:
-            a['icon'] = self.get_affix_icon_name(a['id'])
+        if self._bnet_broker.is_operational():
+            for a in self.current_affixes:
+                a['icon'] = self.get_affix_icon_name(a['id'])
