@@ -21,7 +21,7 @@ class BnetBroker(metaclass=Singleton):
 
 	@property
 	def locale(self):
-		return 'en_EN'
+		return 'en_US'
 
 	def pull(self, url, namespace):
 		if self.bnet_token is None:

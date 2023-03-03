@@ -1,5 +1,6 @@
-from rio import pull
 from pathlib import Path
+from rio import pull
+from bnet import BnetBroker
 
 AFFIX_ROTATION = [
     [9, 7, 3, 132],
@@ -22,29 +23,28 @@ class AffixServant:
     Next week affixes are only available if a valid bnet token is provided.
     """
 
-    def __init__(self, bnet_token=None, proxy=''):
-        self.bnet_token = bnet_token
+    def __init__(self, proxy=''):
         self.proxy = proxy
         self.next_week_affixes_available = False
+        self._bnet_broker = BnetBroker()
 
-        urls = []
         rio_current_affixes_url = 'https://raider.io/api/v1/mythic-plus/affixes?region=eu&locale=en'
-        urls.append(rio_current_affixes_url)
-        if self.bnet_token:
-            bnet_all_affixes_url = f'https://eu.api.blizzard.com/data/wow/keystone-affix/index?namespace=static-eu&locale=en_US&access_token={self.bnet_token}'
-            urls.append(bnet_all_affixes_url)
+        responses = pull([rio_current_affixes_url], self.proxy)
 
-        responses = pull(urls, self.proxy)
+        bnet_response = {}
+        if self._bnet_broker.bnet_token is not None:
+            bnet_all_affixes_url = f'https://eu.api.blizzard.com/data/wow/keystone-affix/index'
+            bnet_response = self._bnet_broker.pull(bnet_all_affixes_url, 'static-eu')
 
         self.current_affixes = []
-        if len(responses) >= 1 and responses[0].ok:
+        if len(responses) >= 0 and responses[0].ok:
             r = responses[0].json()
             self.current_affixes = r['affix_details']
         self._fix_current_affixes()
 
         self.all_affixes = {}
-        if len(responses) == 2 and responses[1].ok:
-            r = responses[1].json()
+        if bnet_response:
+            r = bnet_response
             for affix in r['affixes']:
                 self.all_affixes[affix['id']] = affix['name']
             self.next_week_affixes_available = True
@@ -84,13 +84,12 @@ class AffixServant:
         return None
 
     def get_affix_icon_name(self, affix_id):
-        if self.bnet_token is None:
+        if self._bnet_broker.bnet_token is None:
             return ""
-        affix_media_url = f'https://us.api.blizzard.com/data/wow/media/keystone-affix/{affix_id}?namespace=static-us&locale=en_US&access_token={self.bnet_token}'
-        responses = pull([affix_media_url], self.proxy)
-        if len(responses) == 1 and responses[0].ok:
-            r = responses[0].json()
-            for asset in r['assets']:
+        affix_media_url = f'https://eu.api.blizzard.com/data/wow/media/keystone-affix/{affix_id}'
+        response = self._bnet_broker.pull(affix_media_url, 'static-eu')
+        if response:
+            for asset in response['assets']:
                 if asset['key'] == 'icon':
                     icon_url = asset['value']
                     # NOTE: this is maybe a little bit hacky
@@ -105,7 +104,7 @@ class AffixServant:
     def _fix_current_affixes(self):
         # Note: fix the affix icons for the raider.io pulled affixes.
         # e.g. they use a different icon for thundering than the official source (bnet)
-        if self.bnet_token is None:
+        if self._bnet_broker.bnet_token is None:
             return
         for a in self.current_affixes:
             a['icon'] = self.get_affix_icon_name(a['id'])

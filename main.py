@@ -180,13 +180,9 @@ def main():
 	settings = parse_config_file(args['config'])
 	# initialize BnetBroker singleton
 	bnet_broker = BnetBroker(settings['client_id'], settings['client_secret'])
-	bnet_token = bnet_broker.bnet_token
-
-	#urls.append('https://checkip.perfect-privacy.com/json')  # Test with your Proxy
 
 	# SET PROXY ---
 	proxy = lists.get_proxy()
-	#proxy = ''	
 	# --------------------
 
 	players = []
@@ -225,7 +221,7 @@ def main():
 	players = hidden_filtered_players
 	# ---------------------
 
-	affix_s = AffixServant(bnet_token, proxy)
+	affix_s = AffixServant(proxy)
 	affixes = affix_s.get_affixes()
 
 	# Grab Season from a Player (and look it up in Static Values API) to get the Full Name and Instance names
