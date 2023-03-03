@@ -19,7 +19,7 @@ function highlightRow(row) {
     };
     row.classList.toggle("click_highlight");
 };
-function sortTable(classColumn, elementClass, table_name) {   /* Sortiert vorerst nur Zahlen, innerHTML gibt den ganzen Zellen-Inhalt aus, deshalb musste ich noch per match den eigentlichen Wert aus 'lalala>213</span> exportieren*/
+function sortTable(classColumn, classElement, table_name) {   /* Sortiert vorerst nur Zahlen, innerHTML gibt den ganzen Zellen-Inhalt aus, deshalb musste ich noch per match den eigentlichen Wert aus 'lalala>213</span> exportieren*/
     var table, rows, switching, i, x, y, shouldSwitch;
     table = document.getElementById(table_name);
     switching = true;
@@ -28,9 +28,9 @@ function sortTable(classColumn, elementClass, table_name) {   /* Sortiert vorers
         rows = table.getElementsByClassName("player_row");
         for (i = 0; i < (rows.length - 1); i++) {
             shouldSwitch = false;
-            x = rows[i].getElementsByClassName(elementClass)[classColumn];
-            y = rows[i + 1].getElementsByClassName(elementClass)[classColumn];
-            if (elementClass == "td_dungeon") {
+            x = rows[i].getElementsByClassName(classElement)[classColumn];
+            y = rows[i + 1].getElementsByClassName(classElement)[classColumn];
+            if (classElement == "td_dungeon") {
                 regex_FindNumbers = '\"([0-9]+\.*?[0-9]*?)\ ';
                 if (sorted == true) {
                     if (Number(x.outerHTML.match(regex_FindNumbers)[1]) < Number(y.outerHTML.match(regex_FindNumbers)[1])) {
@@ -39,6 +39,19 @@ function sortTable(classColumn, elementClass, table_name) {   /* Sortiert vorers
                     }
                 } else {
                     if (Number(x.outerHTML.match(regex_FindNumbers)[1]) > Number(y.outerHTML.match(regex_FindNumbers)[1])) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+            } else if (classElement == "td_player") {
+                regex_findName = '\<p.*?\"\>(.+?)\<\/p';
+                if (sorted == true) {
+                    if (x.innerHTML.match(regex_findName)[1] < y.innerHTML.match(regex_findName)[1]) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                } else {
+                    if (x.innerHTML.match(regex_findName)[1] > y.innerHTML.match(regex_findName)[1]) {
                         shouldSwitch = true;
                         break;
                     }
