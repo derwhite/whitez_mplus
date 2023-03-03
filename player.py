@@ -1,5 +1,6 @@
 import requests
 from datetime import datetime
+from bnet import BnetBroker
 
 
 CLASS_DATA = {
@@ -121,9 +122,22 @@ class Player:
 
         self._class = self._data['class']
 
+        # Data which is only available via bnet api
+        self._realm_slug = None
+        self._professions = None
+        self.set_up_bnet_data()
+
     @property
     def name(self):
         return self._data['name']
+
+    @property
+    def realm(self):
+        return self._data['realm']
+
+    @property
+    def realm_slug(self):
+        return self._realm_slug
 
     @property
     def spec(self):
@@ -145,8 +159,9 @@ class Player:
     def class_color(self):
         return CLASS_DATA[self._class]['color']
 
+    @property
     def professions(self):
-        return ""
+        return self._professions
 
     def mythic_plus_best_runs(self):
         return self._data['mythic_plus_best_runs']
@@ -215,6 +230,18 @@ class Player:
         else:
             return ""
 
+    def set_up_bnet_data(self):
+        bnet_broker = BnetBroker()
+        # get realm-slug via:
+        # /data/wow/realm/index
+        self._realm_slug = self.realm.lower()  # FIXME
+
+        name_lc = self.name.lower()
+        professions_endpoint = f'/profile/wow/character/{self.realm_slug}/{name_lc}/professions'
+        r = bnet_broker.pull(professions_endpoint, namespace='profile-eu')
+        if r:
+            self._professions = r['primaries']
+
     @staticmethod
     def create_players(player_list, responses):
         if len(player_list) != len(responses):
@@ -236,3 +263,16 @@ class Player:
             player = Player(r, alt=p['is_alt'], hidden=p.get('is_hidden', False))
             players.append(player)
         return players
+
+    @staticmethod
+    def get_professions_string(professions):
+        if professions is None:
+            return ""
+        profession_1 = ""
+        profession_2 = ""
+        if len(professions) > 0:
+            profession_1 = professions[0]['profession']['name']
+        if len(professions) > 1:
+            profession_2 = professions[1]['profession']['name']
+        # TODO: add skill level
+        return ' | '.join([profession_1, profession_2])

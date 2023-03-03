@@ -45,10 +45,6 @@ class BnetBroker(metaclass=Singleton):
 		if not self.is_operational:
 			return {}
 
-		#realmSlug = 'nathrezim'
-		#characterName = 'käseknacker'
-		#url = f'https://eu.api.blizzard.com/profile/wow/character/{realmSlug}/{characterName}/professions?namespace=profile-eu&locale=en_US&access_token={self.bnet_token}'
-
 		query_parameters = f'?namespace={namespace}&locale={self.locale}&access_token={self.bnet_token}'
 		url = self._url_prefix + endpoint + query_parameters
 

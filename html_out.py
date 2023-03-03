@@ -1,6 +1,7 @@
 import rio
 import uuid
 from datetime import datetime, timezone
+from player import Player
 
 # WREWARD=[0,0,278,278,278,281,281,285,288,288,291,294,298,298,301,304] # Season 4
 WREWARD=[0,0,382,385,385,389,389,392,395,395,398,402,405,408,408,411,415,415,418,418,421] # Season 1 DF
@@ -78,7 +79,7 @@ def gen_general_tab(players):
 		str_html += f'<td class="td_ilvl" title="{tier}"><span style="color: {p.class_color}">{p.ilvl}</span></td>'
 		str_html += f'<td><img class="spec_icon" src="{p.spec_icon()}"></td>\n'
 		str_html += f'<td>{p.achievement_points}</td>\n'
-		str_html += f'<td>{p.professions()}</td>\n'
+		str_html += f'<td>{Player.get_professions_string(p.professions)}</td>\n'
 		str_html += f'</tr>\n'
 	str_html += f'</table>\n'
 	return str_html
