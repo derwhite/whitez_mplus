@@ -78,7 +78,7 @@ def gen_general_tab(players):
 		str_html += f'<td class="td_ilvl" title="{tier}"><span style="color: {p.class_color}">{p.ilvl}</span></td>'
 		str_html += f'<td><img class="spec_icon" src="{p.spec_icon()}"></td>\n'
 		str_html += f'<td>{p.achievement_points}</td>\n'
-		str_html += f'<td>-</td>\n'
+		str_html += f'<td>{p.professions()}</td>\n'
 		str_html += f'</tr>\n'
 	str_html += f'</table>\n'
 	return str_html
@@ -236,6 +236,8 @@ def gen_weekly(players, inis, colors, weekly):
 
 
 def gen_affixes_html(affixes):
+	affixes_html_table = '<table><tr><th class="tbl_affixe" spancol=5 style="font-size: 20px;">Affixes:</th></tr>\n{rows}</table>'
+
 	tweek_affixes_html = []
 	for a in affixes['this_week']:
 		affix_html = f'<td class=\"tbl_affixe\"><a class="icontiny" ' \
@@ -247,7 +249,8 @@ def gen_affixes_html(affixes):
 	tweek_affixes_out = "<td class=\"tbl_affixe\">This Week:</td>" + ''.join(tweek_affixes_html)
 
 	if affixes['next_week'] is None:
-		return tweek_affixes_out + "\n"
+		affix_row = "<tr>" + tweek_affixes_out + "\n" + "</tr>"
+		return affixes_html_table.format(rows=affix_row)
 
 	nweek_affixes_html = []
 	for a in affixes['next_week']:
@@ -259,8 +262,8 @@ def gen_affixes_html(affixes):
 		nweek_affixes_html.append(affix_html)
 	nweek_affixes_out = "<td class=\"tbl_affixe\">Next Week:</td>" + ''.join(nweek_affixes_html)
 
-	affixes_out = "<table><tr><th class=\"tbl_affixe\" spancol=5 style=\"font-size: 20px;\">Affixes:</th></tr>\n<tr>" + tweek_affixes_out + "\n" + "</tr><tr>" + nweek_affixes_out + "</tr></table>"
-	return affixes_out
+	affix_rows = "<tr>" + tweek_affixes_out + "\n" + "</tr><tr>" + nweek_affixes_out + "</tr>"
+	return affixes_html_table.format(rows=affix_rows)
 
 
 def gen_site(affixes, all_tables, season_name, version_string):

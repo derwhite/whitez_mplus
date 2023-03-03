@@ -145,6 +145,9 @@ class Player:
     def class_color(self):
         return CLASS_DATA[self._class]['color']
 
+    def professions(self):
+        return ""
+
     def mythic_plus_best_runs(self):
         return self._data['mythic_plus_best_runs']
 
