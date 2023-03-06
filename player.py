@@ -272,7 +272,16 @@ class Player:
         profession_2 = ""
         if len(professions) > 0:
             profession_1 = professions[0]['profession']['name']
+            tiers = professions[0]['tiers']
+            for t in tiers:
+                if 'Dragon' in t['tier']['name']:
+                    skill_level = f"{t['skill_points']}/{t['max_skill_points']}"
+                    profession_1 += f" ({skill_level})"
         if len(professions) > 1:
             profession_2 = professions[1]['profession']['name']
-        # TODO: add skill level
+            tiers = professions[1]['tiers']
+            for t in tiers:
+                if 'Dragon' in t['tier']['name']:
+                    skill_level = f"{t['skill_points']}/{t['max_skill_points']}"
+                    profession_2 += f" ({skill_level})"
         return ' | '.join([profession_1, profession_2])
