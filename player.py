@@ -236,7 +236,7 @@ class Player:
             return
 
         realm_index_endpoint = f'/data/wow/realm/index'
-        r = bnet_broker.pull(realm_index_endpoint, namespace='dynamic-eu') # TODO: cache this list inside BnetBroker to prevent unnecessary traffic
+        r = bnet_broker.pull(realm_index_endpoint, namespace='dynamic-eu')
         for realm in r['realms']:
             if realm['name'] == self.realm:
                 self._realm_slug = realm['slug']

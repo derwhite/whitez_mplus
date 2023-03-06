@@ -1,4 +1,5 @@
 import requests
+import functools
 
 
 class Singleton(type):
@@ -41,6 +42,7 @@ class BnetBroker(metaclass=Singleton):
 	def is_operational(self):
 		return self.bnet_token is not None
 
+	@functools.lru_cache()
 	def pull(self, endpoint, namespace):
 		if not self.is_operational:
 			return {}
