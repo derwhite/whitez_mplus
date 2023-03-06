@@ -232,9 +232,14 @@ class Player:
 
     def set_up_bnet_data(self):
         bnet_broker = BnetBroker()
-        # get realm-slug via:
-        # /data/wow/realm/index
-        self._realm_slug = self.realm.lower()  # FIXME
+        if not bnet_broker.is_operational():
+            return
+
+        realm_index_endpoint = f'/data/wow/realm/index'
+        r = bnet_broker.pull(realm_index_endpoint, namespace='dynamic-eu') # TODO: cache this list inside BnetBroker to prevent unnecessary traffic
+        for realm in r['realms']:
+            if realm['name'] == self.realm:
+                self._realm_slug = realm['slug']
 
         name_lc = self.name.lower()
         professions_endpoint = f'/profile/wow/character/{self.realm_slug}/{name_lc}/professions'
