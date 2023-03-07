@@ -19,9 +19,15 @@
 	</p>
 	<!-- Table -->
 	<div class="mytabs">
+		<!-- Main Weekly -->
+		<input onclick="setRadioActive(this);" type="radio" id="General" name="mytabs">
+		<label for="General">General</label>
+		<div class="tab">
+			{% general_content %}
+		</div>
 		<!-- Main Tracker -->
 		<input onclick="setRadioActive(this);" type="radio" id="Main" name="mytabs" checked="checked">
-		<label for="Main">Main<br>Tracker</label>
+		<label for="Main" style="margin-left: 1%">Main<br>Tracker</label>
 		<div class="tab">
 			{% main_tracker_content %}
 		</div>

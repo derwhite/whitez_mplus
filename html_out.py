@@ -1,6 +1,7 @@
 import rio
 import uuid
 from datetime import datetime, timezone
+from player import Player
 
 # WREWARD=[0,0,278,278,278,281,281,285,288,288,291,294,298,298,301,304] # Season 4
 WREWARD=[0,0,382,385,385,389,389,392,395,395,398,402,405,408,408,411,415,415,418,418,421] # Season 1 DF
@@ -58,6 +59,30 @@ def gen_score_tt(scores):
 		tt += '</tr>'
 	tt += '</table>'
 	return tt
+
+
+def gen_general_tab(players):
+	table_id = uuid.uuid4().hex
+	str_html = f'<table id="{table_id}">\n'
+	str_html += f'<tr>'
+	str_html += f'<th>Player</th>\n'
+	str_html += f'<th onclick="sortTable(0, \'td_ilvl\', \'{table_id}\')" class="ilvl">ilvl</th>\n'
+	str_html += f'<th>Spec</th>'
+	str_html += f'<th>Achievement Points</th>'
+	str_html += f'<th>Professions</th>\n'
+	str_html += f'</tr>\n'
+
+	for p in players:
+		tier = p.get_tier_items()
+		str_html += f'<tr class="player_row" onclick="highlightRow(this)">\n'
+		str_html += f'<td title="Last Update: {p.days_since_last_update()} days ago"><a href="{p.profile_url()}" target="_blank"><img src="{p.thumbnail_url()}" width="35" height="35" style="float:left"></a><p style="color:{p.class_color};padding:5px 0px 0px 3em;margin:0px;text-align:left">{p.name}</p></td>\n'
+		str_html += f'<td class="td_ilvl" title="{tier}"><span style="color: {p.class_color}">{p.ilvl}</span></td>'
+		str_html += f'<td><img class="spec_icon" title="{p.spec}" src="{p.spec_icon()}"></td>\n'
+		str_html += f'<td>{p.achievement_points}</td>\n'
+		str_html += f'<td>{Player.get_professions_string(p.professions)}</td>\n'
+		str_html += f'</tr>\n'
+	str_html += f'</table>\n'
+	return str_html
 
 
 def gen_score_table(players, inis, colors, isTyrannical):
@@ -212,6 +237,8 @@ def gen_weekly(players, inis, colors, weekly):
 
 
 def gen_affixes_html(affixes):
+	affixes_html_table = '<table><tr><th class="tbl_affixe" spancol=5 style="font-size: 20px;">Affixes:</th></tr>\n{rows}</table>'
+
 	tweek_affixes_html = []
 	for a in affixes['this_week']:
 		affix_html = f'<td class=\"tbl_affixe\"><a class="icontiny" ' \
@@ -223,7 +250,8 @@ def gen_affixes_html(affixes):
 	tweek_affixes_out = "<td class=\"tbl_affixe\">This Week:</td>" + ''.join(tweek_affixes_html)
 
 	if affixes['next_week'] is None:
-		return tweek_affixes_out + "\n"
+		affix_row = "<tr>" + tweek_affixes_out + "\n" + "</tr>"
+		return affixes_html_table.format(rows=affix_row)
 
 	nweek_affixes_html = []
 	for a in affixes['next_week']:
@@ -235,8 +263,8 @@ def gen_affixes_html(affixes):
 		nweek_affixes_html.append(affix_html)
 	nweek_affixes_out = "<td class=\"tbl_affixe\">Next Week:</td>" + ''.join(nweek_affixes_html)
 
-	affixes_out = "<table><tr><th class=\"tbl_affixe\" spancol=5 style=\"font-size: 20px;\">Affixes:</th></tr>\n<tr>" + tweek_affixes_out + "\n" + "</tr><tr>" + nweek_affixes_out + "</tr></table>"
-	return affixes_out
+	affix_rows = "<tr>" + tweek_affixes_out + "\n" + "</tr><tr>" + nweek_affixes_out + "</tr>"
+	return affixes_html_table.format(rows=affix_rows)
 
 
 def gen_site(affixes, all_tables, season_name, version_string):
@@ -259,6 +287,7 @@ def gen_site(affixes, all_tables, season_name, version_string):
 		myhtml = myhtml.replace('{% legend %}', legend)
 		myhtml = myhtml.replace('{% affixes %}', affixes_html)
 
+		myhtml = myhtml.replace('{% general_content %}', all_tables['general'])
 		myhtml = myhtml.replace('{% main_tracker_content %}', all_tables['main_score'])
 		myhtml = myhtml.replace('{% main_weekly_content %}', all_tables['main_weekly'])
 		myhtml = myhtml.replace('{% alts_tracker_content %}', all_tables['alts_score'])

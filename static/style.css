@@ -163,3 +163,12 @@ changing order destroys the radio button lineup */
     /*padding-right: 10px;*/
     border: none;
 }
+
+.spec_icon {
+    display:block;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 8px;
+    width: 32px;
+    height: 32px;
+}

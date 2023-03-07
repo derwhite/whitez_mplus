@@ -11,9 +11,9 @@ import subprocess
 import rio
 import lists
 import html_out
-from bnet import create_access_token
 from player import Player
 from affix_servant import AffixServant
+from bnet import BnetBroker
 
 
 def sync_directories(source_dir, dest_dir): #AHAHAHA from ChatGPT ^^
@@ -181,13 +181,11 @@ def main():
 	## ---------------------------------------
 
 	settings = parse_config_file(args['config'])
-	bnet_token = create_access_token(settings['client_id'], settings['client_secret'])
-
-	#urls.append('https://checkip.perfect-privacy.com/json')  # Test with your Proxy
+	# initialize BnetBroker singleton
+	bnet_broker = BnetBroker(settings['client_id'], settings['client_secret'])
 
 	# SET PROXY ---
 	proxy = lists.get_proxy()
-	#proxy = ''	
 	# --------------------
 
 	players = []
@@ -226,13 +224,13 @@ def main():
 	players = hidden_filtered_players
 	# ---------------------
 
-	affix_s = AffixServant(bnet_token, proxy)
+	affix_s = AffixServant(proxy)
 	affixes = affix_s.get_affixes()
 
 	# Grab Season from a Player (and look it up in Static Values API) to get the Full Name and Instance names
 	# set bnet client_ID and client_secret to get Instance Timers
 	season = players[0]._data['mythic_plus_scores_by_season'][0]['season']
-	inis, sname = rio.get_instances(season, bnet_token, proxy)
+	inis, sname = rio.get_instances(season, proxy)
 	# --------------------
 	
 	# get Score_colors from API (if failed from File)
@@ -243,6 +241,8 @@ def main():
 	alts = [p for p in players if p._is_alt]
 	# Generate Tables
 	tables = {}
+	# General overview
+	tables.update({'general': html_out.gen_general_tab(players)})
 	# Mains
 	tables.update({'main_score': html_out.gen_score_table(mains, inis, scolors, affixes['tyrannical'])})
 	tables.update({'main_weekly': html_out.gen_weekly(mains, inis, scolors, 'mythic_plus_weekly_highest_level_runs')})
