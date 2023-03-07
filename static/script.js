@@ -56,6 +56,18 @@ function sortTable(classColumn, classElement, table_name) {   /* Sortiert vorers
                         break;
                     }
                 }
+            } else if (classElement == "td_achiev") {
+                if (sorted == true) {
+                    if (Number(x.innerHTML) < Number(y.innerHTML)) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                } else {
+                    if (Number(x.innerHTML) > Number(y.innerHTML)) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
             } else {
                 regex_FindNumbers = '\>(\-*?[0-9]+\.*?[0-9]*?)\<';
                 if (sorted == true) {

@@ -65,20 +65,20 @@ def gen_general_tab(players):
 	table_id = uuid.uuid4().hex
 	str_html = f'<table id="{table_id}">\n'
 	str_html += f'<tr>'
-	str_html += f'<th>Player</th>\n'
+	str_html += f'<th onclick="sortTable(0, \'td_player\', \'{table_id}\')">Player</th>\n'
 	str_html += f'<th onclick="sortTable(0, \'td_ilvl\', \'{table_id}\')" class="ilvl">ilvl</th>\n'
 	str_html += f'<th>Spec</th>'
-	str_html += f'<th>Achievement Points</th>'
+	str_html += f'<th onclick="sortTable(0, \'td_achiev\', \'{table_id}\')">Achievement Points</th>'
 	str_html += f'<th>Professions</th>\n'
 	str_html += f'</tr>\n'
 
 	for p in players:
 		tier = p.get_tier_items()
 		str_html += f'<tr class="player_row" onclick="highlightRow(this)">\n'
-		str_html += f'<td title="Last Update: {p.days_since_last_update()} days ago"><a href="{p.profile_url()}" target="_blank"><img src="{p.thumbnail_url()}" width="35" height="35" style="float:left"></a><p style="color:{p.class_color};padding:5px 0px 0px 3em;margin:0px;text-align:left">{p.name}</p></td>\n'
+		str_html += f'<td class="td_player" title="Last Update: {p.days_since_last_update()} days ago"><a href="{p.profile_url()}" target="_blank"><img src="{p.thumbnail_url()}" width="35" height="35" style="float:left"></a><p style="color:{p.class_color};padding:5px 0px 0px 3em;margin:0px;text-align:left">{p.name}</p></td>\n'
 		str_html += f'<td class="td_ilvl" title="{tier}"><span style="color: {p.class_color}">{p.ilvl}</span></td>'
 		str_html += f'<td><img class="spec_icon" title="{p.spec}" src="{p.spec_icon()}"></td>\n'
-		str_html += f'<td>{p.achievement_points}</td>\n'
+		str_html += f'<td class="td_achiev">{p.achievement_points}</td>\n'
 		str_html += f'<td>{Player.get_professions_string(p.professions)}</td>\n'
 		str_html += f'</tr>\n'
 	str_html += f'</table>\n'
