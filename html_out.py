@@ -69,7 +69,7 @@ def gen_general_tab(players):
 	str_html += f'<th onclick="sortTable(0, \'td_ilvl\', \'{table_id}\')" class="ilvl">ilvl</th>\n'
 	str_html += f'<th>Spec</th>'
 	str_html += f'<th onclick="sortTable(0, \'td_achiev\', \'{table_id}\')">Achievement Points</th>'
-	str_html += f'<th>Professions</th>\n'
+	str_html += f'<th colspan="2">Professions</th>\n'
 	str_html += f'</tr>\n'
 
 	for p in players:
@@ -79,7 +79,7 @@ def gen_general_tab(players):
 		str_html += f'<td class="td_ilvl" title="{tier}"><span style="color: {p.class_color}">{p.ilvl}</span></td>'
 		str_html += f'<td><img class="spec_icon" title="{p.spec}" src="{p.spec_icon()}"></td>\n'
 		str_html += f'<td class="td_achiev">{p.achievement_points}</td>\n'
-		str_html += f'<td>{Player.get_professions_string(p.professions)}</td>\n'
+		str_html += f'<td>{p.profession1}</td><td>{p.profession2}</td>\n'
 		str_html += f'</tr>\n'
 	str_html += f'</table>\n'
 	return str_html

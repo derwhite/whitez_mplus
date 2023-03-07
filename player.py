@@ -163,6 +163,30 @@ class Player:
     def professions(self):
         return self._professions
 
+    @property
+    def profession1(self):  # Maybe u want to rename this
+        profession_1 = "None"
+        if len(self._professions) > 0:
+            profession_1 = self._professions[0]['profession']['name']
+            tiers = self._professions[0]['tiers']
+            for t in tiers:
+                if 'Dragon' in t['tier']['name']:
+                    skill_level = f"{t['skill_points']}/{t['max_skill_points']}"
+                    profession_1 += f" ({skill_level})"
+        return profession_1
+    
+    @property
+    def profession2(self):  # Maybe u want to rename this
+        profession_2 = "None"
+        if len(self._professions) > 1:
+            profession_2 = self._professions[1]['profession']['name']
+            tiers = self._professions[1]['tiers']
+            for t in tiers:
+                if 'Dragon' in t['tier']['name']:
+                    skill_level = f"{t['skill_points']}/{t['max_skill_points']}"
+                    profession_2 += f" ({skill_level})"
+        return profession_2
+
     def mythic_plus_best_runs(self):
         return self._data['mythic_plus_best_runs']
 
