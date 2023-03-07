@@ -168,6 +168,7 @@ changing order destroys the radio button lineup */
     display:block;
     margin-left: auto;
     margin-right: auto;
-    border: 2px solid transparent;
-    border-radius: 4px;
+    border-radius: 8px;
+    width: 32px;
+    height: 32px;
 }
