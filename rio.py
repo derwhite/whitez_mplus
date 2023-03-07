@@ -13,16 +13,6 @@ def is_json(myjson):
 	return True
 
 
-def get_api_list(player_list):
-	request_urls = []		# Erzeuge API Anfrage 	Liste !!
-	hidden_players = []
-	for player in player_list:
-		realm = player['realm']
-		name = player['name']
-		request_urls.append(f'https://raider.io/api/v1/characters/profile?region=eu&realm={realm}&name={name}&fields=talents,mythic_plus_best_runs,mythic_plus_scores_by_season:current,mythic_plus_alternate_runs,gear,mythic_plus_weekly_highest_level_runs,mythic_plus_previous_weekly_highest_level_runs')
-	return request_urls, hidden_players
-
-
 def append_api_requests(players_list):
 	for player in players_list:
 		realm = player['realm']

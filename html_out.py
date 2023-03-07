@@ -3,8 +3,8 @@ import uuid
 from datetime import datetime, timezone
 from player import Player
 
-# WREWARD=[0,0,278,278,278,281,281,285,288,288,291,294,298,298,301,304] # Season 4
-WREWARD=[0,0,382,385,385,389,389,392,395,395,398,402,405,408,408,411,415,415,418,418,421] # Season 1 DF
+
+WREWARD = [0,0,382,385,385,389,389,392,395,395,398,402,405,408,408,411,415,415,418,418,421]  # Season 1 DF
 DUNGEONS_BACKGROUND = {
 	"AA": "resources/dungeons/DF/AA.png",
 	"COS": "resources/dungeons/DF/COS.png",

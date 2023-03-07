@@ -82,13 +82,6 @@ def generate_version_string():
 		return ""
 
 
-def clean_lists(mains, hidden):
-	for x in reversed(mains):
-		if f'{x.json()["name"]}-{x.json()["realm"]}' in hidden:
-			mains.remove(x)
-	return mains
-
-
 def export_data_to_json(players):
 	# Takes all Pulled Players and writes the responses to an Json file !
 	now = datetime.now()
@@ -106,13 +99,6 @@ def export_data_to_json(players):
 
 	with open(f'json/{date}_2.json', 'w', encoding="utf8") as f:
 		f.write(json.dumps(dump, sort_keys=True))
-
-
-def clear_low_ilevel_chars(mains, min_ilvl):
-	for x in reversed(mains):
-		if x.json()['gear']['item_level_equipped'] < min_ilvl:
-			mains.remove(x)
-	return mains
 
 
 def parse_config_file(config_file_path):
