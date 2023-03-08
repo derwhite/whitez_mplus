@@ -54,6 +54,9 @@ class BnetBroker(metaclass=Singleton):
 		if r.ok:
 			return r.json()
 		else:
+			print(f"WARNING: Couldn't get a valid response for {endpoint}:")
+			print(f"status-code: {r.status_code}")
+			print(f"Reason: {r.reason}")
 			return {}
 
 	@staticmethod
