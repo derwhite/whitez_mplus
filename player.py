@@ -163,29 +163,20 @@ class Player:
     def professions(self):
         return self._professions
 
-    @property
-    def profession1(self):  # Maybe u want to rename this
-        profession_1 = "None"
-        if len(self._professions) > 0:
-            profession_1 = self._professions[0]['profession']['name']
-            tiers = self._professions[0]['tiers']
-            for t in tiers:
-                if 'Dragon' in t['tier']['name']:
-                    skill_level = f"{t['skill_points']}/{t['max_skill_points']}"
-                    profession_1 += f" ({skill_level})"
-        return profession_1
-    
-    @property
-    def profession2(self):  # Maybe u want to rename this
-        profession_2 = "None"
-        if len(self._professions) > 1:
-            profession_2 = self._professions[1]['profession']['name']
-            tiers = self._professions[1]['tiers']
-            for t in tiers:
-                if 'Dragon' in t['tier']['name']:
-                    skill_level = f"{t['skill_points']}/{t['max_skill_points']}"
-                    profession_2 += f" ({skill_level})"
-        return profession_2
+    def profession_string(self, profession_number):
+        if profession_number not in [1, 2] or self.professions is None:
+            return "-"
+        if profession_number - 1 not in range(len(self.professions)):
+            return "-"
+
+        profession = self.professions[profession_number - 1]
+        profession_string = profession['profession']['name']
+        tiers = profession['tiers']
+        for t in tiers:
+            if 'Dragon' in t['tier']['name']:
+                skill_level = f"{t['skill_points']}/{t['max_skill_points']}"
+                profession_string += f" ({skill_level})"
+        return profession_string
 
     def mythic_plus_best_runs(self):
         return self._data['mythic_plus_best_runs']
@@ -269,7 +260,8 @@ class Player:
         professions_endpoint = f'/profile/wow/character/{self.realm_slug}/{name_lc}/professions'
         r = bnet_broker.pull(professions_endpoint, namespace='profile-eu')
         if r:
-            self._professions = r['primaries']
+            if 'primaries' in r:
+                self._professions = r['primaries']
 
     @staticmethod
     def create_players(player_list, responses):
@@ -292,25 +284,3 @@ class Player:
             player = Player(r, alt=p['is_alt'], hidden=p.get('is_hidden', False))
             players.append(player)
         return players
-
-    @staticmethod
-    def get_professions_string(professions):
-        if professions is None:
-            return ""
-        profession_1 = ""
-        profession_2 = ""
-        if len(professions) > 0:
-            profession_1 = professions[0]['profession']['name']
-            tiers = professions[0]['tiers']
-            for t in tiers:
-                if 'Dragon' in t['tier']['name']:
-                    skill_level = f"{t['skill_points']}/{t['max_skill_points']}"
-                    profession_1 += f" ({skill_level})"
-        if len(professions) > 1:
-            profession_2 = professions[1]['profession']['name']
-            tiers = professions[1]['tiers']
-            for t in tiers:
-                if 'Dragon' in t['tier']['name']:
-                    skill_level = f"{t['skill_points']}/{t['max_skill_points']}"
-                    profession_2 += f" ({skill_level})"
-        return ' | '.join([profession_1, profession_2])

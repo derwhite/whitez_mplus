@@ -106,7 +106,7 @@ def parse_config_file(config_file_path):
 	config.read(config_file_path)
 
 	min_ilvl = config["DEFAULT"].getint("min_ilvl", 300)
-	min_score = config["DEFAULT"].getint("min_score", 1)
+	min_score = config["DEFAULT"].getint("min_score", 0)
 	max_inactive_days = config["DEFAULT"].getint("max_inactive_days", 30)
 
 	client_id = config['BNET'].get('client_id', "")

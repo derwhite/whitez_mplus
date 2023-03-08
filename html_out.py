@@ -79,7 +79,7 @@ def gen_general_tab(players):
 		str_html += f'<td class="td_ilvl" title="{tier}"><span style="color: {p.class_color}">{p.ilvl}</span></td>'
 		str_html += f'<td><img class="spec_icon" title="{p.spec}" src="{p.spec_icon()}"></td>\n'
 		str_html += f'<td class="td_achiev">{p.achievement_points}</td>\n'
-		str_html += f'<td>{p.profession1}</td><td>{p.profession2}</td>\n'
+		str_html += f'<td>{p.profession_string(1)}</td><td>{p.profession_string(2)}</td>\n'
 		str_html += f'</tr>\n'
 	str_html += f'</table>\n'
 	return str_html
