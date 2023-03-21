@@ -77,7 +77,7 @@ def gen_general_tab(players):
 		str_html += f'<tr class="player_row" onclick="highlightRow(this)">\n'
 		str_html += f'<td class="td_player" title="Last Update: {p.days_since_last_update()} days ago"><a href="{p.profile_url()}" target="_blank"><img src="{p.thumbnail_url()}" width="35" height="35" style="float:left"></a><p style="color:{p.class_color};padding:5px 0px 0px 3em;margin:0px;text-align:left">{p.name}</p></td>\n'
 		str_html += f'<td class="td_ilvl" title="{tier}"><span style="color: {p.class_color}">{p.ilvl}</span></td>'
-		str_html += f'<td><img class="spec_icon" title="{p.spec}" src="{p.spec_icon()}"></td>\n'
+		str_html += f'<td><a href="{p.telents_url()}" target="_blank"><img class="spec_icon" title="{p.spec}" src="{p.spec_icon()}"></a></td>\n'
 		str_html += f'<td class="td_achiev">{p.achievement_points}</td>\n'
 		str_html += f'<td>{p.profession_string(1)}</td><td>{p.profession_string(2)}</td>\n'
 		str_html += f'</tr>\n'
