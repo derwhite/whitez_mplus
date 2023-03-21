@@ -1,9 +1,27 @@
 from multiprocessing.dummy import Pool as ThreadPool
+import re
 import requests
 import json
 
 from bnet import BnetBroker
 
+def get_run_details(players, proxy=''):
+	urls = []
+	for p in players:
+		[urls.append(p['url']) for p in p._data['mythic_plus_weekly_highest_level_runs'] if p['url'] not in urls]
+		[urls.append(p['url']) for p in p._data['mythic_plus_previous_weekly_highest_level_runs'] if p['url'] not in urls]
+	pattern = re.compile('\/(\d+)') # regex to extract the run id from the url
+	run_ids = []
+	[run_ids.append(pattern.findall(url)[0]) for url in urls]
+	pull_urls = [f'https://raider.io/api/v1/mythic-plus/run-details?season=season-df-1&id={run_id}' for run_id in run_ids]
+	runs_response = pull(pull_urls, proxy)
+	dict_runs = {}
+	for url, r in zip(urls, runs_response):
+		get_spieler = []
+		for spieler in r.json()['roster']:
+			get_spieler.append(spieler['character']['name'])
+		dict_runs[url] = "\n".join(get_spieler)
+	return dict_runs
 
 def is_json(myjson):
 	try:

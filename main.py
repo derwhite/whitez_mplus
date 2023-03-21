@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import os
+
 import shutil
 from pathlib import Path
 import json
@@ -192,6 +193,8 @@ def main():
 	players.extend(Player.create_players(player_list, responses))
 	# --------------------
 
+	runs_dict = rio.get_run_details(players, proxy)
+
 	# sort Players
 	ilvl_sorted_players = list(sorted(players, key=lambda player: player.ilvl, reverse=True))
 	score_sorted_players = list(sorted(ilvl_sorted_players, key=lambda p: p.score, reverse=True))
@@ -231,12 +234,12 @@ def main():
 	tables.update({'general': html_out.gen_general_tab(players)})
 	# Mains
 	tables.update({'main_score': html_out.gen_score_table(mains, inis, scolors, affixes['tyrannical'])})
-	tables.update({'main_weekly': html_out.gen_weekly(mains, inis, scolors, 'mythic_plus_weekly_highest_level_runs')})
-	tables.update({'main_pweek': html_out.gen_weekly(mains, inis, scolors, 'mythic_plus_previous_weekly_highest_level_runs')})
+	tables.update({'main_weekly': html_out.gen_weekly(mains, inis, scolors, 'mythic_plus_weekly_highest_level_runs', runs_dict)})
+	tables.update({'main_pweek': html_out.gen_weekly(mains, inis, scolors, 'mythic_plus_previous_weekly_highest_level_runs', runs_dict)})
 	# Alts
 	tables.update({'alts_score': html_out.gen_score_table(alts, inis, scolors, affixes['tyrannical'])})
-	tables.update({'alts_weekly': html_out.gen_weekly(alts, inis, scolors, 'mythic_plus_weekly_highest_level_runs')})
-	tables.update({'alts_pweek': html_out.gen_weekly(alts, inis, scolors, 'mythic_plus_previous_weekly_highest_level_runs')})
+	tables.update({'alts_weekly': html_out.gen_weekly(alts, inis, scolors, 'mythic_plus_weekly_highest_level_runs', runs_dict)})
+	tables.update({'alts_pweek': html_out.gen_weekly(alts, inis, scolors, 'mythic_plus_previous_weekly_highest_level_runs', runs_dict)})
 
 	myhtml = html_out.gen_site(affixes, tables, sname, generate_version_string())
 	

@@ -168,7 +168,7 @@ def gen_score_table(players, inis, colors, isTyrannical):
 	return str_html
 
 
-def gen_weekly(players, inis, colors, weekly):
+def gen_weekly(players, inis, colors, weekly, runs_dict):
 	players = rio.sort_players_by(players,weekly)
 	high = rio.get_highest_score(players)
 	table_id = uuid.uuid4().hex
@@ -225,9 +225,9 @@ def gen_weekly(players, inis, colors, weekly):
 				stern = get_sterne(p._data[weekly][i]['num_keystone_upgrades'])
 				dt = datetime.strptime(p._data[weekly][i]['completed_at'], '%Y-%m-%dT%H:%M:%S.000Z')
 				dt = dt.replace(tzinfo=timezone.utc).astimezone(tz=None)
-				run_time = dt.strftime('%a %d.%m %H:%M %Z')
+				run_time = dt.strftime('%a %d.%m %H:%M')
 				## TODO Maybe we want to Add instance Picture to Weekly runs, too. 
-				str_html += f'<td title="{p._data[weekly][i]["score"]} | {run_time}"><span style="color:{color}">{p._data[weekly][i]["short_name"]} (<a href="{p._data[weekly][i]["url"]}" style="color:{rio.get_color(colors, p._data[weekly][i]["score"] * 20, high)}">{p._data[weekly][i]["mythic_level"]}{stern}</a>)</span></td>\n'
+				str_html += f'<td title="Points: {p._data[weekly][i]["score"]}\n{run_time}\n{runs_dict[p._data[weekly][i]["url"]]}"><span style="color:{color}">{p._data[weekly][i]["short_name"]} (<a href="{p._data[weekly][i]["url"]}" style="color:{rio.get_color(colors, p._data[weekly][i]["score"] * 20, high)}">{p._data[weekly][i]["mythic_level"]}{stern}</a>)</span></td>\n'
 			else:
 				str_html += f'<td><span style="color:{color}">-</span></td>\n'
 		str_html += '</tr>\n'
