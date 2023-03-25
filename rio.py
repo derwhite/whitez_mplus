@@ -18,9 +18,10 @@ def get_run_details(players, proxy=''):
 	dict_runs = {}
 	for url, r in zip(urls, runs_response):
 		get_spieler = []
-		for spieler in r.json()['roster']:
-			get_spieler.append(spieler['character']['name'])
-		dict_runs[url] = "\n".join(get_spieler)
+		if r.ok and is_json(r.text):
+			for spieler in r.json()['roster']:
+				get_spieler.append(spieler['character']['name'])
+			dict_runs[url] = "\n".join(get_spieler)
 	return dict_runs
 
 def is_json(myjson):
