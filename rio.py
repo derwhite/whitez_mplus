@@ -22,6 +22,8 @@ def get_run_details(players, proxy=''):
 			for spieler in r.json()['roster']:
 				get_spieler.append(spieler['character']['name'])
 			dict_runs[url] = "\n".join(get_spieler)
+		else:
+			dict_runs[url] = "ERROR:\ndidn't found the run details"
 	return dict_runs
 
 def is_json(myjson):
