@@ -14,7 +14,8 @@ def get_run_details(players, proxy=''):
 	pattern = re.compile('\/(\d+)') # regex to extract the run id from the url
 	run_ids = []
 	[run_ids.append(pattern.findall(url)[0]) for url in urls]
-	pull_urls = [f'https://raider.io/api/v1/mythic-plus/run-details?season=season-df-1&id={run_id}' for run_id in run_ids]
+	season_slug = players[0]._data['mythic_plus_scores_by_season'][0]['season']
+	pull_urls = [f'https://raider.io/api/v1/mythic-plus/run-details?season={season_slug}&id={run_id}' for run_id in run_ids]
 	runs_response = pull(pull_urls, proxy)
 	dict_runs = {}
 	for url, r in zip(urls, runs_response):
@@ -67,6 +68,7 @@ def pull(urls, proxy=''):    #sometimes gets stuck if Proxy does not response -.
 			s.proxies.update(proxies)
 	s_get_with_timeout = partial(s.get, timeout=15)
 	results = pool.map(s_get_with_timeout, urls, chunksize=1)  # DL all URLS !!
+	pool.shutdown() #idk if nessessary... but better safe than sorry
 	checked_results = []
 	for r in results:
 		for x in range(3):
