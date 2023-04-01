@@ -1,7 +1,8 @@
-from multiprocessing.dummy import Pool as ThreadPool
 import re
 import requests
 import json
+from functools import partial
+from concurrent.futures import ThreadPoolExecutor
 
 from bnet import BnetBroker
 
@@ -55,7 +56,7 @@ def append_api_requests(players_list):
 def pull(urls, proxy=''):    #sometimes gets stuck if Proxy does not response -.-
 	s = requests.Session()
 	s.headers.update({'Cache-Control': 'none','Pragma':'ino-cache'})
-	pool = ThreadPool(4)
+	pool = ThreadPoolExecutor(max_workers=20)
 	if proxy != '':
 		with open('proxykey') as f:
 			key = f.readlines()
@@ -64,9 +65,8 @@ def pull(urls, proxy=''):    #sometimes gets stuck if Proxy does not response -.
 			'https': f'http://{key[0].strip()}@{proxy}:8080'
 			}
 			s.proxies.update(proxies)
-	results = pool.map(s.get, urls, chunksize=1)  # DL all URLS !!
-	pool.close()
-	pool.join()
+	s_get_with_timeout = partial(s.get, timeout=15)
+	results = pool.map(s_get_with_timeout, urls, chunksize=1)  # DL all URLS !!
 	checked_results = []
 	for r in results:
 		for x in range(3):
