@@ -44,13 +44,13 @@ const sortTable = (columnIndex, elementClass, tableName) => {
   
   function getValue(cell) {
     if (elementClass === 'td_dungeon') {
-        return parseFloat(cell.textContent.match(/\d+\.*\d*/)[0]);
+        return parseFloat(cell.outerHTML.match('\"([0-9]+\.*?[0-9]*?)\ ')[1]);
     } else if (elementClass === 'td_player') {
         return cell.querySelector('p').textContent;
     } else if (elementClass === 'td_achiev') {
         return parseInt(cell.textContent,10);
     } else {
-      return parseFloat(cell.textContent.match(/\d+\.*\d*/)[0]);
+      return parseFloat(cell.innerHTML.match('\>(\-*?[0-9]+\.*?[0-9]*?)\<')[1]);
     }
   }
 };
