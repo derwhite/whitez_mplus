@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', activeRadio, false);
 const whTooltips = { colorLinks: true, iconizeLinks: true, renameLinks: false };
-var sorted = false;
+var sortOrder = 'asc';
 function activeRadio() {
     var data = sessionStorage.getItem('data');
     if (JSON.parse(data).myRadioButtonID != '') {
@@ -19,78 +19,38 @@ function highlightRow(row) {
     };
     row.classList.toggle("click_highlight");
 };
-function sortTable(classColumn, classElement, table_name) {   /* Sortiert vorerst nur Zahlen, innerHTML gibt den ganzen Zellen-Inhalt aus, deshalb musste ich noch per match den eigentlichen Wert aus 'lalala>213</span> exportieren*/
-    var table, rows, switching, i, x, y, shouldSwitch;
-    table = document.getElementById(table_name);
-    switching = true;
-    while (switching) {
-        switching = false;
-        rows = table.getElementsByClassName("player_row");
-        for (i = 0; i < (rows.length - 1); i++) {
-            shouldSwitch = false;
-            x = rows[i].getElementsByClassName(classElement)[classColumn];
-            y = rows[i + 1].getElementsByClassName(classElement)[classColumn];
-            if (classElement == "td_dungeon") {
-                regex_FindNumbers = '\"([0-9]+\.*?[0-9]*?)\ ';
-                if (sorted == true) {
-                    if (Number(x.outerHTML.match(regex_FindNumbers)[1]) < Number(y.outerHTML.match(regex_FindNumbers)[1])) {
-                        shouldSwitch = true;
-                        break;
-                    }
-                } else {
-                    if (Number(x.outerHTML.match(regex_FindNumbers)[1]) > Number(y.outerHTML.match(regex_FindNumbers)[1])) {
-                        shouldSwitch = true;
-                        break;
-                    }
-                }
-            } else if (classElement == "td_player") {
-                regex_findName = '\<p.*?\"\>(.+?)\<\/p';
-                if (sorted == true) {
-                    if (x.innerHTML.match(regex_findName)[1] < y.innerHTML.match(regex_findName)[1]) {
-                        shouldSwitch = true;
-                        break;
-                    }
-                } else {
-                    if (x.innerHTML.match(regex_findName)[1] > y.innerHTML.match(regex_findName)[1]) {
-                        shouldSwitch = true;
-                        break;
-                    }
-                }
-            } else if (classElement == "td_achiev") {
-                if (sorted == true) {
-                    if (Number(x.innerHTML) < Number(y.innerHTML)) {
-                        shouldSwitch = true;
-                        break;
-                    }
-                } else {
-                    if (Number(x.innerHTML) > Number(y.innerHTML)) {
-                        shouldSwitch = true;
-                        break;
-                    }
-                }
-            } else {
-                regex_FindNumbers = '\>(\-*?[0-9]+\.*?[0-9]*?)\<';
-                if (sorted == true) {
-                    if (Number(x.innerHTML.match(regex_FindNumbers)[1]) < Number(y.innerHTML.match(regex_FindNumbers)[1])) {
-                        shouldSwitch = true;
-                        break;
-                    }
-                } else {
-                    if (Number(x.innerHTML.match(regex_FindNumbers)[1]) > Number(y.innerHTML.match(regex_FindNumbers)[1])) {
-                        shouldSwitch = true;
-                        break;
-                    }
-                }
-            }
-        }
-        if (shouldSwitch) {
-            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-            switching = true;
-        }
+
+const sortTable = (columnIndex, elementClass, tableName) => {
+  const table = document.getElementById(tableName);
+  let shouldSort = true;
+  
+  while (shouldSort) {
+    shouldSort = false;
+    const rows = table.getElementsByClassName('player_row');
+    for (let i = 0; i < rows.length - 1; i++) {
+      var x = rows[i].getElementsByClassName(elementClass)[columnIndex];;
+      var y = rows[i + 1].getElementsByClassName(elementClass)[columnIndex];;
+      var currentValue = getValue(x);
+      var nextValue = getValue(y);
+
+      if (sortOrder === 'asc' ? currentValue > nextValue : currentValue < nextValue) {
+        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+        shouldSort = true;
+        break;
+      }
     }
-    if (sorted == false) {
-        sorted = true;
+  }
+  sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+  
+  function getValue(cell) {
+    if (elementClass === 'td_dungeon') {
+        return parseFloat(cell.textContent.match(/\d+\.*\d*/)[0]);
+    } else if (elementClass === 'td_player') {
+        return cell.querySelector('p').textContent;
+    } else if (elementClass === 'td_achiev') {
+        return parseInt(cell.textContent,10);
     } else {
-        sorted = false
+      return parseFloat(cell.textContent.match(/\d+\.*\d*/)[0]);
     }
+  }
 };
