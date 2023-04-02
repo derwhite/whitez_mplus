@@ -47,6 +47,8 @@ const sortTable = (columnIndex, elementClass, tableName) => {
         return parseFloat(cell.outerHTML.match('\"([0-9]+\.*?[0-9]*?)\ ')[1]);
     } else if (elementClass === 'td_player') {
         return cell.querySelector('p').textContent;
+    } else if (elementClass === 'td_spec') {
+        return cell.innerHTML.match('title=\"(\[A-Za-z]+?)\"')[1];
     } else if (elementClass === 'td_achiev') {
         return parseInt(cell.textContent,10);
     } else {
