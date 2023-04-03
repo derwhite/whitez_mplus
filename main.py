@@ -150,6 +150,14 @@ def cli():
 	args = vars(parser.parse_args())
 	return args
 
+def clean_css_file(file_path):
+	"""	 Removes all comments and empty lines from a CSS file."""
+	with open(file_path, 'r') as f:
+		lines = f.readlines()
+	with open(file_path, 'w') as f:
+		for line in lines:
+			if not line.strip().startswith('/*') and line.strip() != '' and not line.strip().endswith('*/'):
+				f.write(line)
 
 def main():
 	args = cli()
@@ -165,6 +173,7 @@ def main():
 			exit(1)
 		sync_directories('resources', os.path.join(os.path.dirname(Path(args['outfile']).absolute()), 'resources'))
 		sync_directories('static', os.path.join(os.path.dirname(Path(args['outfile']).absolute()), 'static'))
+		clean_css_file(os.path.join(os.path.dirname(Path(args['outfile']).absolute()), 'static', 'style.css'))
 		# TODO Minify CSS and JS
 	## ---------------------------------------
 
