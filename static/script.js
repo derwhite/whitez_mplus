@@ -28,8 +28,8 @@ const sortTable = (columnIndex, elementClass, tableName) => {
     shouldSort = false;
     const rows = table.getElementsByClassName('player_row');
     for (let i = 0; i < rows.length - 1; i++) {
-      var x = rows[i].getElementsByClassName(elementClass)[columnIndex];;
-      var y = rows[i + 1].getElementsByClassName(elementClass)[columnIndex];;
+      var x = rows[i].getElementsByClassName(elementClass)[columnIndex];
+      var y = rows[i + 1].getElementsByClassName(elementClass)[columnIndex];
       var currentValue = getValue(x);
       var nextValue = getValue(y);
 
