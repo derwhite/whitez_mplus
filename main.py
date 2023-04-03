@@ -8,6 +8,7 @@ from datetime import datetime
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 import configparser
 import subprocess
+import sys
 
 import rio
 import lists
@@ -162,8 +163,8 @@ def main():
 		if os.path.dirname(Path(args['outfile']).absolute()) == os.getcwd():
 			print(f"ERROR: Your output path matches your script path !")
 			exit(1)
-		sync_directories('resources', f"{os.path.dirname(Path(args['outfile']).absolute())}/resources")
-		sync_directories('static', f"{os.path.dirname(Path(args['outfile']).absolute())}/static")
+		sync_directories('resources', os.path.join(os.path.dirname(Path(args['outfile']).absolute()), 'resources'))
+		sync_directories('static', os.path.join(os.path.dirname(Path(args['outfile']).absolute()), 'static'))
 		# TODO Minify CSS and JS
 	## ---------------------------------------
 
