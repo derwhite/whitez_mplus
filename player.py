@@ -1,7 +1,7 @@
 import requests
 from datetime import datetime
 from bnet import BnetBroker
-
+from concurrent.futures import ThreadPoolExecutor
 
 CLASS_DATA = {
     'Death Knight': {
@@ -276,17 +276,26 @@ class Player:
             return []
 
         players = []
-        for p, r in zip(player_list, responses):
-            if not r.ok:
-                print(f"WARNING: Couldn't get a valid response for player {p['name']}-{p['realm']}:")
-                print(f"status-code: {r.status_code}")
-                print(f"Reason: {r.reason}")
-                print(f"URL: {r.url}")
-                try:
-                    print(f"Response: {r.json()}")
-                except requests.exceptions.JSONDecodeError as e:
-                    print(f"Response: {r.text}")
-                continue
-            player = Player(r, alt=p['is_alt'], hidden=p.get('is_hidden', False))
-            players.append(player)
+        with ThreadPoolExecutor(max_workers=20) as executor:
+            futures = []
+            for p, r in zip(player_list, responses):
+                future = executor.submit(Player._process_player, p, r)
+                futures.append(future)
+
+            players = [future.result() for future in futures if future.result()]
         return players
+
+    @staticmethod
+    def _process_player(p, r):
+        if not r.ok:
+            print(f"WARNING: Couldn't get a valid response for player {p['name']}-{p['realm']}:")
+            print(f"status-code: {r.status_code}")
+            print(f"Reason: {r.reason}")
+            print(f"URL: {r.url}")
+            try:
+                print(f"Response: {r.json()}")
+            except requests.exceptions.JSONDecodeError as e:
+                print(f"Response: {r.text}")
+            return None
+        player = Player(r, alt=p['is_alt'], hidden=p.get('is_hidden', False))
+        return player
