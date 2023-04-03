@@ -55,31 +55,31 @@ def append_api_requests(players_list):
 
 
 def pull(urls, proxy=''):    #sometimes gets stuck if Proxy does not response -.-
-	s = requests.Session()
-	s.headers.update({'Cache-Control': 'none','Pragma':'ino-cache'})
-	pool = ThreadPoolExecutor(max_workers=20)
-	if proxy != '':
-		with open('proxykey') as f:
-			key = f.readlines()
-			proxies = {
-			'http': f'http://{key[0].strip()}@{proxy}:8080',
-			'https': f'http://{key[0].strip()}@{proxy}:8080'
-			}
-			s.proxies.update(proxies)
-	s_get_with_timeout = partial(s.get, timeout=15)
-	results = pool.map(s_get_with_timeout, urls, chunksize=1)  # DL all URLS !!
-	pool.shutdown() #idk if nessessary... but better safe than sorry
-	checked_results = []
-	for r in results:
-		for x in range(3):
-			if r.ok and is_json(r.text):
-				checked_results.append(r)
-				break
-			else:
-				r = s.get(r.url)
-			if x == 2:
-				checked_results.append(r)
-	s.close()
+	with requests.Session() as s:
+		s.headers.update({'Cache-Control': 'none','Pragma':'ino-cache'})
+		if proxy != '':
+			with open('proxykey') as f:
+				key = f.readlines()
+				proxies = {
+				'http': f'http://{key[0].strip()}@{proxy}:8080',
+				'https': f'http://{key[0].strip()}@{proxy}:8080'
+				}
+				s.proxies.update(proxies)
+		s_get_with_timeout = partial(s.get, timeout=15)
+		with ThreadPoolExecutor(max_workers=20) as pool:
+			results = pool.map(s_get_with_timeout, urls, chunksize=1)  # DL all URLS !!
+		
+		checked_results = []
+		for r in results:
+			for x in range(3):
+				if r.ok and is_json(r.text):
+					checked_results.append(r)
+					break
+				else:
+					r = s.get(r.url)
+				if x == 2:
+					checked_results.append(r)
+
 	return checked_results
 
 
