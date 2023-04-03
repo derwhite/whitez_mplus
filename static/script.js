@@ -32,7 +32,6 @@ const sortTable = (columnIndex, elementClass, tableName) => {
       var y = rows[i + 1].getElementsByClassName(elementClass)[columnIndex];
       var currentValue = getValue(x);
       var nextValue = getValue(y);
-
       if (sortOrder === 'asc' ? currentValue > nextValue : currentValue < nextValue) {
         rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
         shouldSort = true;
@@ -51,6 +50,15 @@ const sortTable = (columnIndex, elementClass, tableName) => {
         return cell.innerHTML.match('title=\"(\[A-Za-z]+?)\"')[1];
     } else if (elementClass === 'td_achiev') {
         return parseInt(cell.textContent,10);
+    } else if (elementClass === 'td_rewards') {
+        if (cell.textContent == '-') { return 0 }
+        a = cell.textContent.split('/');
+        sum = 0;
+        for (i in a){
+          if (parseInt(a[i],10) == 421){ a[i] = parseInt(a[i],10) * 20 };
+          sum += parseInt(a[i],10);
+        }
+        return sum;
     } else {
       return parseFloat(cell.innerHTML.match('\>(\-*?[0-9]+\.*?[0-9]*?)\<')[1]);
     }
