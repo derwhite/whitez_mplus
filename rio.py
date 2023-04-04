@@ -22,10 +22,10 @@ def get_run_details(players, proxy=''):
 		get_spieler = []
 		if r.ok and is_json(r.text):
 			for spieler in r.json()['roster']:
-				get_spieler.append(spieler['character']['name'])
-			dict_runs[url] = "\n".join(get_spieler)
+				get_spieler.append(f"[{int(spieler['items']['item_level_equipped'])}] {spieler['character']['name']}")
+			dict_runs[url] = "\n" + "\n".join(get_spieler)
 		else:
-			dict_runs[url] = "ERROR:\ndidn't found the run details"
+			dict_runs[url] = "\nERROR:\ndidn't found the run details"
 	return dict_runs
 
 def is_json(myjson):
