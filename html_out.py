@@ -238,14 +238,14 @@ def gen_weekly(players, inis, colors, weekly, runs_dict):
 
 
 def gen_stats():
-    myhtml = f'<h1>Stats, under Construction</h1>'
-    myhtml += f'<img src="file://C:/Users/White/Documents/Git/letsTry/Error 29.12.2022_10-40-39.jpg" alt="An example image">'
-    myhtml += f'<img src="file://C:/Users/White/Documents/Git/letsTry/Error 29.12.2022_10-40-39.jpg" alt="An example image">'
-    myhtml += f'<img src="file://C:/Users/White/Documents/Git/letsTry/Error 29.12.2022_10-40-39.jpg" alt="An example image">'
-    myhtml += f'<img src="file://C:/Users/White/Documents/Git/letsTry/Error 29.12.2022_10-40-39.jpg" alt="An example image">'
-    myhtml += f'<img src="file://C:/Users/White/Documents/Git/letsTry/Error 29.12.2022_10-40-39.jpg" alt="An example image">'
-    myhtml += f'<img src="file://C:/Users/White/Documents/Git/letsTry/Error 29.12.2022_10-40-39.jpg" alt="An example image">'
-    myhtml += f'</div>'
+    url = 'resources/stats/aa.jpg'
+    myhtml = f'<h1>Stats, under Construction</h1>\n'
+    myhtml += f'<div class="img-row">\n'
+    myhtml += f'<div class="img-container">\n'
+    myhtml += f'<a href="{url}" target="_blank"><img src="{url}" alt="An example image"></a>\n'
+    myhtml += f'<span>TITLE</span>\n'
+    myhtml += f'</div>\n'
+    myhtml += f'</div>\n'
     
     return myhtml
 

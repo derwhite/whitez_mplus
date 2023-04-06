@@ -174,9 +174,35 @@ changing order destroys the radio button lineup */
 .img-row {
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
+    align-items: flex-start;
 }
-.img-row img {
-    width: 20%;
+
+.img-container {
+    position: relative;
+    width: 200px;
     height: auto;
+    margin-right: 10px;
+}
+
+.img-container:last-child {
+    margin-right: 0;
+}
+
+.img-container img {
+    width: 100%;
+    height: auto;
+}
+
+.img-container span {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    padding: 5px;
+    font-size: 18px;
+    font-weight: bold;
+    width: 100%;
+    text-align: center;
 }
