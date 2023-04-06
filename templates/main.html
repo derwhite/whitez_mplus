@@ -61,6 +61,11 @@
 		<div class="tab">
 			{% alts_prev_weekly_content %}
 		</div>
+		<input onclick="setRadioActive(this);" type="radio" id="Stats" name="mytabs">
+		<label for="Stats"style="margin-left: 3%">Stats S1</label>
+		<div class="tab">
+			{% stats_content %}
+		</div>
 	</div>
 	<br><br><br>
 	<p>All data provided by <a href="https://raider.io">Raider.io</a> & <a href="https://battle.net">Battle.net</a></p>

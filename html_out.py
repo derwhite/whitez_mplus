@@ -237,6 +237,10 @@ def gen_weekly(players, inis, colors, weekly, runs_dict):
 	return str_html
 
 
+def gen_stats():
+    return '<h1>Stats, under Construction</h1>'
+
+
 def gen_affixes_html(affixes):
 	affixes_html_table = '<table><tr><th class="tbl_affixe" spancol=5 style="font-size: 20px;">Affixes:</th></tr>\n{rows}</table>'
 
@@ -295,6 +299,7 @@ def gen_site(affixes, all_tables, season_name, version_string):
 		myhtml = myhtml.replace('{% alts_weekly_content %}', all_tables['alts_weekly'])
 		myhtml = myhtml.replace('{% main_prev_weekly_content %}', all_tables['main_pweek'])
 		myhtml = myhtml.replace('{% alts_prev_weekly_content %}', all_tables['alts_pweek'])
+		myhtml = myhtml.replace('{% stats_content %}', all_tables['stats'])
 		myhtml = myhtml.replace('{% version_string %}', version_string)
 
 		return myhtml
