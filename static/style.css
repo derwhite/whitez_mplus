@@ -163,7 +163,6 @@ changing order destroys the radio button lineup */
     /*padding-right: 10px;*/
     border: none;
 }
-
 .spec_icon {
     display:block;
     margin-left: auto;
@@ -171,4 +170,13 @@ changing order destroys the radio button lineup */
     border-radius: 8px;
     width: 32px;
     height: 32px;
+}
+.img-row {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.img-row img {
+    width: 20%;
+    height: auto;
 }

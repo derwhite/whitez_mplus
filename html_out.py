@@ -238,7 +238,16 @@ def gen_weekly(players, inis, colors, weekly, runs_dict):
 
 
 def gen_stats():
-    return '<h1>Stats, under Construction</h1>'
+    myhtml = f'<h1>Stats, under Construction</h1>'
+    myhtml += f'<img src="file://C:/Users/White/Documents/Git/letsTry/Error 29.12.2022_10-40-39.jpg" alt="An example image">'
+    myhtml += f'<img src="file://C:/Users/White/Documents/Git/letsTry/Error 29.12.2022_10-40-39.jpg" alt="An example image">'
+    myhtml += f'<img src="file://C:/Users/White/Documents/Git/letsTry/Error 29.12.2022_10-40-39.jpg" alt="An example image">'
+    myhtml += f'<img src="file://C:/Users/White/Documents/Git/letsTry/Error 29.12.2022_10-40-39.jpg" alt="An example image">'
+    myhtml += f'<img src="file://C:/Users/White/Documents/Git/letsTry/Error 29.12.2022_10-40-39.jpg" alt="An example image">'
+    myhtml += f'<img src="file://C:/Users/White/Documents/Git/letsTry/Error 29.12.2022_10-40-39.jpg" alt="An example image">'
+    myhtml += f'</div>'
+    
+    return myhtml
 
 
 def gen_affixes_html(affixes):
