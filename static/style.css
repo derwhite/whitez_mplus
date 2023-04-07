@@ -195,13 +195,14 @@ changing order destroys the radio button lineup */
 
 .img-container span {
     position: absolute;
-    top: 0;
+    top: -10px;
     left: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    color: #fff;
+    background-color: rgba(0, 0, 0, 0.592);
+    color: #ffffff;
     padding: 5px;
-    font-size: 18px;
+    font-size: 24px;
+    text-shadow: -1px -1px 0 #1500ff, 1px -1px 0 #1500ff, -1px 1px 0 #1500ff, 1px 1px 0 #1500ff;
     font-weight: bold;
-    width: 100%;
+    width: 95%;
     text-align: center;
 }
