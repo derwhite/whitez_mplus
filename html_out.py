@@ -1,5 +1,6 @@
 import rio
 import uuid
+import os
 from datetime import datetime, timezone
 from player import Player
 
@@ -238,16 +239,40 @@ def gen_weekly(players, inis, colors, weekly, runs_dict):
 
 
 def gen_stats():
-    url = 'resources/stats/aa.jpg'
-    myhtml = f'<h1>Stats, under Construction</h1>\n'
-    myhtml += f'<div class="img-row">\n'
-    myhtml += f'<div class="img-container">\n'
-    myhtml += f'<a href="{url}" target="_blank"><img src="{url}" alt="An example image"></a>\n'
-    myhtml += f'<span>TITLE</span>\n'
-    myhtml += f'</div>\n'
-    myhtml += f'</div>\n'
-    
-    return myhtml
+	mypath = os.path.dirname(os.path.relpath(__file__))
+	mypath = os.path.join(mypath, 'resources/stats')
+	files = os.listdir(mypath)
+	# files.sort()
+
+	dungeon_runs = [file for file in files if file.startswith('dungeon_runs_')]
+	myhtml = f'<h1>Dungeon Runs 4 Players:</h1>\n'
+	myhtml += f'<div class="img-row">\n'
+	for count, url in enumerate(dungeon_runs):
+		url = os.path.join(mypath, url)
+		if count % 7 == 0:
+			myhtml += f'</div>\n'
+			myhtml += f'<div class="img-row">\n'
+		myhtml += f'<div class="img-container">\n'
+		myhtml += f'<a href="{url}" target="_blank"><img src="{url}"></a>\n'
+		myhtml += f'<span>{dungeon_runs[count][len("dungeon_runs_"):-4]}</span>\n'
+		myhtml += f'</div>\n'
+	myhtml += f'</div>\n'
+
+	played_together = [file for file in files if file.startswith('played_together_')]
+	myhtml += f'<h1>Played together with:</h1>\n'
+	myhtml += f'<div class="img-row">\n'
+	for count, url in enumerate(played_together):
+		url = os.path.join(mypath, url)
+		if count % 7 == 0:
+			myhtml += f'</div>\n'
+			myhtml += f'<div class="img-row">\n'
+		myhtml += f'<div class="img-container">\n'
+		myhtml += f'<a href="{url}" target="_blank"><img src="{url}"></a>\n'
+		myhtml += f'<span>{played_together[count][len("played_together_"):-4]}</span>\n'
+		myhtml += f'</div>\n'
+	myhtml += f'</div>\n'
+
+	return myhtml
 
 
 def gen_affixes_html(affixes):

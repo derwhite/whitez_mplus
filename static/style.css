@@ -177,7 +177,6 @@ changing order destroys the radio button lineup */
     justify-content: flex-start;
     align-items: flex-start;
 }
-
 .img-container {
     position: relative;
     width: 200px;
