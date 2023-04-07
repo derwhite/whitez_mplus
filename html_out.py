@@ -243,32 +243,39 @@ def gen_stats():
 	mypath = os.path.join(mypath, 'resources/stats')
 	files = os.listdir(mypath)
 	# files.sort()
-
 	dungeon_runs = [file for file in files if file.startswith('dungeon_runs_')]
+	played_together = [file for file in files if file.startswith('played_together_')]
+
+	pics_in_line = 6
+	pic_rows = (len(dungeon_runs) // pics_in_line) + 1
+
 	myhtml = f'<h1>Dungeon Runs 4 Players:</h1>\n'
 	myhtml += f'<div class="img-row">\n'
-	for count, url in enumerate(dungeon_runs):
-		url = os.path.join(mypath, url)
-		if count % 7 == 0:
+	for count in range(pic_rows * pics_in_line):
+		if count % pics_in_line == 0:
 			myhtml += f'</div>\n'
 			myhtml += f'<div class="img-row">\n'
 		myhtml += f'<div class="img-container">\n'
-		myhtml += f'<a href="{url}" target="_blank"><img src="{url}"></a>\n'
-		myhtml += f'<span>{dungeon_runs[count][len("dungeon_runs_"):-4]}</span>\n'
+		if count < len(dungeon_runs):
+			myhtml += f'<a href="{os.path.join(mypath, dungeon_runs[count])}" target="_blank"><img src="{os.path.join(mypath, dungeon_runs[count])}"></a>\n'
+			myhtml += f'<span>{dungeon_runs[count][len("dungeon_runs_"):-4]}</span>\n'
+		else:
+			myhtml += f'<img src="">\n'
 		myhtml += f'</div>\n'
 	myhtml += f'</div>\n'
 
-	played_together = [file for file in files if file.startswith('played_together_')]
 	myhtml += f'<h1>Played together with:</h1>\n'
 	myhtml += f'<div class="img-row">\n'
-	for count, url in enumerate(played_together):
-		url = os.path.join(mypath, url)
-		if count % 7 == 0:
+	for count in range(pic_rows * pics_in_line):
+		if count % pics_in_line == 0:
 			myhtml += f'</div>\n'
 			myhtml += f'<div class="img-row">\n'
 		myhtml += f'<div class="img-container">\n'
-		myhtml += f'<a href="{url}" target="_blank"><img src="{url}"></a>\n'
-		myhtml += f'<span>{played_together[count][len("played_together_"):-4]}</span>\n'
+		if count < len(played_together):
+			myhtml += f'<a href="{os.path.join(mypath, played_together[count])}" target="_blank"><img src="{os.path.join(mypath, played_together[count])}"></a>\n'
+			myhtml += f'<span>{played_together[count][len("played_together_"):-4]}</span>\n'
+		else:
+			myhtml += f'<img src="">\n'
 		myhtml += f'</div>\n'
 	myhtml += f'</div>\n'
 
