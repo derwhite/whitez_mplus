@@ -247,7 +247,9 @@ def gen_stats():
 	played_together = [file for file in files if file.startswith('played_together_')]
 
 	pics_in_line = 6
-	pic_rows = (len(dungeon_runs) // pics_in_line) + 1
+	pic_rows = (len(dungeon_runs) // pics_in_line)
+	if len(dungeon_runs) % pics_in_line != 0:
+		pic_rows += 1
 
 	myhtml = f'<h1>Dungeon Runs 4 Players:</h1>\n'
 	myhtml += f'<div class="img-row">\n'
