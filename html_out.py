@@ -257,8 +257,8 @@ def gen_stats():
 			myhtml += f'<div class="img-row">\n'
 		myhtml += f'<div class="img-container">\n'
 		if count < len(dungeon_runs):
-			myhtml += f'<a href="{os.path.join(mypath, dungeon_runs[count])}" target="_blank"><img src="{os.path.join(mypath, dungeon_runs[count])}"></a>\n'
-			myhtml += f'<span>{dungeon_runs[count][len("dungeon_runs_"):-4]}</span>\n'
+			myhtml += f'<a href="{os.path.join(mypath, dungeon_runs[count])}" target="_blank"><img src="{os.path.join(mypath, dungeon_runs[count])}">\n'
+			myhtml += f'<span>{dungeon_runs[count][len("dungeon_runs_"):-4]}</span></a>\n'
 		else:
 			myhtml += f'<img src="">\n'
 		myhtml += f'</div>\n'
@@ -272,8 +272,8 @@ def gen_stats():
 			myhtml += f'<div class="img-row">\n'
 		myhtml += f'<div class="img-container">\n'
 		if count < len(played_together):
-			myhtml += f'<a href="{os.path.join(mypath, played_together[count])}" target="_blank"><img src="{os.path.join(mypath, played_together[count])}"></a>\n'
-			myhtml += f'<span>{played_together[count][len("played_together_"):-4]}</span>\n'
+			myhtml += f'<a href="{os.path.join(mypath, played_together[count])}" target="_blank"><img src="{os.path.join(mypath, played_together[count])}">\n'
+			myhtml += f'<span>{played_together[count][len("played_together_"):-4]}</span></a>\n'
 		else:
 			myhtml += f'<img src="">\n'
 		myhtml += f'</div>\n'
