@@ -203,6 +203,8 @@ def main():
 	players.extend(Player.create_players(player_list, responses))
 	# --------------------
 
+	# rio.extract_player_ids(players)
+
 	runs_dict = rio.get_run_details(players, proxy)
 
 	# sort Players

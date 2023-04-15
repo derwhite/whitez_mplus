@@ -6,23 +6,47 @@ from concurrent.futures import ThreadPoolExecutor
 
 from bnet import BnetBroker
 
+def extract_player_ids(players, proxy='') -> None:
+	run_id_pattern = re.compile('\/(\d+)')
+	run_ids = [run_id_pattern.findall(p._data['mythic_plus_best_runs'][0]['url'])[0] for p in players if len(p._data['mythic_plus_best_runs']) > 0]
+	season_slug = players[0]._data['mythic_plus_scores_by_season'][0]['season']
+	pull_urls = [f'https://raider.io/api/v1/mythic-plus/run-details?season={season_slug}&id={run_id}' for run_id in run_ids]
+	runs_response = pull(pull_urls, proxy)
+	dict_player_ids = {}
+	for p in players:
+		for r in runs_response:
+			player_found = False
+			if r.ok and is_json(r.text):
+				for char in r.json()['roster']:
+					if char['character']['name'] == p.name:
+						dict_player_ids[p.name] = char['character']['id']
+						player_found = True
+						break
+			if player_found:
+				break
+	with open('player_ids.json', 'w') as f:
+		json.dump(dict_player_ids, f)
+	
+
 def get_run_details(players, proxy=''):
 	urls = []
 	for p in players:
-		[urls.append(p['url']) for p in p._data['mythic_plus_weekly_highest_level_runs'] if p['url'] not in urls]
-		[urls.append(p['url']) for p in p._data['mythic_plus_previous_weekly_highest_level_runs'] if p['url'] not in urls]
+		urls.extend([p['url'] for p in p._data['mythic_plus_weekly_highest_level_runs'] if p['url'] not in urls])
+		urls.extend([p['url'] for p in p._data['mythic_plus_previous_weekly_highest_level_runs'] if p['url'] not in urls])
 	pattern = re.compile('\/(\d+)') # regex to extract the run id from the url
-	run_ids = []
-	[run_ids.append(pattern.findall(url)[0]) for url in urls]
+	run_ids = [pattern.findall(url)[0] for url in urls]
 	season_slug = players[0]._data['mythic_plus_scores_by_season'][0]['season']
 	pull_urls = [f'https://raider.io/api/v1/mythic-plus/run-details?season={season_slug}&id={run_id}' for run_id in run_ids]
 	runs_response = pull(pull_urls, proxy)
 	dict_runs = {}
 	for url, r in zip(urls, runs_response):
-		get_spieler = []
 		if r.ok and is_json(r.text):
-			for spieler in r.json()['roster']:
-				get_spieler.append(f"[{int(spieler['items']['item_level_equipped'])}] {spieler['character']['name']}")
+			# add tank first
+			get_spieler = [f"[{int(spieler['items']['item_level_equipped'])}] {spieler['character']['name']}" for spieler in r.json()['roster'] if spieler['character']['spec']['role'] == 'tank']
+			# add healer 2nd
+			get_spieler.extend([f"[{int(spieler['items']['item_level_equipped'])}] {spieler['character']['name']}" for spieler in r.json()['roster'] if spieler['character']['spec']['role'] == 'healer'])
+			# add dps last
+			get_spieler.extend([f"[{int(spieler['items']['item_level_equipped'])}] {spieler['character']['name']}" for spieler in r.json()['roster'] if spieler['character']['spec']['role'] == 'dps'])
 			dict_runs[url] = "\n" + "\n".join(get_spieler)
 		else:
 			dict_runs[url] = "\nERROR:\ndidn't found the run details"
