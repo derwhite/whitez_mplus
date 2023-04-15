@@ -40,10 +40,13 @@ def get_run_details(players, proxy=''):
 	runs_response = pull(pull_urls, proxy)
 	dict_runs = {}
 	for url, r in zip(urls, runs_response):
-		get_spieler = []
 		if r.ok and is_json(r.text):
-			for spieler in r.json()['roster']:
-				get_spieler.append(f"[{int(spieler['items']['item_level_equipped'])}] {spieler['character']['name']}")
+			# add tank first
+			get_spieler = [f"[{int(spieler['items']['item_level_equipped'])}] {spieler['character']['name']}" for spieler in r.json()['roster'] if spieler['character']['spec']['role'] == 'tank']
+			# add healer 2nd
+			get_spieler.extend([f"[{int(spieler['items']['item_level_equipped'])}] {spieler['character']['name']}" for spieler in r.json()['roster'] if spieler['character']['spec']['role'] == 'healer'])
+			# add dps last
+			get_spieler.extend([f"[{int(spieler['items']['item_level_equipped'])}] {spieler['character']['name']}" for spieler in r.json()['roster'] if spieler['character']['spec']['role'] == 'dps'])
 			dict_runs[url] = "\n" + "\n".join(get_spieler)
 		else:
 			dict_runs[url] = "\nERROR:\ndidn't found the run details"
