@@ -1,119 +1,121 @@
-
 @font-face {
-    font-family: 'TitilliumWeb';
-    src: url('../resources/Font/Titillium_Web/TitilliumWeb-SemiBold.ttf');
+  font-family: "TitilliumWeb";
+  src: url("../resources/Font/Titillium_Web/TitilliumWeb-SemiBold.ttf");
 }
 /* complete site */
 html {
-    background-color: black;
-    color: white;
-    font-family: 'TitilliumWeb', sans-serif;
+  background-color: black;
+  color: white;
+  font-family: "TitilliumWeb", sans-serif;
 }
 /* Affix tooltip class */
 .icontiny {
-    background: left center no-repeat;
+  background: left center no-repeat;
 }
 /* highlights row, that was clicked, through javascript */
 .click_highlight {
-	background-color: #123456 !important;
-    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+  background-color: #123456 !important;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
+    1px 1px 0 #000;
 }
 /*<th> and <td> of table affixes */
 .tbl_affixe {
-    text-align: left;
-    padding-right: 10px;
-    border: none;
+  text-align: left;
+  padding-right: 10px;
+  border: none;
 }
 /* all in mytabs (complete table and select section) */
 .mytabs {
-    display: flex;
-    flex-wrap: wrap;
-    white-space: nowrap;
-    max-width: 100%;
-	font-size: 17px;
-	text-align:center;
+  display: flex;
+  flex-wrap: wrap;
+  white-space: nowrap;
+  max-width: 100%;
+  font-size: 17px;
+  text-align: center;
 }
 /* table and td cells in mytabs */
-.mytabs table, td {
-	border: 1px solid #383838;
-    border-collapse: collapse;
+.mytabs table,
+td {
+  border: 1px solid #383838;
+  border-collapse: collapse;
 }
 /* th in mytabs */
 .mytabs th {
-    position: sticky;
-	background-color: black;
-	font-size: 17px;
-    top: -1px;
-    outline: 1px solid #383838;
-    height: 53px;
-	background-size: 100% 100%;
-	z-index: 10;
+  position: sticky;
+  background-color: black;
+  font-size: 17px;
+  top: -1px;
+  outline: 1px solid #383838;
+  height: 53px;
+  background-size: 100% 100%;
+  z-index: 10;
 }
 /* only table in mytabs */
 .mytabs table {
-    width: 100%;
+  width: 100%;
 }
 /* every 2nd row in mytabs */
 .mytabs tr:nth-child(even) {
-	background-color: #181818;
+  background-color: #181818;
 }
 /* every row except first, because this is th (on mouse hover) in mytabs*/
 .mytabs tr:not(:first-child):hover {
-    background-color: #012e31;
+  background-color: #012e31;
 }
 /* radio buttons in mytabs (table select)*/
 /* display: none; hides the small dot selector */
 .mytabs input[type="radio"] {
-    display: none;
+  display: none;
 }
 /* the labels of radio buttons in mytabs */
 .mytabs label {
-    padding: 5px;
-	width: 85px;
-    font-weight: bold;
-    border: 1px solid #383838;
-	font-size: 17px;
-	border-radius: 15px 15px 0px 0px;
+  padding: 5px;
+  width: 85px;
+  font-weight: bold;
+  border: 1px solid #383838;
+  font-size: 17px;
+  border-radius: 15px 15px 0px 0px;
 }
 /* has to do with the tabs itself, makes all invisable except the selected one.
 changing order destroys the radio button lineup */
 .mytabs .tab {
-    width: 100%;
-    order: 1;
-    display: none;
+  width: 100%;
+  order: 1;
+  display: none;
 }
 /* has also todo with table display on checked radio button */
-.mytabs input[type='radio']:checked + label + .tab {
-    display: block;
+.mytabs input[type="radio"]:checked + label + .tab {
+  display: block;
 }
 /* checked radio button */
 .mytabs input[type="radio"]:checked + label {
-	color: red;
+  color: red;
 }
 /* all dungeons th in mythic score table */
 .mytabs .dungeon {
-	width: 8%;
-    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+  width: 8%;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
+    1px 1px 0 #000;
 }
 /* ilvl th in all tables */
 .mytabs .ilvl {
-    width: 5%;
+  width: 5%;
 }
 /* score th in mythic score table */
 .mytabs .score {
-    width: 7%;
+  width: 7%;
 }
 /* rewards th in weekly table */
 .mytabs .rewards {
-    width: 11%;
+  width: 11%;
 }
 /* +20 th in wekkly table */
 .mytabs .twenty {
-    width: 4%;
+  width: 4%;
 }
 /* empty th fields in weekly table */
 .mytabs .runs_weekly {
-    width: 7%;
+  width: 7%;
 }
 /* Improved tooltips which looks like a speach bubble and can contain any kind of html content, e.g. images */
 /* add 'class="tooltip"' to the html element which should show a tooltip */
@@ -160,49 +162,54 @@ changing order destroys the radio button lineup */
   width: 12px;
 }
 .tbl_tt td {
-    /*padding-right: 10px;*/
-    border: none;
+  /*padding-right: 10px;*/
+  border: none;
 }
 .spec_icon {
-    display:block;
-    margin-left: auto;
-    margin-right: auto;
-    border-radius: 8px;
-    width: 32px;
-    height: 32px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
 }
 .img-row {
-    width: 100%;
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 .img-container {
-    position: relative;
-    width: 200px;
-    height: auto;
-    margin-right: 10px;
+  position: relative;
+  width: 200px;
+  height: auto;
+  margin-right: 10px;
+}
+
+.img-container:hover {
+  transform: scale(1.2);
 }
 
 .img-container:last-child {
-    margin-right: 0;
+  margin-right: 0;
 }
 
 .img-container img {
-    width: 100%;
-    height: auto;
+  width: 100%;
+  height: auto;
 }
 
 .img-container span {
-    position: absolute;
-    top: -10px;
-    left: 0;
-    background-color: rgba(0, 0, 0, 0.592);
-    color: #ffffff;
-    padding: 5px;
-    font-size: 24px;
-    text-shadow: -1px -1px 0 #1500ff, 1px -1px 0 #1500ff, -1px 1px 0 #1500ff, 1px 1px 0 #1500ff;
-    font-weight: bold;
-    width: 95%;
-    text-align: center;
+  position: absolute;
+  top: -10px;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.592);
+  color: #ffffff;
+  padding: 5px;
+  font-size: 24px;
+  text-shadow: -1px -1px 0 #1500ff, 1px -1px 0 #1500ff, -1px 1px 0 #1500ff,
+    1px 1px 0 #1500ff;
+  font-weight: bold;
+  width: 95%;
+  text-align: center;
 }
