@@ -6,6 +6,8 @@ from player import Player
 
 
 WREWARD = [0,0,382,385,385,389,389,392,395,395,398,402,405,408,408,411,415,415,418,418,421]  # Season 1 DF
+# WREWARD = [0, 0, 408, 411, 411, 415, 415, 418, 421, 421, 424, 428, 431, 434, 434, 437, 441, 441, 444, 444, 447] # Season 2 DF
+
 DUNGEONS_BACKGROUND = {
 	"AA": "resources/dungeons/DF/AA.png",
 	"COS": "resources/dungeons/DF/COS.png",
@@ -15,6 +17,15 @@ DUNGEONS_BACKGROUND = {
 	"TJS": "resources/dungeons/DF/TJS.png",
 	"AV": "resources/dungeons/DF/AV.png",
 	"NO": "resources/dungeons/DF/NO.png",
+	# Season 2
+ 	"BH": "resources/dungeons/DF/BH.png",
+	"FH": "resources/dungeons/DF/FH.png",
+	"HOI": "resources/dungeons/DF/HOI.png",
+	"NELT": "resources/dungeons/DF/NELT.png",
+	"NL": "resources/dungeons/DF/NL.png",
+	"ULD": "resources/dungeons/DF/ULD.png",
+	"UNDR": "resources/dungeons/DF/UNDR.png",
+	"VP": "resources/dungeons/DF/VP.png",
 }
 
 
