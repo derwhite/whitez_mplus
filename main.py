@@ -108,7 +108,7 @@ def parse_config_file(config_file_path):
 	config.read(config_file_path)
 
 	min_ilvl = config["DEFAULT"].getint("min_ilvl", 300)
-	min_score = config["DEFAULT"].getint("min_score", 0)
+	min_score = config["DEFAULT"].getint("min_score", 1)
 	max_inactive_days = config["DEFAULT"].getint("max_inactive_days", 30)
 
 	client_id = config['BNET'].get('client_id', "")
@@ -207,22 +207,23 @@ def main():
 
 	runs_dict = rio.get_run_details(players, proxy)
 
+	export_data_to_json(players)
+
 	# sort Players
 	ilvl_sorted_players = list(sorted(players, key=lambda player: player.ilvl, reverse=True))
 	score_sorted_players = list(sorted(ilvl_sorted_players, key=lambda p: p.score, reverse=True))
 	# --------------------
 
 	# Filter low iLvl and inactive players
-	ilvl_filtered_players = list(filter(lambda player: player.ilvl >= settings['min_ilvl'], score_sorted_players))
+	inactive_filtered_players = list(filter(lambda player: player.days_since_last_update() < settings['max_inactive_days'], score_sorted_players))
+	ilvl_filtered_players = list(filter(lambda player: player.ilvl >= settings['min_ilvl'], inactive_filtered_players))
 	score_filtered_players = list(filter(lambda player: player.score >= settings['min_score'], ilvl_filtered_players))
-	inactive_filtered_players = list(filter(lambda player: player.days_since_last_update() < settings['max_inactive_days'], score_filtered_players))
 	# --------------------
-	
-	export_data_to_json(players)
 
 	# remove hidden mains
-	hidden_filtered_players = list(filter(lambda player: not player._is_hidden, inactive_filtered_players))
-	players = hidden_filtered_players
+	hidden_filtered_players = list(filter(lambda player: not player._is_hidden, score_filtered_players))
+	mplus_players = hidden_filtered_players
+	general_players = inactive_filtered_players  # show all active chars in general tab regardless of their score or ilvl
 	# ---------------------
 
 	affix_s = AffixServant(proxy)
@@ -230,7 +231,7 @@ def main():
 
 	# Grab Season from a Player (and look it up in Static Values API) to get the Full Name and Instance names
 	# set bnet client_ID and client_secret to get Instance Timers
-	season = players[0]._data['mythic_plus_scores_by_season'][0]['season']
+	season = mplus_players[0]._data['mythic_plus_scores_by_season'][0]['season']
 	inis, sname = rio.get_instances(season, proxy)
 	# --------------------
 	
@@ -238,12 +239,12 @@ def main():
 	scolors = rio.get_score_colors(proxy)
 	# --------------------
 
-	mains = [p for p in players if not p._is_alt]
-	alts = [p for p in players if p._is_alt]
+	mains = [p for p in mplus_players if not p._is_alt]
+	alts = [p for p in mplus_players if p._is_alt]
 	# Generate Tables
 	tables = {}
 	# General overview
-	tables.update({'general': html_out.gen_general_tab(players)})
+	tables.update({'general': html_out.gen_general_tab(general_players)})
 	# Mains
 	tables.update({'main_score': html_out.gen_score_table(mains, inis, scolors, affixes['tyrannical'])})
 	tables.update({'main_weekly': html_out.gen_weekly(mains, inis, scolors, 'mythic_plus_weekly_highest_level_runs', runs_dict)})
