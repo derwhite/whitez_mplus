@@ -18,6 +18,8 @@ from affix_servant import AffixServant
 from bnet import BnetBroker
 
 
+EXPANSION_ID = 9
+
 def sync_directories(source_dir, dest_dir): #AHAHAHA from ChatGPT ^^
 	"""
 	Synchronize the contents of two directories, source_dir and dest_dir.
@@ -204,7 +206,6 @@ def main():
 	# --------------------
 
 	# rio.extract_player_ids(players)
-
 	runs_dict = rio.get_run_details(players, proxy)
 
 	export_data_to_json(players)
@@ -232,9 +233,14 @@ def main():
 	# Grab Season from a Player (and look it up in Static Values API) to get the Full Name and Instance names
 	# set bnet client_ID and client_secret to get Instance Timers
 	season = mplus_players[0]._data['mythic_plus_scores_by_season'][0]['season']
-	inis, sname = rio.get_instances(season, proxy)
+	inis, sname = rio.get_instances(EXPANSION_ID, season, proxy)
 	# --------------------
-	
+ 
+	season_end = rio.get_season_end(EXPANSION_ID, season, proxy)
+	if season_end:
+		season_ends_str = f"{sname} ends on {season_end.strftime('%d.%m.%Y %H:%M')}"
+	else:
+		season_ends_str = ''
 	# get Score_colors from API (if failed from File)
 	scolors = rio.get_score_colors(proxy)
 	# --------------------
@@ -254,7 +260,7 @@ def main():
 	tables.update({'alts_weekly': html_out.gen_weekly(alts, inis, scolors, 'mythic_plus_weekly_highest_level_runs', runs_dict)})
 	tables.update({'alts_pweek': html_out.gen_weekly(alts, inis, scolors, 'mythic_plus_previous_weekly_highest_level_runs', runs_dict)})
 
-	myhtml = html_out.gen_site(affixes, tables, sname, generate_version_string())
+	myhtml = html_out.gen_site(affixes, tables, sname, season_ends_str,generate_version_string())
 	
 	with open(args['outfile'], "w", encoding="utf8") as text_file:
 		text_file.write(myhtml)

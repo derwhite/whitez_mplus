@@ -3,7 +3,7 @@ import requests
 import json
 from functools import partial
 from concurrent.futures import ThreadPoolExecutor
-
+from datetime import datetime
 from bnet import BnetBroker
 
 def extract_player_ids(players, proxy='') -> None:
@@ -107,8 +107,8 @@ def pull(urls, proxy=''):    #sometimes gets stuck if Proxy does not response -.
 	return checked_results
 
 
-def get_instances(season, proxy=''):
-	tmp = pull(['https://raider.io/api/v1/mythic-plus/static-data?expansion_id=9'], proxy)
+def get_instances(expansion_id, season, proxy=''):
+	tmp = pull([f'https://raider.io/api/v1/mythic-plus/static-data?expansion_id={expansion_id}'], proxy)
 	instances = []
 	season_name = ""
 	bnet_broker = BnetBroker()
@@ -190,3 +190,12 @@ def get_highest_score(players):
 			if high < ini['score']:
 				high = ini['score']
 	return high
+
+def get_season_end(expasion_id, season_slug, proxy = '') -> datetime:
+	tmp = pull([f'https://raider.io/api/v1/mythic-plus/static-data?expansion_id={expasion_id}'], proxy)
+	for sea in tmp[0].json()['seasons']:
+		if sea['slug'] == season_slug:
+			if sea['ends']['eu'] != None:
+				return datetime.strptime(sea['ends']['eu'], '%Y-%m-%dT%H:%M:%SZ')
+			else:
+				return None
