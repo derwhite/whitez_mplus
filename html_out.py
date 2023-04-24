@@ -326,7 +326,7 @@ def gen_affixes_html(affixes):
 	return affixes_html_table.format(rows=affix_rows)
 
 
-def gen_site(affixes, all_tables, season_name, version_string):
+def gen_site(affixes, all_tables, season_name, season_end, version_string):
 	now = datetime.now()
 	now = now.strftime("%d.%m.%Y %H:%M:%S")
 
@@ -345,7 +345,8 @@ def gen_site(affixes, all_tables, season_name, version_string):
 		myhtml = myhtml.replace('{% now %}', now)
 		myhtml = myhtml.replace('{% legend %}', legend)
 		myhtml = myhtml.replace('{% affixes %}', affixes_html)
-
+		myhtml = myhtml.replace('{% season_ends %}', season_end)
+		
 		myhtml = myhtml.replace('{% general_content %}', all_tables['general'])
 		myhtml = myhtml.replace('{% main_tracker_content %}', all_tables['main_score'])
 		myhtml = myhtml.replace('{% main_weekly_content %}', all_tables['main_weekly'])

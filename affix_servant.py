@@ -68,15 +68,17 @@ class AffixServant:
 
         next_week_affixes = []
         next_week_affix_ids = self.search_next_affix_week()
-        for affix_id in next_week_affix_ids:
-            affix = {}
-            affix['id'] = affix_id
-            affix['name'] = self.all_affixes[affix_id]
-            affix['description'] = ""  # TODO: You can get this here: /data/wow/keystone-affix/{keystoneAffixId}
-            affix['icon'] = self.get_affix_icon_name(affix_id)
-            affix['wowhead_url'] = f'https://wowhead.com/affix={affix_id}'
-            next_week_affixes.append(affix)
-        return next_week_affixes
+        if next_week_affix_ids:
+            for affix_id in next_week_affix_ids:
+                affix = {}
+                affix['id'] = affix_id
+                affix['name'] = self.all_affixes[affix_id]
+                affix['description'] = ""  # TODO: You can get this here: /data/wow/keystone-affix/{keystoneAffixId}
+                affix['icon'] = self.get_affix_icon_name(affix_id)
+                affix['wowhead_url'] = f'https://wowhead.com/affix={affix_id}'
+                next_week_affixes.append(affix)
+            return next_week_affixes
+        return None
 
     def search_next_affix_week(self):
         current_affix_ids = [affix['id'] for affix in self.current_affixes]
