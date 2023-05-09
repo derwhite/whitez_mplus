@@ -5,8 +5,7 @@ from datetime import datetime, timezone
 from player import Player
 
 
-WREWARD = [0,0,382,385,385,389,389,392,395,395,398,402,405,408,408,411,415,415,418,418,421]  # Season 1 DF
-# WREWARD = [0, 0, 408, 411, 411, 415, 415, 418, 421, 421, 424, 428, 431, 434, 434, 437, 441, 441, 444, 444, 447] # Season 2 DF
+WREWARD = [0, 0, 415, 418, 421, 421, 424, 424, 428, 428, 431, 431, 434, 434, 437, 437, 441, 441, 444, 444, 447] # Season 2 DF
 
 DUNGEONS_BACKGROUND = {
 	"AA": "resources/dungeons/DF/AA.png",

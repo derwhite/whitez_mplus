@@ -204,7 +204,7 @@ def main():
 	responses = rio.pull(urls, proxy)
 	players.extend(Player.create_players(player_list, responses))
 	# --------------------
-
+	
 	# rio.extract_player_ids(players)
 	runs_dict = rio.get_run_details(players, proxy)
 
@@ -232,7 +232,8 @@ def main():
 
 	# Grab Season from a Player (and look it up in Static Values API) to get the Full Name and Instance names
 	# set bnet client_ID and client_secret to get Instance Timers
-	season = mplus_players[0]._data['mythic_plus_scores_by_season'][0]['season']
+ 
+	season = general_players[0]._data['mythic_plus_scores_by_season'][0]['season']
 	inis, sname = rio.get_instances(EXPANSION_ID, season, proxy)
 	# --------------------
  
