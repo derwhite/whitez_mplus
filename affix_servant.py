@@ -3,16 +3,14 @@ from rio import pull
 from bnet import BnetBroker
 
 AFFIX_ROTATION = [
-    [9, 7, 3, 132],
-    [10, 6, 14, 132],
-    [9, 11, 12, 132],
-    [10, 8, 3, 132],
-    [9, 6, 124, 132],
-    [10, 123, 12, 132],
-    [9, 8, 13, 132],
-    [10, 7, 124, 132],
-    [9, 123, 14, 132],
-    [10, 11, 13, 132],
+    [9, 124, 6],
+    [10, -1, -1],
+    [9, -1, -1],
+    [10, -1, -1],
+    [9, -1, -1],
+    [10, -1, -1],
+    [9, -1, -1],
+    [10, -1, -1],
 ]
 
 
@@ -71,11 +69,19 @@ class AffixServant:
         if next_week_affix_ids:
             for affix_id in next_week_affix_ids:
                 affix = {}
-                affix['id'] = affix_id
-                affix['name'] = self.all_affixes[affix_id]
-                affix['description'] = ""  # TODO: You can get this here: /data/wow/keystone-affix/{keystoneAffixId}
-                affix['icon'] = self.get_affix_icon_name(affix_id)
-                affix['wowhead_url'] = f'https://wowhead.com/affix={affix_id}'
+                if affix_id == -1:
+                    unknown_affix = {
+                        'id': -1,
+                        'name': "???",
+                        'description': ""
+                    }
+                    affix = unknown_affix
+                else:
+                    affix['id'] = affix_id
+                    affix['name'] = self.all_affixes[affix_id]
+                    affix['description'] = ""  # TODO: You can get this here: /data/wow/keystone-affix/{keystoneAffixId}
+                    affix['icon'] = self.get_affix_icon_name(affix_id)
+                    affix['wowhead_url'] = f'https://wowhead.com/affix={affix_id}'
                 next_week_affixes.append(affix)
             return next_week_affixes
         return None
