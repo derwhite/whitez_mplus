@@ -234,9 +234,12 @@ class Player:
     def thumbnail_url(self):
         return self._data['thumbnail_url']
 
-    def telents_url(self):
+    def talents_url(self):
         wowhead_talents_url = 'https://www.wowhead.com/talent-calc/blizzard/'
-        return wowhead_talents_url + self._data['talentLoadout']['loadout_text']
+        if 'talentLoadout' in self._data:
+            if 'loadout_text' in self._data['talentLoadout']:
+                wowhead_talents_url += self._data['talentLoadout']['loadout_text']
+        return wowhead_talents_url
 
     def spec_icon(self):
         class_ = self._class
