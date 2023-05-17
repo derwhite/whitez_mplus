@@ -4,7 +4,7 @@ from bnet import BnetBroker
 
 AFFIX_ROTATION = [
     [9, 124, 6],
-    [10, -1, -1],
+    [10, 134, 7],
     [9, -1, -1],
     [10, -1, -1],
     [9, -1, -1],

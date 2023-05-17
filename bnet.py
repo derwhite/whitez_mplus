@@ -65,7 +65,13 @@ class BnetBroker(metaclass=Singleton):
 		endpoint = f'https://{region}.battle.net/oauth/token'
 		response = requests.post(endpoint, data=data, auth=(client_id, client_secret))
 		if response.status_code == 200:
-			return response.json()['access_token']
+			try:
+				return response.json()['access_token']
+			except requests.exceptions.JSONDecodeError as e:
+				print("WARNING: '_create_access_token' api call doesn't return a valid json response! "
+					  "Bnet API requests won't be available!")
+				print(f"Response: {response.text}")
+				return None
 		else:
 			print("WARNING: No valid bnet client_id / client_secret set. Bnet API requests won't be available!")
 			return None
