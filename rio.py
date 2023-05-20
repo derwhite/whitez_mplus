@@ -89,7 +89,9 @@ def pull(urls, proxy=''):    #sometimes gets stuck if Proxy does not response -.
 				'https': f'http://{key[0].strip()}@{proxy}:8080'
 				}
 				s.proxies.update(proxies)
-		s_get_with_timeout = partial(s.get, timeout=15)
+		connection_timeout = 15
+		read_timeout = 30
+		s_get_with_timeout = partial(s.get, timeout=(connection_timeout,read_timeout))
 		if len(urls) > 1:
 			with ThreadPoolExecutor(max_workers=20) as pool:
 				results = pool.map(s_get_with_timeout, urls, chunksize=1)  # DL all URLS !!
