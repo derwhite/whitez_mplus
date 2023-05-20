@@ -96,15 +96,19 @@ def pull(urls, proxy=''):    #sometimes gets stuck if Proxy does not response -.
 		else:
 			results = [s_get_with_timeout(urls[0])]
 		checked_results = []
-		for r in results:
-			for x in range(3):
-				if r.ok and is_json(r.text):
-					checked_results.append(r)
-					break
-				else:
-					r = s.get(r.url)
-				if x == 2:
-					checked_results.append(r)
+		try:
+			for r in results:
+				for x in range(3):
+					if r.ok and is_json(r.text):
+						checked_results.append(r)
+						break
+					else:
+						r = s.get(r.url)
+					if x == 2:
+						checked_results.append(r)
+		except requests.exceptions.ReadTimeout as e:
+			print(e)
+			quit(1)
 
 	return checked_results
 
