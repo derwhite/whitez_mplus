@@ -177,10 +177,10 @@ def sort_players_by(results, weekly):
 	return results
 
 
-def get_color(score_tier, points, max=0):
+def get_color(score_tier, points, max=0, dungeons_count=0):
 	color = "white"
 	if max > 0:
-		points = points / 20
+		points = points / (dungeons_count*2)
 		points = points**4/max**4 * (score_tier[0]['score']*1)
 	if points == 0:
 		return color

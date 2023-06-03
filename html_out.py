@@ -145,9 +145,9 @@ def gen_score_table(players, inis, colors, isTyrannical):
 		for ini in inis:
 			# Iterate Instances:
 			best, alter = get_instance_from_player(p, ini['short'])
-			best.update({'color': rio.get_color(colors, best['score'] * 20, high_score)})
+			best.update({'color': rio.get_color(colors, best['score'] * (len(inis)*2), high_score, len(inis))})
 			best.update({'sterne': get_sterne(best['upgrade'])})
-			alter.update({'color': rio.get_color(colors, alter['score'] * 20, high_score)})
+			alter.update({'color': rio.get_color(colors, alter['score'] * (len(inis)*2), high_score, len(inis))})
 			alter.update({'sterne': get_sterne(alter['upgrade'])})
 			first = {}
 			sec = {}
@@ -201,7 +201,7 @@ def gen_weekly(players, inis, colors, weekly, runs_dict):
 		# --------- Show Left Instances -------
 		count = 0
 		for i in p._data[weekly]:
-			if i['mythic_level'] >= 20:
+			if i['mythic_level'] >= len(WREWARD):
 				count += 1
 		color = 'red'
 		if count >= 8:
@@ -214,8 +214,8 @@ def gen_weekly(players, inis, colors, weekly, runs_dict):
 			if i != 0:
 				str_html += f' / '
 			if len(p._data[weekly]) > i:
-				if p._data[weekly][i]['mythic_level'] >= 20:
-					reward = WREWARD[20]
+				if p._data[weekly][i]['mythic_level'] >= len(WREWARD):
+					reward = WREWARD[len(WREWARD)-1]
 				else:
 					reward = WREWARD[p._data[weekly][i]['mythic_level']]
 				str_html += f'{reward}'
@@ -238,7 +238,7 @@ def gen_weekly(players, inis, colors, weekly, runs_dict):
 				dt = dt.replace(tzinfo=timezone.utc).astimezone(tz=None)
 				run_time = dt.strftime('%a %d.%m %H:%M')
 				## TODO Maybe we want to Add instance Picture to Weekly runs, too. 
-				str_html += f'<td title="Points: {p._data[weekly][i]["score"]}\n{run_time}\n{runs_dict[p._data[weekly][i]["url"]]}"><span style="color:{color}">{p._data[weekly][i]["short_name"]} (<a href="{p._data[weekly][i]["url"]}" style="color:{rio.get_color(colors, p._data[weekly][i]["score"] * 20, high)}">{p._data[weekly][i]["mythic_level"]}{stern}</a>)</span></td>\n'
+				str_html += f'<td title="Points: {p._data[weekly][i]["score"]}\n{run_time}\n{runs_dict[p._data[weekly][i]["url"]]}"><span style="color:{color}">{p._data[weekly][i]["short_name"]} (<a href="{p._data[weekly][i]["url"]}" style="color:{rio.get_color(colors, p._data[weekly][i]["score"] * (len(inis)*2), high, len(inis))}">{p._data[weekly][i]["mythic_level"]}{stern}</a>)</span></td>\n'
 			else:
 				str_html += f'<td><span style="color:{color}">-</span></td>\n'
 		str_html += '</tr>\n'
