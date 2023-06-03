@@ -201,7 +201,7 @@ def gen_weekly(players, inis, colors, weekly, runs_dict):
 		# --------- Show Left Instances -------
 		count = 0
 		for i in p._data[weekly]:
-			if i['mythic_level'] >= len(WREWARD):
+			if i['mythic_level'] >= len(WREWARD)-1:
 				count += 1
 		color = 'red'
 		if count >= 8:
@@ -214,7 +214,7 @@ def gen_weekly(players, inis, colors, weekly, runs_dict):
 			if i != 0:
 				str_html += f' / '
 			if len(p._data[weekly]) > i:
-				if p._data[weekly][i]['mythic_level'] >= len(WREWARD):
+				if p._data[weekly][i]['mythic_level'] >= len(WREWARD)-1:
 					reward = WREWARD[len(WREWARD)-1]
 				else:
 					reward = WREWARD[p._data[weekly][i]['mythic_level']]
