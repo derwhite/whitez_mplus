@@ -95,8 +95,10 @@ def pull(urls, proxy=''):    #sometimes gets stuck if Proxy does not response -.
 		if len(urls) > 1:
 			with ThreadPoolExecutor(max_workers=20) as pool:
 				results = pool.map(s_get_with_timeout, urls, chunksize=1)  # DL all URLS !!
-		else:
+		elif len(urls) == 1:
 			results = [s_get_with_timeout(urls[0])]
+		else:
+			return []
 		checked_results = []
 		try:
 			for r in results:
