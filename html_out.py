@@ -86,7 +86,7 @@ def gen_general_tab(players):
 	for p in players:
 		tier = p.get_tier_items()
 		embellishments = p.embellishments()
-		embellishments_tt = ', '.join(embellishments)
+		embellishments_tt = Player.embellishment_list_to_tooltip(embellishments)
 		str_html += f'<tr class="player_row" onclick="highlightRow(this)">\n'
 		str_html += f'<td class="td_player" title="Last Update: {p.days_since_last_update()} days ago"><a href="{p.profile_url()}" target="_blank"><img src="{p.thumbnail_url()}" width="35" height="35" style="float:left"></a><p style="color:{p.class_color};padding:5px 0px 0px 3em;margin:0px;text-align:left">{p.name}</p></td>\n'
 		str_html += f'<td class="td_ilvl" title="{tier}"><span style="color: {p.class_color}">{p.ilvl}</span></td>\n'

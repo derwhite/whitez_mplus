@@ -259,7 +259,7 @@ class Player:
         for item in self._equipped_items:
             if 'limit_category' in item:
                 if 'Embellished' in item['limit_category']:
-                    embellishments_list.append(item['slot']['name'])
+                    embellishments_list.append({'slot': item['slot']['name'], 'ilvl': item['level']['value']})
         return embellishments_list
 
     def set_up_bnet_data(self):
@@ -287,6 +287,12 @@ class Player:
         if r:
             if 'equipped_items' in r:
                 self._equipped_items = r['equipped_items']
+
+    @staticmethod
+    def embellishment_list_to_tooltip(embellishment_list):
+        temp = [f"{e['slot']} ({e['ilvl']})" for e in embellishment_list]
+        tt = ', '.join(temp)
+        return tt
 
     @staticmethod
     def create_players(player_list, responses):
