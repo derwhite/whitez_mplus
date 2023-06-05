@@ -125,7 +125,9 @@ class Player:
         # Data which is only available via bnet api
         self._realm_slug = None
         self._professions = None
+        self._equipped_items = None
         self.set_up_bnet_data()
+        self.embellishments()
 
     @property
     def name(self):
@@ -252,6 +254,14 @@ class Player:
         else:
             return ""
 
+    def embellishments(self):
+        embellishments_list = []
+        for item in self._equipped_items:
+            if 'limit_category' in item:
+                if 'Embellished' in item['limit_category']:
+                    embellishments_list.append(item['slot']['name'])
+        return embellishments_list
+
     def set_up_bnet_data(self):
         bnet_broker = BnetBroker()
         if not bnet_broker.is_operational():
@@ -271,6 +281,12 @@ class Player:
         if r:
             if 'primaries' in r:
                 self._professions = r['primaries']
+
+        equipment_endpoint = f'/profile/wow/character/{self.realm_slug}/{name_lc}/equipment'
+        r = bnet_broker.pull(equipment_endpoint, namespace='profile-eu')
+        if r:
+            if 'equipped_items' in r:
+                self._equipped_items = r['equipped_items']
 
     @staticmethod
     def create_players(player_list, responses):
@@ -302,3 +318,4 @@ class Player:
             return None
         player = Player(r, alt=p['is_alt'], hidden=p.get('is_hidden', False))
         return player
+    

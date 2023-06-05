@@ -77,6 +77,7 @@ def gen_general_tab(players):
 	str_html += f'<tr>'
 	str_html += f'<th onclick="sortTable(0, \'td_player\', \'{table_id}\')">Player</th>\n'
 	str_html += f'<th onclick="sortTable(0, \'td_ilvl\', \'{table_id}\')" class="ilvl">ilvl</th>\n'
+	str_html += f'<th>Embellishments</th>\n'
 	str_html += f'<th onclick="sortTable(0, \'td_spec\', \'{table_id}\')">Spec</th>'
 	str_html += f'<th onclick="sortTable(0, \'td_achiev\', \'{table_id}\')">Achievement Points</th>'
 	str_html += f'<th colspan="2">Professions</th>\n'
@@ -84,9 +85,12 @@ def gen_general_tab(players):
 
 	for p in players:
 		tier = p.get_tier_items()
+		embellishments = p.embellishments()
+		embellishments_tt = ', '.join(embellishments)
 		str_html += f'<tr class="player_row" onclick="highlightRow(this)">\n'
 		str_html += f'<td class="td_player" title="Last Update: {p.days_since_last_update()} days ago"><a href="{p.profile_url()}" target="_blank"><img src="{p.thumbnail_url()}" width="35" height="35" style="float:left"></a><p style="color:{p.class_color};padding:5px 0px 0px 3em;margin:0px;text-align:left">{p.name}</p></td>\n'
-		str_html += f'<td class="td_ilvl" title="{tier}"><span style="color: {p.class_color}">{p.ilvl}</span></td>'
+		str_html += f'<td class="td_ilvl" title="{tier}"><span style="color: {p.class_color}">{p.ilvl}</span></td>\n'
+		str_html += f'<td class="td_embellishments" title="{embellishments_tt}">{len(embellishments)}</td>\n'
 		str_html += f'<td class="td_spec"><a href="{p.talents_url()}" target="_blank"><img class="spec_icon" title="{p.spec}" src="{p.spec_icon()}"></a></td>\n'
 		str_html += f'<td class="td_achiev">{p.achievement_points}</td>\n'
 		str_html += f'<td>{p.profession_string(1)}</td><td>{p.profession_string(2)}</td>\n'
