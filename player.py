@@ -256,10 +256,11 @@ class Player:
 
     def embellishments(self):
         embellishments_list = []
-        for item in self._equipped_items:
-            if 'limit_category' in item:
-                if 'Embellished' in item['limit_category']:
-                    embellishments_list.append({'slot': item['slot']['name'], 'ilvl': item['level']['value']})
+        if self._equipped_items:
+            for item in self._equipped_items:
+                if 'limit_category' in item:
+                    if 'Embellished' in item['limit_category']:
+                        embellishments_list.append({'slot': item['slot']['name'], 'ilvl': item['level']['value']})
         return embellishments_list
 
     def set_up_bnet_data(self):
