@@ -209,3 +209,12 @@ def get_season_end(expasion_id, season_slug, proxy = '') -> datetime:
 				return datetime.strptime(sea['ends']['eu'], '%Y-%m-%dT%H:%M:%SZ')
 			else:
 				return None
+
+def get_new_season_starts(expasion_id, season_slug, proxy = '') -> datetime:
+	tmp = pull([f'https://raider.io/api/v1/mythic-plus/static-data?expansion_id={expasion_id}'], proxy)
+	for sea in tmp[0].json()['seasons']:
+		if sea['slug'] == season_slug[:-1] + str(int(season_slug[-1])+1):
+			if sea['starts']['eu'] != None:
+				return datetime.strptime(sea['starts']['eu'], '%Y-%m-%dT%H:%M:%SZ')
+			else:
+				return None

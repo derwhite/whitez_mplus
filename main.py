@@ -241,7 +241,11 @@ def main():
 	if season_end:
 		season_ends_str = f"{sname} ends on {season_end.strftime('%d.%m.%Y %H:%M')}"
 	else:
-		season_ends_str = ''
+		season_end = rio.get_new_season_starts(EXPANSION_ID, season, proxy)
+		if season_end:
+			season_ends_str = f"{sname[:-1] + str(int(sname[-1]) + 1)} starts on {season_end.strftime('%d.%m.%Y %H:%M')}"
+		else:
+			season_ends_str = ''
 	# get Score_colors from API (if failed from File)
 	scolors = rio.get_score_colors(proxy)
 	# --------------------
