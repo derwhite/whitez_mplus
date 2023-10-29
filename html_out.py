@@ -3,8 +3,9 @@ import uuid
 from datetime import datetime, timezone
 from player import Player
 
-
+#         |0| 1 |  2 |  3 |  4 |  5 | 6 |  7 |  8 |  9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 |
 WREWARD = [0, 0, 415, 418, 421, 421, 424, 424, 428, 428, 431, 431, 434, 434, 437, 437, 441, 441, 444, 444, 447] # Season 2 DF
+#WREWARD= [0, 0, 454, 457, 460, 460, 463, 463, 467, 467, 470, 470, 473, 473, 473, 476, 476, 476, 480, 480, 483] # Season 3 DF
 
 DUNGEONS_BACKGROUND = {
 	"AA": "resources/dungeons/DF/AA.png",
@@ -24,6 +25,15 @@ DUNGEONS_BACKGROUND = {
 	"ULD": "resources/dungeons/DF/ULD.png",
 	"UNDR": "resources/dungeons/DF/UNDR.png",
 	"VP": "resources/dungeons/DF/VP.png",
+	# Season 3
+	"WM": "resources/dungeons/DF/WM.png",
+    "TOTT": "resources/dungeons/DF/TOTT.png",
+    "EB": "resources/dungeons/DF/EB.png",
+    "RISE": "resources/dungeons/DF/RISE.png",
+    "FALL": "resources/dungeons/DF/RISE.png", ## TODO: Is this loading screen the same ?
+    "DHT": "resources/dungeons/DF/DHT.png",
+    "AD": "resources/dungeons/DF/AD.png",
+    "BRH": "resources/dungeons/DF/BRH.png",
 }
 
 
