@@ -26,7 +26,10 @@ def extract_player_ids(players, proxy='') -> None:
 						player_dict['realm'] = p.realm
 						player_dict['id'] = char['character']['id']
 						list_player_ids.append(player_dict)
-						dict_player_ids[p.name] = char['character']['id']
+						if p.name.startswith("Käse"):
+							dict_player_ids[f'{p.name}-{p.realm}'] = char['character']['id']
+						else:
+							dict_player_ids[p.name] = char['character']['id']
 						player_found = True
 						break
 			if player_found:
