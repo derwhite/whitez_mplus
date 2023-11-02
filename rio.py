@@ -6,19 +6,26 @@ from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 from bnet import BnetBroker
 
+
 def extract_player_ids(players, proxy='') -> None:
 	run_id_pattern = re.compile('\/(\d+)')
 	run_ids = [run_id_pattern.findall(p._data['mythic_plus_best_runs'][0]['url'])[0] for p in players if len(p._data['mythic_plus_best_runs']) > 0]
 	season_slug = players[0]._data['mythic_plus_scores_by_season'][0]['season']
 	pull_urls = [f'https://raider.io/api/v1/mythic-plus/run-details?season={season_slug}&id={run_id}' for run_id in run_ids]
 	runs_response = pull(pull_urls, proxy)
+	list_player_ids = []
 	dict_player_ids = {}
 	for p in players:
 		for r in runs_response:
 			player_found = False
 			if r.ok and is_json(r.text):
 				for char in r.json()['roster']:
-					if char['character']['name'] == p.name:
+					if char['character']['name'] == p.name and char['character']['realm']['name'] == p.realm:
+						player_dict = dict()
+						player_dict['name'] = p.name
+						player_dict['realm'] = p.realm
+						player_dict['id'] = char['character']['id']
+						list_player_ids.append(player_dict)
 						dict_player_ids[p.name] = char['character']['id']
 						player_found = True
 						break
@@ -26,7 +33,9 @@ def extract_player_ids(players, proxy='') -> None:
 				break
 	with open('player_ids.json', 'w') as f:
 		json.dump(dict_player_ids, f)
-	
+	with open('player_ids_with_realm.json', 'w') as f:
+		json.dump(list_player_ids, f)
+
 
 def get_run_details(players, proxy=''):
 	urls = []
