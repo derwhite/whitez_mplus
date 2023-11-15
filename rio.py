@@ -156,14 +156,13 @@ def get_instances(expansion_id, season, proxy=''):
 
 
 def get_score_colors(proxy=''):
-	tmp = pull(['https://raider.io/api/v1/mythic-plus/score-tiers?season=current'], proxy)
-	try:
-		r = tmp[0]
+	response_list = pull(['https://raider.io/api/v1/mythic-plus/score-tiers?season=current'], proxy)
+	if len(response_list) > 0:
+		r = response_list[0]
 		if r.json()['statusCode'] == 200:
 			return r.json()
-	except:
-		with open('color.json') as f:
-			return json.load(f)
+	with open('color.json') as f:
+		return json.load(f)
 
 
 def sort_players_by(results, weekly):
