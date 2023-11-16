@@ -159,7 +159,7 @@ def get_score_colors(proxy=''):
 	response_list = pull(['https://raider.io/api/v1/mythic-plus/score-tiers?season=current'], proxy)
 	if len(response_list) > 0:
 		r = response_list[0]
-		if r.json()['statusCode'] == 200:
+		if r.status_code == 200:
 			return r.json()
 	with open('color.json') as f:
 		return json.load(f)
