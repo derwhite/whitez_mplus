@@ -152,6 +152,7 @@ def get_instances(expansion_id, season, proxy=''):
 				instances.append({'short': ini['short_name'], 'name': ini['name'], 'timer': ini_time, 'upgrade_2': upgrade_2, 'upgrade_3': upgrade_3})
 			season_name = sea['name']
 			break
+	instances = sorted(instances, key=lambda i: i['short'])
 	return instances, season_name
 
 

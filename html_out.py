@@ -25,14 +25,14 @@ DUNGEONS_BACKGROUND = {
 	"UNDR": "resources/dungeons/DF/UNDR.png",
 	"VP": "resources/dungeons/DF/VP.png",
 	# Season 3
+	"AD": "resources/dungeons/DF/AD.png",
+	"BRH": "resources/dungeons/DF/BRH.png",
+	"DHT": "resources/dungeons/DF/DHT.png",
+	"EB": "resources/dungeons/DF/EB.png",
+	"FALL": "resources/dungeons/DF/RISE.png", ## TODO: Is this loading screen the same ?
+	"RISE": "resources/dungeons/DF/RISE.png",
+	"TOTT": "resources/dungeons/DF/TOTT.png",
 	"WM": "resources/dungeons/DF/WM.png",
-    "TOTT": "resources/dungeons/DF/TOTT.png",
-    "EB": "resources/dungeons/DF/EB.png",
-    "RISE": "resources/dungeons/DF/RISE.png",
-    "FALL": "resources/dungeons/DF/RISE.png", ## TODO: Is this loading screen the same ?
-    "DHT": "resources/dungeons/DF/DHT.png",
-    "AD": "resources/dungeons/DF/AD.png",
-    "BRH": "resources/dungeons/DF/BRH.png",
 }
 
 
