@@ -165,29 +165,23 @@ def get_score_colors(proxy=''):
 		return json.load(f)
 
 
-def sort_players_by(results, weekly):
-	i = 0
-	while i < len(results):
-		x = i+1
-		while x < len(results):
-			sum = 0
-			for r in results[x]._data[weekly]:
-				if r['mythic_level'] >= 20:
-					sum += 300
-				sum += r['mythic_level']
-			sum2 = 0
-			for r in results[i]._data[weekly]:
-				if r['mythic_level'] >= 20:
-					sum2 += 300
-				sum2 += r['mythic_level']
-			if sum > sum2:
-				#print(results[i].json()['name'],sum2,results[x].json()['name'],sum)
-				tmp = results[i]
-				results[i] = results[x]
-				results[x] = tmp
-			x += 1
-		i += 1
-	return results
+def sort_players_by(players, weekly):
+	# sorts players by their weekly (current or last) m+ runs
+	# sorts the players based on their highest key level. If key levels are the same, sort them based on their
+	# second highest key level, etc.
+
+	def kl(player):
+		runs = player.weekly_runs(weekly)
+		fixed_key_level_list = []
+		for i in range(0, 10):
+			if i < len(runs):
+				fixed_key_level_list.append(runs[i]['mythic_level'])
+			else:
+				fixed_key_level_list.append(-1)
+		return fixed_key_level_list
+
+	players = sorted(players, key=lambda p: (kl(p)[0], kl(p)[1], kl(p)[2], kl(p)[3], kl(p)[4], kl(p)[5], kl(p)[6], kl(p)[7], kl(p)[8], kl(p)[9]), reverse=True)
+	return players
 
 
 def get_color(score_tier, points, max=0, dungeons_count=0):

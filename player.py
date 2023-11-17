@@ -187,6 +187,12 @@ class Player:
     def mythic_plus_alternate_runs(self):
         return self._data['mythic_plus_alternate_runs']
 
+    def weekly_runs(self, weekly):
+        # rio only returns the 10 highest keys, even if you did more runs per week
+        runs = self._data[weekly]
+        # rio sorts them, but resort them just in case
+        return sorted(runs, key=lambda r: r['mythic_level'], reverse=True)
+
     def last_crawled_at(self):
         return datetime.strptime(self._data['last_crawled_at'], '%Y-%m-%dT%H:%M:%S.000Z')
 

@@ -192,7 +192,7 @@ def gen_score_table(players, inis, colors, isTyrannical):
 
 
 def gen_weekly(players, inis, colors, weekly, runs_dict):
-	players = rio.sort_players_by(players,weekly)
+	players = rio.sort_players_by(players, weekly)
 	high = rio.get_highest_score(players)
 	table_id = uuid.uuid4().hex
 	str_html = f'<table id="{table_id}">\n'
