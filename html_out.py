@@ -5,6 +5,9 @@ from player import Player
 
 #        |0| 1 |  2 |  3 |  4 |  5 | 6 |  7 |  8 |  9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 |
 WREWARD= [0, 0, 454, 457, 460, 460, 463, 463, 467, 467, 470, 470, 473, 473, 473, 476, 476, 476, 480, 480, 483] # Season 3 DF
+MYTH_TRACK_BREAKPOINT = 480
+HERO_TRACK_BREAKPOINT = 467
+CHAMPION_TRACK_BREAKPOINT = 454
 
 DUNGEONS_BACKGROUND = {
 	"AA": "resources/dungeons/DF/AA.png",
@@ -80,6 +83,38 @@ def gen_score_tt(scores):
 	return tt
 
 
+def gen_rewards_html(player, weekly):
+	epic_color = "#c600ff"
+	rare_color = "#0081ff"
+	uncommon_color = "#1eff00"
+
+	str_html = ''
+	for i in [0, 3, 7]:
+		if i != 0:
+			str_html += f' / '
+		if len(player._data[weekly]) > i:
+			if player._data[weekly][i]['mythic_level'] >= len(WREWARD) - 1:
+				reward = WREWARD[len(WREWARD) - 1]
+			else:
+				reward = WREWARD[player._data[weekly][i]['mythic_level']]
+
+			reward_str = f'<span>{reward}</span>'
+			if reward >= CHAMPION_TRACK_BREAKPOINT:
+				reward_str = f'<span style="color: {uncommon_color}">{reward}</span>'
+			if reward >= HERO_TRACK_BREAKPOINT:
+				reward_str = f'<span style="color: {rare_color}">{reward}</span>'
+			if reward >= MYTH_TRACK_BREAKPOINT:
+				reward_str = f'<span style="color: {epic_color}">{reward}</span>'
+			str_html += reward_str
+		else:
+			str_html += f'-'
+			if i == 0:
+				break
+			else:
+				str_html = str_html[:-4]
+	return str_html
+
+
 def gen_general_tab(players):
 	table_id = uuid.uuid4().hex
 	str_html = f'<table id="{table_id}">\n'
@@ -135,10 +170,10 @@ def gen_score_table(players, inis, colors, isTyrannical):
 
 	high_score = rio.get_highest_score(players)
 	for p in players:
-		mainSize=17
-		secSize=13
+		mainSize = 17
+		secSize = 13
 		#-----------------------------------------------------------
-		# Count Tier Items an Build a string
+		# Count Tier Items and Build a string
 		tier = p.get_tier_items()
 		#----------------------------------
 		# Create Player Line on Website !!
@@ -205,7 +240,7 @@ def gen_weekly(players, inis, colors, weekly, runs_dict):
 	str_html += f'</tr>\n'
 	for p in players:
 		# ------------ PLAYER and SCORE -----------
-		# Count Tier Items an Build a string
+		# Count Tier Items and Build a string
 		tier = p.get_tier_items()
 		# ----------------------------------
 		str_html += f'<tr class="player_row" onclick="highlightRow(this)">\n'
@@ -223,21 +258,7 @@ def gen_weekly(players, inis, colors, weekly, runs_dict):
 		str_html += f'<td class="td_twenty"><span style="color:{color}">{count-8}</span></td>\n'
 		# ---------- 0 / 0 / 0 Rewards -------
 		str_html += f'<td class="td_rewards">'
-		for i in [0, 3, 7]:
-			if i != 0:
-				str_html += f' / '
-			if len(p._data[weekly]) > i:
-				if p._data[weekly][i]['mythic_level'] >= len(WREWARD)-1:
-					reward = WREWARD[len(WREWARD)-1]
-				else:
-					reward = WREWARD[p._data[weekly][i]['mythic_level']]
-				str_html += f'{reward}'
-			else:
-				str_html += f'-'
-				if i == 0:
-					break
-				else:
-					str_html = str_html[:-4]
+		str_html += gen_rewards_html(p, weekly)
 		str_html += f'</td>'
 		# ------------- Instances ------
 		for i in range(0, 8):
