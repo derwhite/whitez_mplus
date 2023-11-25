@@ -288,8 +288,6 @@ def gen_affixes_html(affixes):
 	for a in affixes['this_week']:
 		affix_html = f'<td class=\"tbl_affixe\"><a class="icontiny" ' \
 					 f'data-game="wow" data-type="affix" href="{a["wowhead_url"]}">' \
-					 f'<img src="https://wow.zamimg.com/images/wow/icons/tiny/{a["icon"]}.gif" ' \
-					 f'style="vertical-align: middle;" loading="lazy">' \
 					 f'<span class="tinycontxt"> {a["name"]}</span></a></td>'
 		tweek_affixes_html.append(affix_html)
 	tweek_affixes_out = "<td class=\"tbl_affixe\">This Week:</td>" + ''.join(tweek_affixes_html)
@@ -303,8 +301,6 @@ def gen_affixes_html(affixes):
 		if a['id'] != -1:
 			affix_html = f'<td class=\"tbl_affixe\"><a class="icontiny" ' \
 						 f'data-game="wow" data-type="affix" href="{a["wowhead_url"]}">' \
-						 f'<img src="https://wow.zamimg.com/images/wow/icons/tiny/{a["icon"]}.gif" ' \
-						 f'style="vertical-align: middle;" loading="lazy">' \
 						 f'<span class="tinycontxt"> {a["name"]}</span></a></td>'
 		else:
 			affix_html = f'<td class="tbl_affixe"><span class"tinycontxt"> {a["name"]}</span></td>'
