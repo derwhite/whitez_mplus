@@ -5,24 +5,28 @@ from player import Player
 
 #        |0| 1 |  2 |  3 |  4 |  5 | 6 |  7 |  8 |  9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 |
 WREWARD= [0, 0, 454, 457, 460, 460, 463, 463, 467, 467, 470, 470, 473, 473, 473, 476, 476, 476, 480, 480, 483] # Season 3 DF
+#WREWARD= [0, 0, 509, 509, 512, 512, 515, 515, 519, 519, 522] # Season 4 DF
 MYTH_TRACK_BREAKPOINT = 480
+#MYTH_TRACK_BREAKPOINT = 519
 HERO_TRACK_BREAKPOINT = 467
+#HERO_TRACK_BREAKPOINT = 506
 CHAMPION_TRACK_BREAKPOINT = 454
+#CHAMPION_TRACK_BREAKPOINT = 493
 
 DUNGEONS_BACKGROUND = {
-	"AA": "resources/dungeons/DF/AA.png",
+	"AA": "resources/dungeons/DF/AA.png", # Season 4
 	"COS": "resources/dungeons/DF/COS.png",
 	"HOV": "resources/dungeons/DF/HOV.png",
-	"RLP": "resources/dungeons/DF/RLP.png",
+	"RLP": "resources/dungeons/DF/RLP.png", # Season 4
 	"SBG": "resources/dungeons/DF/SBG.png",
 	"TJS": "resources/dungeons/DF/TJS.png",
-	"AV": "resources/dungeons/DF/AV.png",
-	"NO": "resources/dungeons/DF/NO.png",
+	"AV": "resources/dungeons/DF/AV.png", # Season 4
+	"NO": "resources/dungeons/DF/NO.png", # Season 4
 	# Season 2
- 	"BH": "resources/dungeons/DF/BH.png",
-	"FH": "resources/dungeons/DF/FH.png",
-	"HOI": "resources/dungeons/DF/HOI.png",
-	"NELT": "resources/dungeons/DF/NELT.png",
+ 	"BH": "resources/dungeons/DF/BH.png", # Season 4
+	"FH": "resources/dungeons/DF/FH.png", # Season 4
+	"HOI": "resources/dungeons/DF/HOI.png", # Season 4
+	"NELT": "resources/dungeons/DF/NELT.png", # Season 4
 	"NL": "resources/dungeons/DF/NL.png",
 	"ULD": "resources/dungeons/DF/ULD.png",
 	"UNDR": "resources/dungeons/DF/UNDR.png",
@@ -32,7 +36,7 @@ DUNGEONS_BACKGROUND = {
 	"BRH": "resources/dungeons/DF/BRH.png",
 	"DHT": "resources/dungeons/DF/DHT.png",
 	"EB": "resources/dungeons/DF/EB.png",
-	"FALL": "resources/dungeons/DF/RISE.png", ## TODO: Is this loading screen the same ?
+	"FALL": "resources/dungeons/DF/RISE.png",
 	"RISE": "resources/dungeons/DF/RISE.png",
 	"TOTT": "resources/dungeons/DF/TOTT.png",
 	"WM": "resources/dungeons/DF/WM.png",
