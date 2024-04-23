@@ -147,7 +147,9 @@ def cli():
 	parser.add_argument('--config', help='path to config file', default='lists/settings.conf')
 	parser.add_argument('--mains', help='mains file path', default='lists/mains.txt')
 	parser.add_argument('--alts', help='alts file path', default='lists/alts.txt')
-	parser.add_argument('--copy_res', help='copys resouces to output directoy', action='store_true')
+	parser.add_argument('--no_copy', help='dont copy resources to output directoy', action='store_true')
+	parser.add_argument('--backup_requests', help='creates json file from Player datas', action='store_true')
+	
 
 	args = vars(parser.parse_args())
 	return args
@@ -168,10 +170,11 @@ def main():
 		print(f"ERROR: outfile '{args['outfile']}' isn't a valid file path!")
 		exit(1)
 
-	## --copy_res flag is set ##
-	if args['copy_res']:
+	## Copy Resources to Output Directory
+	if not args['no_copy']:
 		if os.path.dirname(Path(args['outfile']).absolute()) == os.getcwd():
 			print(f"ERROR: Your output path matches your script path !")
+			print(f"try to use a different output path or use the --no_copy flag to disable copying resources.")
 			exit(1)
 		sync_directories('resources', os.path.join(os.path.dirname(Path(args['outfile']).absolute()), 'resources'))
 		sync_directories('static', os.path.join(os.path.dirname(Path(args['outfile']).absolute()), 'static'))
@@ -210,7 +213,8 @@ def main():
 	# rio.extract_player_ids(players)
 	runs_dict = rio.get_run_details(players, proxy)
 
-	export_data_to_json(players)
+	if args['backup_requests']:
+		export_data_to_json(players)
 
 	# sort Players
 	ilvl_sorted_players = list(sorted(players, key=lambda player: player.ilvl, reverse=True))
