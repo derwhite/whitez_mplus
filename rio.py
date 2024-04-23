@@ -3,8 +3,9 @@ import requests
 import json
 from functools import partial
 from concurrent.futures import ThreadPoolExecutor
-from datetime import datetime
+from datetime import datetime, timezone
 from bnet import BnetBroker
+from dateutil.parser import parse
 
 
 def extract_player_ids(players, proxy='') -> None:
@@ -72,14 +73,14 @@ def is_json(myjson):
 	return True
 
 
-def append_api_requests(players_list):
+def append_api_requests(players_list, season):
 	for player in players_list:
 		realm = player['realm']
 		name = player['name']
 		fields = [
 			'talents',
 			'mythic_plus_best_runs',
-			'mythic_plus_scores_by_season:current',
+			f'mythic_plus_scores_by_season:{season}',
 			'mythic_plus_alternate_runs',
 			'gear',
 			'mythic_plus_weekly_highest_level_runs',
@@ -224,3 +225,20 @@ def get_new_season_starts(expasion_id, season_slug, proxy = '') -> datetime:
 				return datetime.strptime(sea['starts']['eu'], '%Y-%m-%dT%H:%M:%SZ')
 			else:
 				return None
+
+def get_current_season(expasion_id,proxy=''):
+    down = pull([f'https://raider.io/api/v1/mythic-plus/static-data?expansion_id={expasion_id}'], proxy)[0]
+    now = datetime.now(timezone.utc)
+    if down.ok:
+        for sea in down.json()['seasons']:
+            if re.fullmatch('season-\w\w-\d', sea['slug']):
+                start = sea['starts']['eu']
+                end = sea['ends']['eu']
+                if start is None:
+                    continue
+                if now > parse(start):
+                    if end is None:
+                        return sea["slug"], None
+                    else:
+                        if now < parse(end):
+                            return sea["slug"], parse(end).astimezone()

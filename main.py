@@ -187,11 +187,13 @@ def main():
 	proxy = lists.get_proxy()
 	# --------------------
 
+	season, season_end = rio.get_current_season(EXPANSION_ID, proxy)
+
 	players = []
 
 	# Load Player Mains ---
 	player_list = lists.read_players_file(args['mains'], alts=False)
-	rio.append_api_requests(player_list)
+	rio.append_api_requests(player_list, season)
 	urls = [p['url'] for p in player_list]
 	responses = rio.pull(urls, proxy)
 	players.extend(Player.create_players(player_list, responses))
@@ -199,7 +201,7 @@ def main():
 	
 	# Load Player Alts ---
 	player_list = lists.read_players_file(args['alts'], alts=True)
-	rio.append_api_requests(player_list)
+	rio.append_api_requests(player_list, season)
 	urls = [p['url'] for p in player_list]
 	responses = rio.pull(urls, proxy)
 	players.extend(Player.create_players(player_list, responses))
@@ -230,22 +232,15 @@ def main():
 	affix_s = AffixServant(proxy)
 	affixes = affix_s.get_affixes()
 
-	# Grab Season from a Player (and look it up in Static Values API) to get the Full Name and Instance names
+	# get Instances and Season Name
 	# set bnet client_ID and client_secret to get Instance Timers
  
-	season = general_players[0]._data['mythic_plus_scores_by_season'][0]['season']
 	inis, sname = rio.get_instances(EXPANSION_ID, season, proxy)
 	# --------------------
  
-	season_end = rio.get_season_end(EXPANSION_ID, season, proxy)
 	if season_end:
 		season_ends_str = f"{sname} ends on {season_end.strftime('%d.%m.%Y %H:%M')}"
-	else:
-		season_end = rio.get_new_season_starts(EXPANSION_ID, season, proxy)
-		if season_end:
-			season_ends_str = f"{sname[:-1] + str(int(sname[-1]) + 1)} starts on {season_end.strftime('%d.%m.%Y %H:%M')}"
-		else:
-			season_ends_str = ''
+
 	# get Score_colors from API (if failed from File)
 	scolors = rio.get_score_colors(proxy)
 	# --------------------
