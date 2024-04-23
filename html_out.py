@@ -237,7 +237,7 @@ def gen_weekly(players, inis, colors, weekly, runs_dict):
 	str_html = f'<table id="{table_id}">\n'
 	str_html += f'<tr><th onclick="sortTable(0, \'td_player\', \'{table_id}\')">Player</th>'
 	str_html += f'<th onclick="sortTable(0, \'td_ilvl\', \'{table_id}\')" class="ilvl">ilvl</th>'
-	str_html += f'<th onclick="sortTable(0, \'td_twenty\', \'{table_id}\')" class="twenty">+18</th>'
+	str_html += f'<th onclick="sortTable(0, \'td_twenty\', \'{table_id}\')" class="twenty">+{len(WREWARD)-3}</th>'
 	str_html += f'<th onclick="sortTable(0, \'td_rewards\', \'{table_id}\')" class="rewards">Rewards</th>'
 	for i in range(0,8):
 		str_html += f'<th class="runs_weekly"></th>'
