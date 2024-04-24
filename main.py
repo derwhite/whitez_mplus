@@ -242,6 +242,7 @@ def main():
 	inis, sname = rio.get_instances(EXPANSION_ID, season, proxy)
 	# --------------------
  
+	season_ends_str = ""
 	if season_end:
 		season_ends_str = f"{sname} ends on {season_end.strftime('%d.%m.%Y %H:%M')}"
 
