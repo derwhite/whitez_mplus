@@ -2,6 +2,7 @@ import requests
 from datetime import datetime
 from bnet import BnetBroker
 from concurrent.futures import ThreadPoolExecutor
+from dateutil.parser import parse
 
 CLASS_DATA = {
     'Death Knight': {
@@ -194,12 +195,17 @@ class Player:
         return sorted(runs, key=lambda r: r['mythic_level'], reverse=True)
 
     def last_crawled_at(self):
-        return datetime.strptime(self._data['last_crawled_at'], '%Y-%m-%dT%H:%M:%S.000Z')
+        return parse(self._data['last_crawled_at'])
 
     def days_since_last_update(self):
         last_crawled = self.last_crawled_at()
-        tday = datetime.now()
+        tday = datetime.now(tz=last_crawled.tzinfo)
         days = (tday - last_crawled).days
+        if days > 10: # because rio sometimes doesn't update the data for players
+            search = ('mythic_plus_recent_runs', 'mythic_plus_best_runs', 'mythic_plus_alternate_runs')
+            if sum([len(self._data[s]) for s in search]) != 0:
+                latest_date = max([parse(a['completed_at']) for x in search for a in self._data[x]])
+                days = (tday - latest_date).days
         return days
 
     def relevant_scores(self):
