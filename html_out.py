@@ -3,12 +3,12 @@ import uuid
 from datetime import datetime, timezone
 from player import Player
 
-#        |0| 1 |  2 |  3 |  4 |  5 | 6 |  7 |  8 |  9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 |
-#WREWARD= [0, 0, 454, 457, 460, 460, 463, 463, 467, 467, 470, 470, 473, 473, 473, 476, 476, 476, 480, 480, 483] # Season 3 DF
+#          |HC | M0 | +2 | +3 | +4 | +5 | +6 | +7 | +8 | +9 |+10 |
 WREWARD = [0, 0, 509, 509, 512, 512, 515, 515, 519, 519, 522]  # Season 4 DF
-MYTH_TRACK_BREAKPOINT = 519
-HERO_TRACK_BREAKPOINT = 506
-CHAMPION_TRACK_BREAKPOINT = 493
+#WREWARD = [593, 603, 606, 610, 610, 613, 613, 616, 619, 619, 623]  # Season 1 TWW
+MYTH_TRACK_BREAKPOINT = 623
+HERO_TRACK_BREAKPOINT = 610
+CHAMPION_TRACK_BREAKPOINT = 603
 
 DUNGEONS_BACKGROUND = {
 	"AA": "resources/dungeons/DF/AA.png", # Season 4
@@ -37,6 +37,15 @@ DUNGEONS_BACKGROUND = {
 	"RISE": "resources/dungeons/DF/RISE.png",
 	"TOTT": "resources/dungeons/DF/TOTT.png",
 	"WM": "resources/dungeons/DF/WM.png",
+	# TWW Season 1
+	"SIEGE": "resources/dungeons/TWW/SIEGE.png",
+ 	"GB": "resources/dungeons/TWW/GB.png",
+    "NW": "resources/dungeons/TWW/NW.png",
+    "MISTS": "resources/dungeons/TWW/MISTS.png",
+    "SV": "resources/dungeons/TWW/SV.png",
+    "COT": "resources/dungeons/TWW/COT.png",
+    "DAWN": "resources/dungeons/TWW/DAWN.png",
+    "ARAK": "resources/dungeons/TWW/ARAK.png",
 }
 
 
