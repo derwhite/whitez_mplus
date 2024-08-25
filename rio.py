@@ -226,3 +226,4 @@ def get_current_season(expasion_id,proxy=''):
                     else:
                         if now < parse(end):
                             return sea["slug"], parse(end).astimezone()
+    return None, None

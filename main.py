@@ -191,6 +191,9 @@ def main():
 	# --------------------
 
 	season, season_end = rio.get_current_season(EXPANSION_ID, proxy)
+	if not season:
+		print("Couldn't find an active Season")
+		sys.exit(1)
 
 	players = []
 
