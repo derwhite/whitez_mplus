@@ -4,7 +4,7 @@ import os
 import shutil
 from pathlib import Path
 import json
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 import configparser
 import subprocess
@@ -246,7 +246,7 @@ def main():
 	# --------------------
  
 	season_ends_str = ""
-	if season_end:
+	if season_end and season_end - datetime.now(tz=timezone.utc) < timedelta(days=30):
 		season_ends_str = f"{sname} ends on {season_end.strftime('%d.%m.%Y %H:%M')}"
 
 	# get Score_colors from API (if failed from File)
