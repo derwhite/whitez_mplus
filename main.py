@@ -18,7 +18,7 @@ from affix_servant import AffixServant
 from bnet import BnetBroker
 
 
-EXPANSION_ID = 9
+EXPANSION_ID = 10
 
 def sync_directories(source_dir, dest_dir): #AHAHAHA from ChatGPT ^^
 	"""

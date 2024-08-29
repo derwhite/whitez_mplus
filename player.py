@@ -203,7 +203,7 @@ class Player:
         days = (tday - last_crawled).days
         if days > 10: # because rio sometimes doesn't update the data for players
             search = ('mythic_plus_recent_runs', 'mythic_plus_best_runs', 'mythic_plus_alternate_runs')
-            if sum([len(self._data[s]) for s in search]) != 0:
+            if sum([len(self._data[s]) for s in search if s in self._data]) != 0:
                 latest_date = max([parse(a['completed_at']) for x in search for a in self._data[x]])
                 days = (tday - latest_date).days
         return days
