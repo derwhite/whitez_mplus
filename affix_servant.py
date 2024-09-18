@@ -42,6 +42,15 @@ class AffixServant:
         if len(responses) >= 0 and responses[0].ok:
             r = responses[0].json()
             self.current_affixes = r['affix_details']
+        else:
+            self.current_affixes = [{
+                    "id": 0,
+                    "name": "No_Response",
+                    "description": "can't get any information from Raider.io",
+                    "wowhead_url": "",
+                    "icon": "inv_misc_volatilewater"
+                    }]
+
         self._fix_current_affixes()
 
         self.all_affixes = {}
