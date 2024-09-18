@@ -81,7 +81,6 @@ def append_api_requests(players_list, season):
 			'talents',
 			'mythic_plus_best_runs',
 			f'mythic_plus_scores_by_season:{season}',
-			'mythic_plus_alternate_runs',
 			'mythic_plus_recent_runs',
 			'gear',
 			'mythic_plus_weekly_highest_level_runs',
