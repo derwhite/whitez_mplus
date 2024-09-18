@@ -51,15 +51,15 @@ DUNGEONS_BACKGROUND = {
 
 def get_instance_from_player(player, ini):
 	best = {}
-	alter = {}
+	# alter = {}
 	best.update({'run': 0})
 	best.update({'upgrade': 0})
 	best.update({'score': 0})
 	best.update({'affix': 0})
-	alter.update({'run': 0})
-	alter.update({'upgrade': 0})
-	alter.update({'score': 0})
-	alter.update({'affix': 0})
+	# alter.update({'run': 0})
+	# alter.update({'upgrade': 0})
+	# alter.update({'score': 0})
+	# alter.update({'affix': 0})
 	for x in player.mythic_plus_best_runs():
 		if x['short_name'] == ini:
 			best.update({'run':x['mythic_level']})
@@ -68,14 +68,14 @@ def get_instance_from_player(player, ini):
 			best.update({'affix':x['affixes'][0]['id']})
 			break	
 
-	for x in player.mythic_plus_alternate_runs():
-		if x['short_name'] == ini:
-			alter.update({'run':x['mythic_level']})
-			alter.update({'upgrade':x['num_keystone_upgrades']})
-			alter.update({'score':x['score']})
-			alter.update({'affix':x['affixes'][0]['id']})
-			break
-	return best, alter		
+	# for x in player.mythic_plus_alternate_runs():
+	# 	if x['short_name'] == ini:
+	# 		alter.update({'run':x['mythic_level']})
+	# 		alter.update({'upgrade':x['num_keystone_upgrades']})
+	# 		alter.update({'score':x['score']})
+	# 		alter.update({'affix':x['affixes'][0]['id']})
+	# 		break
+	return best#, alter		
 
 
 def get_sterne(upgrade):
@@ -202,35 +202,35 @@ def gen_score_table(players, inis, colors, isTyrannical):
 		#-----------------------------
 		for ini in inis:
 			# Iterate Instances:
-			best, alter = get_instance_from_player(p, ini['short'])
+			best = get_instance_from_player(p, ini['short'])
 			best.update({'color': rio.get_color(colors, best['score'] * (len(inis)*2), high_score, len(inis))})
 			best.update({'sterne': get_sterne(best['upgrade'])})
-			alter.update({'color': rio.get_color(colors, alter['score'] * (len(inis)*2), high_score, len(inis))})
-			alter.update({'sterne': get_sterne(alter['upgrade'])})
-			first = {}
-			sec = {}
-			if isTyrannical:
-				if best['affix'] == 9:
-					first = best
-					sec = alter
-				else:
-					sec = best
-					first = alter
-			else:
-				if best['affix'] == 10:
-					first = best
-					sec = alter
-				else:
-					sec = best
-					first = alter
-			ini_score = round(best["score"] * 1.5 + alter["score"] * 0.5, 1)
-			str_html += f'<td class="td_dungeon" title="{first["score"]} | {sec["score"]} &Sigma; {ini_score}">' \
-						f'<span style="font-size:{mainSize}px;color:{first["color"]}">{first["run"]}</span>' \
-						f'<span style="font-size:{mainSize}px;color:yellow">{first["sterne"]}</span>' \
-						f'<span style="color:white"> | </span>' \
-						f'<span style="font-size:{secSize}px;color:{sec["color"]}">{sec["run"]}</span>' \
-						f'<span style="font-size:{secSize}px;color:yellow">{sec["sterne"]}</span>' \
+			# alter.update({'color': rio.get_color(colors, alter['score'] * (len(inis)*2), high_score, len(inis))})
+			# alter.update({'sterne': get_sterne(alter['upgrade'])})
+			# first = {}
+			# sec = {}
+			# if isTyrannical:
+			# 	if best['affix'] == 9:
+			# 		first = best
+			# 		sec = alter
+			# 	else:
+			# 		sec = best
+			# 		first = alter
+			# else:
+			# 	if best['affix'] == 10:
+			# 		first = best
+			# 		sec = alter
+			# 	else:
+			# 		sec = best
+			# 		first = alter
+			ini_score = round(best["score"] * 1.5)# + alter["score"] * 0.5, 1)
+			str_html += f'<td class="td_dungeon" title="{ini_score}">' \
+						f'<span style="font-size:{mainSize}px;color:{best["color"]}">{best["run"]}</span>' \
+						f'<span style="font-size:{mainSize}px;color:yellow">{best["sterne"]}</span>' \
 						f'</td>\n'
+						# f'<span style="color:white"> | </span>' \
+						# f'<span style="font-size:{secSize}px;color:{sec["color"]}">{sec["run"]}</span>' \
+						# f'<span style="font-size:{secSize}px;color:yellow">{sec["sterne"]}</span>' \
 		str_html += f'</tr>\n'
 	str_html += f'</table>\n'
 	return str_html
