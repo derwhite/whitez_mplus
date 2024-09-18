@@ -325,11 +325,6 @@ def gen_site(affixes, all_tables, season_name, season_end, version_string):
 	now = datetime.now()
 	now = now.strftime("%d.%m.%Y %H:%M:%S")
 
-	if affixes['tyrannical']:
-		legend = "[Tyrannical | Fortified]"
-	else:
-		legend = "[Fortified | Tyrannical]"
-
 	affixes_html = gen_affixes_html(affixes)
 
 	# Building Website !!
@@ -338,7 +333,6 @@ def gen_site(affixes, all_tables, season_name, season_end, version_string):
 
 		myhtml = myhtml.replace('{% season_name %}', season_name)
 		myhtml = myhtml.replace('{% now %}', now)
-		myhtml = myhtml.replace('{% legend %}', legend)
 		myhtml = myhtml.replace('{% affixes %}', affixes_html)
 		myhtml = myhtml.replace('{% season_ends %}', season_end)
 		
