@@ -223,7 +223,7 @@ def gen_score_table(players, inis, colors, isTyrannical):
 			# 	else:
 			# 		sec = best
 			# 		first = alter
-			ini_score = round(best["score"] * 1.5)# + alter["score"] * 0.5, 1)
+			ini_score = round(best["score"])# + alter["score"] * 0.5, 1)
 			str_html += f'<td class="td_dungeon" title="{ini_score}">' \
 						f'<span style="font-size:{mainSize}px;color:{best["color"]}">{best["run"]}</span>' \
 						f'<span style="font-size:{mainSize}px;color:yellow">{best["sterne"]}</span>' \
