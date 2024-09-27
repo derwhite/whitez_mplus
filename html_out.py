@@ -4,8 +4,8 @@ from datetime import datetime, timezone
 from player import Player
 
 #          |HC | M0 | +2 | +3 | +4 | +5 | +6 | +7 | +8 | +9 |+10 |
-WREWARD = [0, 0, 509, 509, 512, 512, 515, 515, 519, 519, 522]  # Season 4 DF
-#WREWARD = [593, 603, 606, 610, 610, 613, 613, 616, 619, 619, 623]  # Season 1 TWW
+#WREWARD = [0, 0, 509, 509, 512, 512, 515, 515, 519, 519, 522]  # Season 4 DF
+WREWARD = [593, 603, 606, 610, 610, 613, 613, 616, 619, 619, 623]  # Season 1 TWW
 MYTH_TRACK_BREAKPOINT = 623
 HERO_TRACK_BREAKPOINT = 610
 CHAMPION_TRACK_BREAKPOINT = 603
