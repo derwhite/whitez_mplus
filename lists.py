@@ -14,7 +14,9 @@ def read_players_file(file_path, alts=False):
 		for line in lines:
 			player = {}
 			line = line.strip('\n')
-			if line and line[0] == '#':
+			if len(line) == 0:
+				continue
+			if line[0] == '#':
 				continue
 			if line[0] == '!':
 				player['is_hidden'] = True
