@@ -113,30 +113,20 @@ def pull(urls, proxy=''):    #sometimes gets stuck if Proxy does not response -.
 		else:
 			return []
 
-		checked_results = [r for r in results if r.ok and is_json(r.text)]
-		reetry = [r for r in results if not r.ok or not is_json(r.text)]
-		if len(reetry) > 0:
-			count = 2
-			k = []
-			while count > 0:
-				count -= 1
-				with ThreadPoolExecutor(max_workers=20) as pool:
-					results = pool.map(s_get_with_timeout, [r.url for r in reetry], chunksize=1)
-				checked_results.extend([r for r in results if r.ok and is_json(r.text)])
-
-		# try:     #this goes maybe stuck
-		# 	for r in results:
-		# 		for x in range(3):
-		# 			if r.ok and is_json(r.text):
-		# 				checked_results.append(r)
-		# 				break
-		# 			else:
-		# 				r = s.get(r.url, timeout=30)
-		# 			if x == 2:
-		# 				checked_results.append(r)
-		# except requests.exceptions.ReadTimeout as e:
-		# 	print(e)
-		# 	quit(1)
+		checked_results = []
+		try:     #this goes maybe stuck
+			for r in results:
+				for x in range(3):
+					if r.ok and is_json(r.text):
+						checked_results.append(r)
+						break
+					else:
+						r = s.get(r.url, timeout=30)
+					if x == 2:
+						checked_results.append(r)
+		except requests.exceptions.ReadTimeout as e:
+			print(e)
+			quit(1)
 
 
 	return checked_results
