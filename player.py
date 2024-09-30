@@ -177,7 +177,7 @@ class Player:
         profession_string = profession['profession']['name']
         tiers = profession['tiers']
         for t in tiers:
-            if 'Dragon' in t['tier']['name']:
+            if 'Khaz' in t['tier']['name']:
                 skill_level = f"{t['skill_points']}/{t['max_skill_points']}"
                 profession_string += f" ({skill_level})"
         return profession_string
