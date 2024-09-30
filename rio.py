@@ -121,7 +121,7 @@ def pull(urls, proxy=''):    #sometimes gets stuck if Proxy does not response -.
 						checked_results.append(r)
 						break
 					else:
-						r = s.get(r.url, timeout=30)
+						r = s.get(r.url, timeout=connection_timeout)
 					if x == 2:
 						checked_results.append(r)
 		except requests.exceptions.ReadTimeout as e:
