@@ -14,6 +14,8 @@ def read_players_file(file_path, alts=False):
 		for line in lines:
 			player = {}
 			line = line.strip('\n')
+			if len(line) == 0:
+				continue
 			if line[0] == '#':
 				continue
 			if line[0] == '!':
