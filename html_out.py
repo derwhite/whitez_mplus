@@ -10,6 +10,8 @@ MYTH_TRACK_BREAKPOINT = 623
 HERO_TRACK_BREAKPOINT = 610
 CHAMPION_TRACK_BREAKPOINT = 603
 
+KEY_LEVEL_TO_GET_MYTH_GEAR = len(WREWARD) - 1  # currently: +10
+
 DUNGEONS_BACKGROUND = {
 	"AA": "resources/dungeons/DF/AA.png", # Season 4
 	"COS": "resources/dungeons/DF/COS.png",
@@ -243,7 +245,7 @@ def gen_weekly(players, inis, colors, weekly, runs_dict):
 	str_html = f'<table id="{table_id}">\n'
 	str_html += f'<tr><th onclick="sortTable(0, \'td_player\', \'{table_id}\')">Player</th>'
 	str_html += f'<th onclick="sortTable(0, \'td_ilvl\', \'{table_id}\')" class="ilvl">ilvl</th>'
-	str_html += f'<th onclick="sortTable(0, \'td_twenty\', \'{table_id}\')" class="twenty">+{len(WREWARD)-3}</th>'
+	str_html += f'<th onclick="sortTable(0, \'td_twenty\', \'{table_id}\')" class="twenty">+{KEY_LEVEL_TO_GET_MYTH_GEAR}</th>'
 	str_html += f'<th onclick="sortTable(0, \'td_rewards\', \'{table_id}\')" class="rewards">Rewards</th>'
 	for i in range(0,8):
 		str_html += f'<th class="runs_weekly"></th>'
@@ -259,7 +261,7 @@ def gen_weekly(players, inis, colors, weekly, runs_dict):
 		# --------- Show Left Instances -------
 		count = 0
 		for i in p._data[weekly]:
-			if i['mythic_level'] >= len(WREWARD)-3:
+			if i['mythic_level'] >= KEY_LEVEL_TO_GET_MYTH_GEAR:
 				count += 1
 		color = 'red'
 		if count >= 8:
