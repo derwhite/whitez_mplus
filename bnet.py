@@ -47,10 +47,18 @@ class BnetBroker(metaclass=Singleton):
 		if not self.is_operational:
 			return {}
 
-		query_parameters = f'?namespace={namespace}&locale={self.locale}&access_token={self.bnet_token}'
+		# Thanks to this thread:
+		# https://us.forums.blizzard.com/en/wow/t/era-cata-retail-api-returns-401-unauthorized-for-every-endpoint-namespace/1993992/7
+		# we have to put the access token in the header instead of the URL
+		# old query:
+		# query_parameters = f'?namespace={namespace}&locale={self.locale}&access_token={self.bnet_token}'
+		# new query:
+		query_parameters = f'?namespace={namespace}&locale={self.locale}'
+		headers = {"Authorization": f"Bearer {self.bnet_token}"}
+
 		url = self._url_prefix + endpoint + query_parameters
 
-		r = requests.get(url)
+		r = requests.get(url, headers=headers)
 		if r.ok:
 			return r.json()
 		else:
