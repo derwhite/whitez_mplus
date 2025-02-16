@@ -9,7 +9,7 @@ from dateutil.parser import parse
 
 
 def extract_player_ids(players, proxy='') -> None:
-	run_id_pattern = re.compile('\/(\d+)')
+	run_id_pattern = re.compile(r'\/(\d+)')
 	run_ids = [run_id_pattern.findall(p._data['mythic_plus_best_runs'][0]['url'])[0] for p in players if len(p._data['mythic_plus_best_runs']) > 0]
 	season_slug = players[0]._data['mythic_plus_scores_by_season'][0]['season']
 	pull_urls = [f'https://raider.io/api/v1/mythic-plus/run-details?season={season_slug}&id={run_id}' for run_id in run_ids]
@@ -46,7 +46,7 @@ def get_run_details(players, proxy=''):
 	for p in players:
 		urls.extend([p['url'] for p in p._data['mythic_plus_weekly_highest_level_runs'] if p['url'] not in urls])
 		urls.extend([p['url'] for p in p._data['mythic_plus_previous_weekly_highest_level_runs'] if p['url'] not in urls])
-	pattern = re.compile('\/(\d+)') # regex to extract the run id from the url
+	pattern = re.compile(r'\/(\d+)') # regex to extract the run id from the url
 	run_ids = [pattern.findall(url)[0] for url in urls]
 	season_slug = players[0]._data['mythic_plus_scores_by_season'][0]['season']
 	pull_urls = [f'https://raider.io/api/v1/mythic-plus/run-details?season={season_slug}&id={run_id}' for run_id in run_ids]
@@ -128,7 +128,6 @@ def pull(urls, proxy=''):    #sometimes gets stuck if Proxy does not response -.
 			print(e)
 			quit(1)
 
-
 	return checked_results
 
 
@@ -152,7 +151,12 @@ def get_instances(expansion_id, season, proxy=''):
 						upgrade_3 = ini_timer['keystone_upgrades'][2]['qualifying_duration'] / 1000
 				except Exception as e:
 					print(f"ERROR: {e}")
-				instances.append({'short': ini['short_name'], 'name': ini['name'], 'timer': ini_time, 'upgrade_2': upgrade_2, 'upgrade_3': upgrade_3})
+				instances.append({'short': ini['short_name'],
+								'name': ini['name'],
+								'timer': ini_time,
+								'upgrade_2': upgrade_2,
+								'upgrade_3': upgrade_3,
+								'img_url': ini['background_image_url']})
 			season_name = sea['name']
 			break
 	instances = sorted(instances, key=lambda i: i['short'])
@@ -216,7 +220,7 @@ def get_current_season(expasion_id,proxy=''):
     now = datetime.now(timezone.utc)
     if down.ok:
         for sea in down.json()['seasons']:
-            if re.fullmatch('season-\w+?-\d', sea['slug']):
+            if re.fullmatch(r'season-\w+?-\d', sea['slug']):
                 start = sea['starts']['eu']
                 end = sea['ends']['eu']
                 if start is None:
