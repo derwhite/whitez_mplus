@@ -4,52 +4,17 @@ from datetime import datetime, timezone
 from player import Player
 
 #          |HC | M0 | +2 | +3 | +4 | +5 | +6 | +7 | +8 | +9 |+10 |
-#WREWARD = [0, 0, 509, 509, 512, 512, 515, 515, 519, 519, 522]  # Season 4 DF
 WREWARD = [593, 603, 606, 610, 610, 613, 613, 616, 619, 619, 623]  # Season 1 TWW
+#WREWARD = [0, 0, 649, 649, 652, 652, 655, 658, 658, 658, 662]  # Season 2 TWW
+
+#MYTH_TRACK_BREAKPOINT = 662  # Season 2
+#HERO_TRACK_BREAKPOINT = 649
+
 MYTH_TRACK_BREAKPOINT = 623
 HERO_TRACK_BREAKPOINT = 610
 CHAMPION_TRACK_BREAKPOINT = 603
 
 KEY_LEVEL_TO_GET_MYTH_GEAR = len(WREWARD) - 1  # currently: +10
-
-DUNGEONS_BACKGROUND = {
-	"AA": "resources/dungeons/DF/AA.png", # Season 4
-	"COS": "resources/dungeons/DF/COS.png",
-	"HOV": "resources/dungeons/DF/HOV.png",
-	"RLP": "resources/dungeons/DF/RLP.png", # Season 4
-	"SBG": "resources/dungeons/DF/SBG.png",
-	"TJS": "resources/dungeons/DF/TJS.png",
-	"AV": "resources/dungeons/DF/AV.png", # Season 4
-	"NO": "resources/dungeons/DF/NO.png", # Season 4
-	# Season 2
- 	"BH": "resources/dungeons/DF/BH.png", # Season 4
-	"FH": "resources/dungeons/DF/FH.png", # Season 4
-	"HOI": "resources/dungeons/DF/HOI.png", # Season 4
-	"NELT": "resources/dungeons/DF/NELT.png", # Season 4
-	"NL": "resources/dungeons/DF/NL.png",
-	"ULD": "resources/dungeons/DF/ULD.png",
-	"UNDR": "resources/dungeons/DF/UNDR.png",
-	"VP": "resources/dungeons/DF/VP.png",
-	# Season 3
-	"AD": "resources/dungeons/DF/AD.png",
-	"BRH": "resources/dungeons/DF/BRH.png",
-	"DHT": "resources/dungeons/DF/DHT.png",
-	"EB": "resources/dungeons/DF/EB.png",
-	"FALL": "resources/dungeons/DF/RISE.png",
-	"RISE": "resources/dungeons/DF/RISE.png",
-	"TOTT": "resources/dungeons/DF/TOTT.png",
-	"WM": "resources/dungeons/DF/WM.png",
-	# TWW Season 1
-	"SIEGE": "resources/dungeons/TWW/SIEGE.png",
- 	"GB": "resources/dungeons/TWW/GB.png",
-    "NW": "resources/dungeons/TWW/NW.png",
-    "MISTS": "resources/dungeons/TWW/MISTS.png",
-    "SV": "resources/dungeons/TWW/SV.png",
-    "COT": "resources/dungeons/TWW/COT.png",
-    "DAWN": "resources/dungeons/TWW/DAWN.png",
-    "ARAK": "resources/dungeons/TWW/ARAK.png",
-}
-
 
 def get_instance_from_player(player, ini):
 	best = {}
@@ -155,7 +120,7 @@ def gen_general_tab(players):
 	return str_html
 
 
-def gen_score_table(players, inis, colors, isTyrannical):
+def gen_score_table(players, inis, colors):
 	table_id = uuid.uuid4().hex
 	str_html = f'<table id="{table_id}">\n'
 	str_html += f'<tr><th onclick="sortTable(0, \'td_player\', \'{table_id}\')">Player</th>\n'
@@ -175,7 +140,7 @@ def gen_score_table(players, inis, colors, isTyrannical):
 			str_keystone_upgrade_timer = f'&#10;+2: {keystone_upgrade_2.strftime(time_format)}&#10;+3: {keystone_upgrade_3.strftime(time_format)}'
 			
 		str_html += f'<th onclick="sortTable({count}, \'td_dungeon\', \'{table_id}\')" '\
-			f'class="dungeon" style="background-image: url({DUNGEONS_BACKGROUND[x["short"]]})" ' \
+			f'class="dungeon" style="background-image: url({x["img_url"]})" ' \
 			f'title="{x["name"]}{str_keystone_upgrade_timer}">{x["short"]}<br>{ini_timer}</th>\n'
 		
 	str_html += f'</tr>\n'
