@@ -260,11 +260,11 @@ def main():
 	# General overview
 	tables.update({'general': html_out.gen_general_tab(general_players)})
 	# Mains
-	tables.update({'main_score': html_out.gen_score_table(mains, inis, scolors, affixes['tyrannical'])})
+	tables.update({'main_score': html_out.gen_score_table(mains, inis, scolors)})
 	tables.update({'main_weekly': html_out.gen_weekly(mains, inis, scolors, 'mythic_plus_weekly_highest_level_runs', runs_dict)})
 	tables.update({'main_pweek': html_out.gen_weekly(mains, inis, scolors, 'mythic_plus_previous_weekly_highest_level_runs', runs_dict)})
 	# Alts
-	tables.update({'alts_score': html_out.gen_score_table(alts, inis, scolors, affixes['tyrannical'])})
+	tables.update({'alts_score': html_out.gen_score_table(alts, inis, scolors)})
 	tables.update({'alts_weekly': html_out.gen_weekly(alts, inis, scolors, 'mythic_plus_weekly_highest_level_runs', runs_dict)})
 	tables.update({'alts_pweek': html_out.gen_weekly(alts, inis, scolors, 'mythic_plus_previous_weekly_highest_level_runs', runs_dict)})
 
