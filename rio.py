@@ -220,15 +220,19 @@ def get_current_season(expasion_id,proxy=''):
     now = datetime.now(timezone.utc)
     if down.ok:
         for sea in down.json()['seasons']:
-            if re.fullmatch(r'season-\w+?-\d', sea['slug']):
-                start = sea['starts']['eu']
-                end = sea['ends']['eu']
-                if start is None:
-                    continue
-                if now > parse(start):
-                    if end is None:
-                        return sea["slug"], None
-                    else:
-                        if now < parse(end):
-                            return sea["slug"], parse(end).astimezone()
+            #if re.fullmatch(r'season-\w+?-\d', sea['slug']):
+            if "ptr" in sea['slug']:
+                continue
+            if "beta" in sea['slug']:
+                continue
+            start = sea['starts']['eu']
+            end = sea['ends']['eu']
+            if start is None:
+                continue
+            if now > parse(start):
+                if end is None:
+                    return sea["slug"], None
+                else:
+                    if now < parse(end):
+                        return sea["slug"], parse(end).astimezone()
     return None, None
