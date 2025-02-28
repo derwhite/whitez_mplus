@@ -5,7 +5,7 @@ from player import Player
 
 #          |HC | M0 | +2 | +3 | +4 | +5 | +6 | +7 | +8 | +9 |+10 |
 WREWARD = [593, 603, 606, 610, 610, 613, 613, 616, 619, 619, 623]  # Season 1 TWW
-#WREWARD = [0, 0, 649, 649, 652, 652, 655, 658, 658, 658, 662]  # Season 2 TWW
+#WREWARD = [632, 645, 649, 649, 652, 652, 655, 658, 658, 658, 662]  # Season 2 TWW
 
 #MYTH_TRACK_BREAKPOINT = 662  # Season 2
 #HERO_TRACK_BREAKPOINT = 649
