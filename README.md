@@ -23,10 +23,12 @@ Pulls infomation about Mythic Plus runs from a custom list of wow players via Ra
   If you don't have an account, the script will still work. 
   The output page just doesn't show all the information.
 
-## Proxy and Login
-- if u want to use a proxy or a rnd proxy to make the requests, just add a file in the folder "lists" with the name "proxy.txt"
-- in that file write only the IP's of the proxys. One ip per line (it must be HTTPS proxys and listen to port 8080)
-- for the login create a file called 'proxykey' and write in it just one line *user:password*
+## RaiderIO API Keys
+- Raider.IO release a new feature for their public API. Now we can call up to 1000 API Calls / per min.
+- I'm actually don't need that much calls, because i call only every few minutes a new build from the Data, but i implemented it anyway.
+- go to http://raider.io/settings/apps and get your API Key.
+- write that key in your `settings.conf` file under [rio] / rio_apikey = YOUR_API_KEY.
+- Thats it.
 
 # About Me
 I'm not a programmer @all and don't work in the IT sector. For me this is just a hobby.
