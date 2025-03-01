@@ -1,5 +1,4 @@
 from pathlib import Path
-from rio import pull
 from bnet import BnetBroker
 
 AFFIX_ROTATION = [
@@ -23,13 +22,12 @@ class AffixServant:
     Next week affixes are only available if a valid bnet token is provided.
     """
 
-    def __init__(self, proxy=''):
-        self.proxy = proxy
+    def __init__(self, rio):
         self.next_week_affixes_available = False
         self._bnet_broker = BnetBroker()
 
         rio_current_affixes_url = 'https://raider.io/api/v1/mythic-plus/affixes?region=eu&locale=en'
-        responses = pull([rio_current_affixes_url], self.proxy)
+        responses = rio.pull([rio_current_affixes_url])
 
         bnet_response = {}
         if self._bnet_broker.is_operational():
