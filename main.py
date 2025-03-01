@@ -116,6 +116,8 @@ def parse_config_file(config_file_path):
 	client_id = config['BNET'].get('client_id', "")
 	client_secret = config['BNET'].get('client_secret', "")
 
+	rio_apikey = config['RIO'].get('rio_apikey', "")
+
 	# Fallback
 	if client_id == "" or client_secret == "":
 		print("INFO: bnet client_id and client_secret not found in config file. File 'bnetkeys' is used instead.")
@@ -126,12 +128,16 @@ def parse_config_file(config_file_path):
 			client_id = lines[0].strip()
 			client_secret = lines[1].strip()
 
+	if rio_apikey == "":
+		print('INFO: Rio is running without Rio_APIKEY !')
+
 	settings = {
 		'min_ilvl': min_ilvl,
 		'min_score': min_score,
 		'max_inactive_days': max_inactive_days,
 		'client_id': client_id,
-		'client_secret': client_secret
+		'client_secret': client_secret,
+		'rio_apikey': rio_apikey
 	}
 
 	return settings
@@ -185,12 +191,14 @@ def main():
 	settings = parse_config_file(args['config'])
 	# initialize BnetBroker singleton
 	bnet_broker = BnetBroker(settings['client_id'], settings['client_secret'])
+	Rio_APIKEY = settings['rio_apikey']
+	RaiderIO = rio.RaiderIO(Rio_APIKEY)
 
 	# SET PROXY ---
 	proxy = lists.get_proxy()
 	# --------------------
 
-	season, season_end = rio.get_current_season(EXPANSION_ID, proxy)
+	season, season_end = RaiderIO.get_current_season(EXPANSION_ID)
 	if not season:
 		print("Couldn't find an active Season")
 		sys.exit(1)
@@ -199,22 +207,22 @@ def main():
 
 	# Load Player Mains ---
 	player_list = lists.read_players_file(args['mains'], alts=False)
-	rio.append_api_requests(player_list, season)
+	RaiderIO.append_api_requests(player_list, season)
 	urls = [p['url'] for p in player_list]
-	responses = rio.pull(urls, proxy)
+	responses = RaiderIO.pull(urls)
 	players.extend(Player.create_players(player_list, responses))
 	# ---------------------
 	
 	# Load Player Alts ---
 	player_list = lists.read_players_file(args['alts'], alts=True)
-	rio.append_api_requests(player_list, season)
+	RaiderIO.append_api_requests(player_list, season)
 	urls = [p['url'] for p in player_list]
-	responses = rio.pull(urls, proxy)
+	responses = RaiderIO.pull(urls)
 	players.extend(Player.create_players(player_list, responses))
 	# --------------------
 	
-	# rio.extract_player_ids(players)
-	runs_dict = rio.get_run_details(players, proxy)
+	# RaiderIO.extract_player_ids(players)
+	runs_dict = RaiderIO.get_run_details(players)
 
 	if args['backup_requests']:
 		export_data_to_json(players)
@@ -236,13 +244,13 @@ def main():
 	general_players = inactive_filtered_players  # show all active chars in general tab regardless of their score or ilvl
 	# ---------------------
 
-	affix_s = AffixServant(proxy)
+	affix_s = AffixServant(RaiderIO)
 	affixes = affix_s.get_affixes()
 
 	# get Instances and Season Name
 	# set bnet client_ID and client_secret to get Instance Timers
  
-	inis, sname = rio.get_instances(EXPANSION_ID, season, proxy)
+	inis, sname = RaiderIO.get_instances(EXPANSION_ID, season)
 	# --------------------
  
 	season_ends_str = ""
@@ -250,7 +258,7 @@ def main():
 		season_ends_str = f"{sname} ends on {season_end.strftime('%d.%m.%Y %H:%M')}"
 
 	# get Score_colors from API (if failed from File)
-	scolors = rio.get_score_colors(proxy)
+	scolors = RaiderIO.get_score_colors()
 	# --------------------
 
 	mains = [p for p in mplus_players if not p._is_alt]
