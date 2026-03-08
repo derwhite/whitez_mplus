@@ -4,11 +4,12 @@ from datetime import datetime, timezone
 from player import Player
 
 #          |HC | M0 | +2 | +3 | +4 | +5 | +6 | +7 | +8 | +9 |+10 |
-WREWARD = [0, 0, 694, 694, 697, 697, 701, 704, 704, 704, 707]  # Season 3 TWW
+WREWARD = [0, 0, 259, 259, 263, 263, 266, 269, 269, 269, 272]  # Season 1 Midnight
 
-MYTH_TRACK_BREAKPOINT = 707  # Season 3
-HERO_TRACK_BREAKPOINT = 694
-CHAMPION_TRACK_BREAKPOINT = 681
+
+MYTH_TRACK_BREAKPOINT = 272  # Season 3
+HERO_TRACK_BREAKPOINT = 259
+CHAMPION_TRACK_BREAKPOINT = 250
 
 KEY_LEVEL_TO_GET_MYTH_GEAR = len(WREWARD) - 1  # currently: +10
 

@@ -153,7 +153,10 @@ class Player:
 
     @property
     def score(self):
-        return self._data['mythic_plus_scores_by_season'][0]['scores']['all']
+        if len(self._data["mythic_plus_scores_by_season"]) > 0:
+            return self._data["mythic_plus_scores_by_season"][0]["scores"]["all"]
+        else:
+            return 0
 
     @property
     def achievement_points(self):

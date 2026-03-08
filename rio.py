@@ -3,7 +3,7 @@ import requests
 import json
 from functools import partial
 from concurrent.futures import ThreadPoolExecutor
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from bnet import BnetBroker
 from dateutil.parser import parse
 
@@ -58,7 +58,7 @@ class RaiderIO:
         with open("player_ids_with_realm.json", "w") as f:
             json.dump(list_player_ids, f)
 
-    def get_run_details(self, players):
+    def get_run_details(self, players, season_slug):
         urls = []
         for p in players:
             urls.extend([p["url"] for p in p._data["mythic_plus_weekly_highest_level_runs"] if p["url"] not in urls])
@@ -67,7 +67,7 @@ class RaiderIO:
             )
         pattern = re.compile(r"\/(\d+)")  # regex to extract the run id from the url
         run_ids = [pattern.findall(url)[0] for url in urls]
-        season_slug = players[0]._data["mythic_plus_scores_by_season"][0]["season"]
+        # season_slug = players[0]._data["mythic_plus_scores_by_season"][0]["season"]
         pull_urls = [
             f"https://raider.io/api/v1/mythic-plus/run-details?{self.Rio_APIKEY}season={season_slug}&id={run_id}"
             for run_id in run_ids
@@ -227,6 +227,28 @@ class RaiderIO:
                         if now < parse(end):
                             return sea["slug"], parse(end).astimezone()
         return None, None
+
+    def get_next_season(self, expasion_id) -> tuple[str, datetime]:
+        down = self.pull(
+            [f"https://raider.io/api/v1/mythic-plus/static-data?{self.Rio_APIKEY}expansion_id={expasion_id}"]
+        )[0]
+        now = datetime.now(timezone.utc)
+        if down.ok:
+            next_sea_slug = None
+            next_sea_date = timedelta(days=99999)
+            for sea in down.json()["seasons"]:
+                if "ptr" in sea["slug"] or "beta" in sea["slug"] or "break-the-meta" in sea["slug"]:
+                    continue
+                start = parse(sea["starts"]["eu"])
+                end = parse(sea["ends"]["eu"])
+                if start is None:
+                    continue
+                if start > now and start - now < next_sea_date:
+                    next_sea_date = start
+                    next_sea_slug = sea["slug"]
+            if next_sea_slug == None:
+                return None, None
+        return next_sea_slug, next_sea_date
 
 
 def get_highest_score(players):

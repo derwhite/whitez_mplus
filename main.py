@@ -18,7 +18,7 @@ from affix_servant import AffixServant
 from bnet import BnetBroker
 
 
-EXPANSION_ID = 10
+EXPANSION_ID = 11
 
 def sync_directories(source_dir, dest_dir): #AHAHAHA from ChatGPT ^^
 	"""
@@ -200,9 +200,10 @@ def main():
 
 	season, season_end = RaiderIO.get_current_season(EXPANSION_ID)
 	if not season:
-		print("Couldn't find an active Season")
-		sys.exit(1)
-
+		season, season_next = RaiderIO.get_next_season(EXPANSION_ID)
+		if not season:
+			print("can't find active or next season !")
+			sys.exit(1)
 	players = []
 
 	# Load Player Mains ---
@@ -222,7 +223,7 @@ def main():
 	# --------------------
 	
 	# RaiderIO.extract_player_ids(players)
-	runs_dict = RaiderIO.get_run_details(players)
+	runs_dict = RaiderIO.get_run_details(players, season_slug=season)
 
 	if args['backup_requests']:
 		export_data_to_json(players)
@@ -253,9 +254,11 @@ def main():
 	inis, sname = RaiderIO.get_instances(EXPANSION_ID, season)
 	# --------------------
  
-	season_ends_str = ""
+	season_status_str = ""
 	if season_end and season_end - datetime.now(tz=timezone.utc) < timedelta(days=30):
-		season_ends_str = f"{sname} ends on {season_end.strftime('%d.%m.%Y %H:%M')}"
+		season_status_str = f"{sname} ends on {season_end.strftime('%d.%m.%Y %H:%M')}"
+	if season_next and season_next - datetime.now(tz=timezone.utc) < timedelta(days=30):
+		season_status_str = f"{sname} start on {season_next.strftime('%d.%m.%Y %H:%M')}"
 
 	# get Score_colors from API (if failed from File)
 	scolors = RaiderIO.get_score_colors()
@@ -276,7 +279,7 @@ def main():
 	tables.update({'alts_weekly': html_out.gen_weekly(alts, inis, scolors, 'mythic_plus_weekly_highest_level_runs', runs_dict)})
 	tables.update({'alts_pweek': html_out.gen_weekly(alts, inis, scolors, 'mythic_plus_previous_weekly_highest_level_runs', runs_dict)})
 
-	myhtml = html_out.gen_site(affixes, tables, sname, season_ends_str,generate_version_string())
+	myhtml = html_out.gen_site(affixes, tables, sname, season_status_str,generate_version_string())
 	
 	with open(args['outfile'], "w", encoding="utf8") as text_file:
 		text_file.write(myhtml)
