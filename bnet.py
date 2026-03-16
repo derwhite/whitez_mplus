@@ -53,7 +53,7 @@ class BnetBroker(metaclass=Singleton):
 		# old query:
 		# query_parameters = f'?namespace={namespace}&locale={self.locale}&access_token={self.bnet_token}'
 		# new query:
-		query_parameters = f'?namespace={namespace}&locale={self.locale}'
+		query_parameters = f'?region=eu&namespace={namespace}&locale={self.locale}'
 		headers = {"Authorization": f"Bearer {self.bnet_token}"}
 
 		url = self._url_prefix + endpoint + query_parameters
