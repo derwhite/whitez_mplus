@@ -30,6 +30,14 @@ Pulls infomation about Mythic Plus runs from a custom list of wow players via Ra
 - write that key in your `settings.conf` file under [rio] / rio_apikey = YOUR_API_KEY.
 - Thats it.
 
+## conda setup and run examples
+```bash
+conda create --name mplus python=3.9 -y
+conda activate mplus
+# example call:
+./main.py ./test/test.html --mains ../wow_mythic_grp/mains.txt --alts ../wow_mythic_grp/alts.txt --config ../settings.conf
+```
+
 # About Me
 I'm not a programmer @all and don't work in the IT sector. For me this is just a hobby.
 I build this kind of Website just for me and my Frieds to keep track of our WoW progress over the actual addon.
