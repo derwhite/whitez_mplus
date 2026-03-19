@@ -18,6 +18,7 @@ CLASS_DATA = {
         'specs': {
             'Havoc': 'https://wow.zamimg.com/images/wow/icons/medium/ability_demonhunter_specdps.jpg',
             'Vengeance': 'https://wow.zamimg.com/images/wow/icons/medium/ability_demonhunter_spectank.jpg',
+            'Devourer': 'https://wow.zamimg.com/images/wow/icons/medium/classicon_demonhunter_void_64.jpg',
         },
     },
     'Druid': {
