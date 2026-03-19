@@ -109,14 +109,27 @@ def parse_config_file(config_file_path):
 	config = configparser.ConfigParser()
 	config.read(config_file_path)
 
-	min_ilvl = config["DEFAULT"].getint("min_ilvl", 300)
-	min_score = config["DEFAULT"].getint("min_score", 1)
-	max_inactive_days = config["DEFAULT"].getint("max_inactive_days", 30)
+	def get_int_setting(option, fallback):
+		value = config.get("DEFAULT", option, fallback="")
+		if value is None:
+			return fallback
+		value = value.strip()
+		if value == "":
+			return fallback
+		try:
+			return int(value)
+		except ValueError:
+			print(f"WARNING: Invalid integer value for DEFAULT.{option}: '{value}'. Using fallback {fallback}.")
+			return fallback
 
-	client_id = config['BNET'].get('client_id', "")
-	client_secret = config['BNET'].get('client_secret', "")
+	min_ilvl = get_int_setting("min_ilvl", 300)
+	min_score = get_int_setting("min_score", 1)
+	max_inactive_days = get_int_setting("max_inactive_days", 30)
 
-	rio_apikey = config['RIO'].get('rio_apikey', "")
+	client_id = config.get('BNET', 'client_id', fallback="")
+	client_secret = config.get('BNET', 'client_secret', fallback="")
+
+	rio_apikey = config.get('RIO', 'rio_apikey', fallback="")
 
 	# Fallback
 	if client_id == "" or client_secret == "":
