@@ -211,6 +211,7 @@ def main():
 	proxy = lists.get_proxy()
 	# --------------------
 
+season_next = None
 	season, season_end = RaiderIO.get_current_season(EXPANSION_ID)
 	if not season:
 		season, season_next = RaiderIO.get_next_season(EXPANSION_ID)
@@ -270,7 +271,7 @@ def main():
 	season_status_str = ""
 	if season_end and season_end - datetime.now(tz=timezone.utc) < timedelta(days=30):
 		season_status_str = f"{sname} ends on {season_end.strftime('%d.%m.%Y %H:%M')}"
-	if season_next and season_next - datetime.now(tz=timezone.utc) < timedelta(days=30):
+	elif season_next and season_next - datetime.now(tz=timezone.utc) < timedelta(days=30):
 		season_status_str = f"{sname} start on {season_next.strftime('%d.%m.%Y %H:%M')}"
 
 	# get Score_colors from API (if failed from File)
