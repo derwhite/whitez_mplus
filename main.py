@@ -211,7 +211,7 @@ def main():
 	proxy = lists.get_proxy()
 	# --------------------
 
-season_next = None
+	season_next = None
 	season, season_end = RaiderIO.get_current_season(EXPANSION_ID)
 	if not season:
 		season, season_next = RaiderIO.get_next_season(EXPANSION_ID)
