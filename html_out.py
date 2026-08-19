@@ -4,7 +4,8 @@ from datetime import datetime, timezone
 from player import Player
 
 #          |HC | M0 | +2 | +3 | +4 | +5 | +6 | +7 | +8 | +9 |+10 |
-WREWARD = [0, 0, 259, 259, 263, 263, 266, 269, 269, 269, 272]  # Season 1 Midnight
+# WREWARD = [0, 0, 259, 259, 263, 263, 266, 269, 269, 269, 272]  # Season 1 Midnight
+WREWARD = [0, 0, 305, 305, 308, 308, 311, 315, 315, 315, 318]  # Season 2 Midnight
 
 
 MYTH_TRACK_BREAKPOINT = 272  # Season 3
