@@ -20,12 +20,7 @@ class RaiderIO:
             self.Rio_APIKEY = ""
 
     def extract_player_ids(self, players) -> None:
-        run_id_pattern = re.compile(r"\/(\d+)")
-        run_ids = [
-            run_id_pattern.findall(p._data["mythic_plus_best_runs"][0]["url"])[0]
-            for p in players
-            if len(p._data["mythic_plus_best_runs"]) > 0
-        ]
+        run_ids = {run["keystone_run_id"] for p in players for run in p._data["mythic_plus_best_runs"]}
         season_slug = players[0]._data["mythic_plus_scores_by_season"][0]["season"]
         pull_urls = [
             f"https://raider.io/api/v1/mythic-plus/run-details?{self.Rio_APIKEY}season={season_slug}&id={run_id}"
@@ -59,14 +54,15 @@ class RaiderIO:
             json.dump(list_player_ids, f)
 
     def get_run_details(self, players, season_slug):
-        urls = []
-        for p in players:
-            urls.extend([p["url"] for p in p._data["mythic_plus_weekly_highest_level_runs"] if p["url"] not in urls])
-            urls.extend(
-                [p["url"] for p in p._data["mythic_plus_previous_weekly_highest_level_runs"] if p["url"] not in urls]
-            )
-        pattern = re.compile(r"\/(\d+)")  # regex to extract the run id from the url
-        run_ids = [pattern.findall(url)[0] for url in urls]
+        run_ids = {
+            run["keystone_run_id"]
+            for p in players
+            for data in [
+                p._data["mythic_plus_weekly_highest_level_runs"],
+                p._data["mythic_plus_previous_weekly_highest_level_runs"],
+            ]
+            for run in data
+        }
         # season_slug = players[0]._data["mythic_plus_scores_by_season"][0]["season"]
         pull_urls = [
             f"https://raider.io/api/v1/mythic-plus/run-details?{self.Rio_APIKEY}season={season_slug}&id={run_id}"
@@ -74,7 +70,7 @@ class RaiderIO:
         ]
         runs_response = self.pull(pull_urls)
         dict_runs = {}
-        for url, r in zip(urls, runs_response):
+        for id, r in zip(run_ids, runs_response):
             if r.ok and is_json(r.text):
                 # add tank first
                 get_spieler = [
@@ -98,9 +94,9 @@ class RaiderIO:
                         if spieler["character"]["spec"]["role"] == "dps"
                     ]
                 )
-                dict_runs[url] = "\n" + "\n".join(get_spieler)
+                dict_runs[id] = "\n" + "\n".join(get_spieler)
             else:
-                dict_runs[url] = "\nERROR:\ndidn't found the run details"
+                dict_runs[id] = "\nERROR:\ndidn't found the run details"
         return dict_runs
 
     def append_api_requests(self, players_list, season):
